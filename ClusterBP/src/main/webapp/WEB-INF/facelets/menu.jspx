@@ -1,0 +1,202 @@
+<jsp:root jsfc="f:view" xmlns:jsp="http://java.sun.com/JSP/Page"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:c="http://java.sun.com/jstl/core"
+    xmlns:p="http://primefaces.org/ui"
+    xmlns:fn="http://java.sun.com/jsp/jstl/functions">
+   
+   <html>
+		<body>
+			<f:view>
+				<ui:composition>
+					<!-- Beging Menu -->
+				
+							<h:form>
+							
+								<p:megaMenu style="width:989px">  
+									<p:submenu label="Master" icon="ui-icon-pencil">  
+							            <p:column>
+							            
+							            	 								            	 <p:submenu label="Grupo">  
+								                    <p:menuitem value="Master Grupo" url="#{facesContext.externalContext.request.scheme}://#{facesContext.externalContext.request.serverName}:#{facesContext.externalContext.request.serverPort}#{facesContext.externalContext.request.contextPath}/XHTML/grupo.xhtml" />  
+								               	 </p:submenu>
+											 								            	 <p:submenu label="GrupoRepositorio">  
+								                    <p:menuitem value="Master GrupoRepositorio" url="#{facesContext.externalContext.request.scheme}://#{facesContext.externalContext.request.serverName}:#{facesContext.externalContext.request.serverPort}#{facesContext.externalContext.request.contextPath}/XHTML/grupoRepositorio.xhtml" />  
+								               	 </p:submenu>
+											 								            	 <p:submenu label="GrupoUsuario">  
+								                    <p:menuitem value="Master GrupoUsuario" url="#{facesContext.externalContext.request.scheme}://#{facesContext.externalContext.request.serverName}:#{facesContext.externalContext.request.serverPort}#{facesContext.externalContext.request.contextPath}/XHTML/grupoUsuario.xhtml" />  
+								               	 </p:submenu>
+											 								            	 <p:submenu label="Historial">  
+								                    <p:menuitem value="Master Historial" url="#{facesContext.externalContext.request.scheme}://#{facesContext.externalContext.request.serverName}:#{facesContext.externalContext.request.serverPort}#{facesContext.externalContext.request.contextPath}/XHTML/historial.xhtml" />  
+								               	 </p:submenu>
+											 								            	 <p:submenu label="LogBusqueda">  
+								                    <p:menuitem value="Master LogBusqueda" url="#{facesContext.externalContext.request.scheme}://#{facesContext.externalContext.request.serverName}:#{facesContext.externalContext.request.serverPort}#{facesContext.externalContext.request.contextPath}/XHTML/logBusqueda.xhtml" />  
+								               	 </p:submenu>
+											 								            	 <p:submenu label="ModeloBusqueda">  
+								                    <p:menuitem value="Master ModeloBusqueda" url="#{facesContext.externalContext.request.scheme}://#{facesContext.externalContext.request.serverName}:#{facesContext.externalContext.request.serverPort}#{facesContext.externalContext.request.contextPath}/XHTML/modeloBusqueda.xhtml" />  
+								               	 </p:submenu>
+											 								            	 <p:submenu label="Plugin">  
+								                    <p:menuitem value="Master Plugin" url="#{facesContext.externalContext.request.scheme}://#{facesContext.externalContext.request.serverName}:#{facesContext.externalContext.request.serverPort}#{facesContext.externalContext.request.contextPath}/XHTML/plugin.xhtml" />  
+								               	 </p:submenu>
+											 								            	 <p:submenu label="PluginModeloBusqueda">  
+								                    <p:menuitem value="Master PluginModeloBusqueda" url="#{facesContext.externalContext.request.scheme}://#{facesContext.externalContext.request.serverName}:#{facesContext.externalContext.request.serverPort}#{facesContext.externalContext.request.contextPath}/XHTML/pluginModeloBusqueda.xhtml" />  
+								               	 </p:submenu>
+											 								            	 <p:submenu label="Pn">  
+								                    <p:menuitem value="Master Pn" url="#{facesContext.externalContext.request.scheme}://#{facesContext.externalContext.request.serverName}:#{facesContext.externalContext.request.serverPort}#{facesContext.externalContext.request.contextPath}/XHTML/pn.xhtml" />  
+								               	 </p:submenu>
+											 								            	 <p:submenu label="Repositorio">  
+								                    <p:menuitem value="Master Repositorio" url="#{facesContext.externalContext.request.scheme}://#{facesContext.externalContext.request.serverName}:#{facesContext.externalContext.request.serverPort}#{facesContext.externalContext.request.contextPath}/XHTML/repositorio.xhtml" />  
+								               	 </p:submenu>
+											 								            	 <p:submenu label="RepositorioPlugin">  
+								                    <p:menuitem value="Master RepositorioPlugin" url="#{facesContext.externalContext.request.scheme}://#{facesContext.externalContext.request.serverName}:#{facesContext.externalContext.request.serverPort}#{facesContext.externalContext.request.contextPath}/XHTML/repositorioPlugin.xhtml" />  
+								               	 </p:submenu>
+											 								            	 <p:submenu label="RepositorioPn">  
+								                    <p:menuitem value="Master RepositorioPn" url="#{facesContext.externalContext.request.scheme}://#{facesContext.externalContext.request.serverName}:#{facesContext.externalContext.request.serverPort}#{facesContext.externalContext.request.contextPath}/XHTML/repositorioPn.xhtml" />  
+								               	 </p:submenu>
+											 								            	 <p:submenu label="Rol">  
+								                    <p:menuitem value="Master Rol" url="#{facesContext.externalContext.request.scheme}://#{facesContext.externalContext.request.serverName}:#{facesContext.externalContext.request.serverPort}#{facesContext.externalContext.request.contextPath}/XHTML/rol.xhtml" />  
+								               	 </p:submenu>
+											 								            	 <p:submenu label="TipoArchivoPn">  
+								                    <p:menuitem value="Master TipoArchivoPn" url="#{facesContext.externalContext.request.scheme}://#{facesContext.externalContext.request.serverName}:#{facesContext.externalContext.request.serverPort}#{facesContext.externalContext.request.contextPath}/XHTML/tipoArchivoPn.xhtml" />  
+								               	 </p:submenu>
+											 								            	 <p:submenu label="Usuario">  
+								                    <p:menuitem value="Master Usuario" url="#{facesContext.externalContext.request.scheme}://#{facesContext.externalContext.request.serverName}:#{facesContext.externalContext.request.serverPort}#{facesContext.externalContext.request.contextPath}/XHTML/usuario.xhtml" />  
+								               	 </p:submenu>
+											 								            	 <p:submenu label="UsuarioRol">  
+								                    <p:menuitem value="Master UsuarioRol" url="#{facesContext.externalContext.request.scheme}://#{facesContext.externalContext.request.serverName}:#{facesContext.externalContext.request.serverPort}#{facesContext.externalContext.request.contextPath}/XHTML/usuarioRol.xhtml" />  
+								               	 </p:submenu>
+											 								            	 <p:submenu label="VersionRep">  
+								                    <p:menuitem value="Master VersionRep" url="#{facesContext.externalContext.request.scheme}://#{facesContext.externalContext.request.serverName}:#{facesContext.externalContext.request.serverPort}#{facesContext.externalContext.request.contextPath}/XHTML/versionRep.xhtml" />  
+								               	 </p:submenu>
+											 							            </p:column>
+							        </p:submenu>  
+															
+															
+							  
+							        <p:submenu label="Data Table" icon="ui-icon-document">
+							           <p:column>  
+							                								            	 <p:submenu label="Grupo">  
+								                    <p:menuitem value="Grupo" url="#{facesContext.externalContext.request.scheme}://#{facesContext.externalContext.request.serverName}:#{facesContext.externalContext.request.serverPort}#{facesContext.externalContext.request.contextPath}/XHTML/grupoListDataTable.xhtml" />  
+								               	 </p:submenu>
+											 								            	 <p:submenu label="GrupoRepositorio">  
+								                    <p:menuitem value="GrupoRepositorio" url="#{facesContext.externalContext.request.scheme}://#{facesContext.externalContext.request.serverName}:#{facesContext.externalContext.request.serverPort}#{facesContext.externalContext.request.contextPath}/XHTML/grupoRepositorioListDataTable.xhtml" />  
+								               	 </p:submenu>
+											 								            	 <p:submenu label="GrupoUsuario">  
+								                    <p:menuitem value="GrupoUsuario" url="#{facesContext.externalContext.request.scheme}://#{facesContext.externalContext.request.serverName}:#{facesContext.externalContext.request.serverPort}#{facesContext.externalContext.request.contextPath}/XHTML/grupoUsuarioListDataTable.xhtml" />  
+								               	 </p:submenu>
+											 								            	 <p:submenu label="Historial">  
+								                    <p:menuitem value="Historial" url="#{facesContext.externalContext.request.scheme}://#{facesContext.externalContext.request.serverName}:#{facesContext.externalContext.request.serverPort}#{facesContext.externalContext.request.contextPath}/XHTML/historialListDataTable.xhtml" />  
+								               	 </p:submenu>
+											 								            	 <p:submenu label="LogBusqueda">  
+								                    <p:menuitem value="LogBusqueda" url="#{facesContext.externalContext.request.scheme}://#{facesContext.externalContext.request.serverName}:#{facesContext.externalContext.request.serverPort}#{facesContext.externalContext.request.contextPath}/XHTML/logBusquedaListDataTable.xhtml" />  
+								               	 </p:submenu>
+											 								            	 <p:submenu label="ModeloBusqueda">  
+								                    <p:menuitem value="ModeloBusqueda" url="#{facesContext.externalContext.request.scheme}://#{facesContext.externalContext.request.serverName}:#{facesContext.externalContext.request.serverPort}#{facesContext.externalContext.request.contextPath}/XHTML/modeloBusquedaListDataTable.xhtml" />  
+								               	 </p:submenu>
+											 								            	 <p:submenu label="Plugin">  
+								                    <p:menuitem value="Plugin" url="#{facesContext.externalContext.request.scheme}://#{facesContext.externalContext.request.serverName}:#{facesContext.externalContext.request.serverPort}#{facesContext.externalContext.request.contextPath}/XHTML/pluginListDataTable.xhtml" />  
+								               	 </p:submenu>
+											 								            	 <p:submenu label="PluginModeloBusqueda">  
+								                    <p:menuitem value="PluginModeloBusqueda" url="#{facesContext.externalContext.request.scheme}://#{facesContext.externalContext.request.serverName}:#{facesContext.externalContext.request.serverPort}#{facesContext.externalContext.request.contextPath}/XHTML/pluginModeloBusquedaListDataTable.xhtml" />  
+								               	 </p:submenu>
+											 								            	 <p:submenu label="Pn">  
+								                    <p:menuitem value="Pn" url="#{facesContext.externalContext.request.scheme}://#{facesContext.externalContext.request.serverName}:#{facesContext.externalContext.request.serverPort}#{facesContext.externalContext.request.contextPath}/XHTML/pnListDataTable.xhtml" />  
+								               	 </p:submenu>
+											 								            	 <p:submenu label="Repositorio">  
+								                    <p:menuitem value="Repositorio" url="#{facesContext.externalContext.request.scheme}://#{facesContext.externalContext.request.serverName}:#{facesContext.externalContext.request.serverPort}#{facesContext.externalContext.request.contextPath}/XHTML/repositorioListDataTable.xhtml" />  
+								               	 </p:submenu>
+											 								            	 <p:submenu label="RepositorioPlugin">  
+								                    <p:menuitem value="RepositorioPlugin" url="#{facesContext.externalContext.request.scheme}://#{facesContext.externalContext.request.serverName}:#{facesContext.externalContext.request.serverPort}#{facesContext.externalContext.request.contextPath}/XHTML/repositorioPluginListDataTable.xhtml" />  
+								               	 </p:submenu>
+											 								            	 <p:submenu label="RepositorioPn">  
+								                    <p:menuitem value="RepositorioPn" url="#{facesContext.externalContext.request.scheme}://#{facesContext.externalContext.request.serverName}:#{facesContext.externalContext.request.serverPort}#{facesContext.externalContext.request.contextPath}/XHTML/repositorioPnListDataTable.xhtml" />  
+								               	 </p:submenu>
+											 								            	 <p:submenu label="Rol">  
+								                    <p:menuitem value="Rol" url="#{facesContext.externalContext.request.scheme}://#{facesContext.externalContext.request.serverName}:#{facesContext.externalContext.request.serverPort}#{facesContext.externalContext.request.contextPath}/XHTML/rolListDataTable.xhtml" />  
+								               	 </p:submenu>
+											 								            	 <p:submenu label="TipoArchivoPn">  
+								                    <p:menuitem value="TipoArchivoPn" url="#{facesContext.externalContext.request.scheme}://#{facesContext.externalContext.request.serverName}:#{facesContext.externalContext.request.serverPort}#{facesContext.externalContext.request.contextPath}/XHTML/tipoArchivoPnListDataTable.xhtml" />  
+								               	 </p:submenu>
+											 								            	 <p:submenu label="Usuario">  
+								                    <p:menuitem value="Usuario" url="#{facesContext.externalContext.request.scheme}://#{facesContext.externalContext.request.serverName}:#{facesContext.externalContext.request.serverPort}#{facesContext.externalContext.request.contextPath}/XHTML/usuarioListDataTable.xhtml" />  
+								               	 </p:submenu>
+											 								            	 <p:submenu label="UsuarioRol">  
+								                    <p:menuitem value="UsuarioRol" url="#{facesContext.externalContext.request.scheme}://#{facesContext.externalContext.request.serverName}:#{facesContext.externalContext.request.serverPort}#{facesContext.externalContext.request.contextPath}/XHTML/usuarioRolListDataTable.xhtml" />  
+								               	 </p:submenu>
+											 								            	 <p:submenu label="VersionRep">  
+								                    <p:menuitem value="VersionRep" url="#{facesContext.externalContext.request.scheme}://#{facesContext.externalContext.request.serverName}:#{facesContext.externalContext.request.serverPort}#{facesContext.externalContext.request.contextPath}/XHTML/versionRepListDataTable.xhtml" />  
+								               	 </p:submenu>
+											 							            </p:column>
+							        </p:submenu>  
+							  
+							        
+							  
+							  
+							        <p:submenu label="Edit Data Table" icon="ui-icon-contact">  
+							            <p:column>  
+							                								            	 <p:submenu label="Grupo">  
+								                    <p:menuitem value="Grupo" url="#{facesContext.externalContext.request.scheme}://#{facesContext.externalContext.request.serverName}:#{facesContext.externalContext.request.serverPort}#{facesContext.externalContext.request.contextPath}/XHTML/grupoListDataTableEditable.xhtml" />  
+								               	 </p:submenu>
+											 								            	 <p:submenu label="GrupoRepositorio">  
+								                    <p:menuitem value="GrupoRepositorio" url="#{facesContext.externalContext.request.scheme}://#{facesContext.externalContext.request.serverName}:#{facesContext.externalContext.request.serverPort}#{facesContext.externalContext.request.contextPath}/XHTML/grupoRepositorioListDataTableEditable.xhtml" />  
+								               	 </p:submenu>
+											 								            	 <p:submenu label="GrupoUsuario">  
+								                    <p:menuitem value="GrupoUsuario" url="#{facesContext.externalContext.request.scheme}://#{facesContext.externalContext.request.serverName}:#{facesContext.externalContext.request.serverPort}#{facesContext.externalContext.request.contextPath}/XHTML/grupoUsuarioListDataTableEditable.xhtml" />  
+								               	 </p:submenu>
+											 								            	 <p:submenu label="Historial">  
+								                    <p:menuitem value="Historial" url="#{facesContext.externalContext.request.scheme}://#{facesContext.externalContext.request.serverName}:#{facesContext.externalContext.request.serverPort}#{facesContext.externalContext.request.contextPath}/XHTML/historialListDataTableEditable.xhtml" />  
+								               	 </p:submenu>
+											 								            	 <p:submenu label="LogBusqueda">  
+								                    <p:menuitem value="LogBusqueda" url="#{facesContext.externalContext.request.scheme}://#{facesContext.externalContext.request.serverName}:#{facesContext.externalContext.request.serverPort}#{facesContext.externalContext.request.contextPath}/XHTML/logBusquedaListDataTableEditable.xhtml" />  
+								               	 </p:submenu>
+											 								            	 <p:submenu label="ModeloBusqueda">  
+								                    <p:menuitem value="ModeloBusqueda" url="#{facesContext.externalContext.request.scheme}://#{facesContext.externalContext.request.serverName}:#{facesContext.externalContext.request.serverPort}#{facesContext.externalContext.request.contextPath}/XHTML/modeloBusquedaListDataTableEditable.xhtml" />  
+								               	 </p:submenu>
+											 								            	 <p:submenu label="Plugin">  
+								                    <p:menuitem value="Plugin" url="#{facesContext.externalContext.request.scheme}://#{facesContext.externalContext.request.serverName}:#{facesContext.externalContext.request.serverPort}#{facesContext.externalContext.request.contextPath}/XHTML/pluginListDataTableEditable.xhtml" />  
+								               	 </p:submenu>
+											 								            	 <p:submenu label="PluginModeloBusqueda">  
+								                    <p:menuitem value="PluginModeloBusqueda" url="#{facesContext.externalContext.request.scheme}://#{facesContext.externalContext.request.serverName}:#{facesContext.externalContext.request.serverPort}#{facesContext.externalContext.request.contextPath}/XHTML/pluginModeloBusquedaListDataTableEditable.xhtml" />  
+								               	 </p:submenu>
+											 								            	 <p:submenu label="Pn">  
+								                    <p:menuitem value="Pn" url="#{facesContext.externalContext.request.scheme}://#{facesContext.externalContext.request.serverName}:#{facesContext.externalContext.request.serverPort}#{facesContext.externalContext.request.contextPath}/XHTML/pnListDataTableEditable.xhtml" />  
+								               	 </p:submenu>
+											 								            	 <p:submenu label="Repositorio">  
+								                    <p:menuitem value="Repositorio" url="#{facesContext.externalContext.request.scheme}://#{facesContext.externalContext.request.serverName}:#{facesContext.externalContext.request.serverPort}#{facesContext.externalContext.request.contextPath}/XHTML/repositorioListDataTableEditable.xhtml" />  
+								               	 </p:submenu>
+											 								            	 <p:submenu label="RepositorioPlugin">  
+								                    <p:menuitem value="RepositorioPlugin" url="#{facesContext.externalContext.request.scheme}://#{facesContext.externalContext.request.serverName}:#{facesContext.externalContext.request.serverPort}#{facesContext.externalContext.request.contextPath}/XHTML/repositorioPluginListDataTableEditable.xhtml" />  
+								               	 </p:submenu>
+											 								            	 <p:submenu label="RepositorioPn">  
+								                    <p:menuitem value="RepositorioPn" url="#{facesContext.externalContext.request.scheme}://#{facesContext.externalContext.request.serverName}:#{facesContext.externalContext.request.serverPort}#{facesContext.externalContext.request.contextPath}/XHTML/repositorioPnListDataTableEditable.xhtml" />  
+								               	 </p:submenu>
+											 								            	 <p:submenu label="Rol">  
+								                    <p:menuitem value="Rol" url="#{facesContext.externalContext.request.scheme}://#{facesContext.externalContext.request.serverName}:#{facesContext.externalContext.request.serverPort}#{facesContext.externalContext.request.contextPath}/XHTML/rolListDataTableEditable.xhtml" />  
+								               	 </p:submenu>
+											 								            	 <p:submenu label="TipoArchivoPn">  
+								                    <p:menuitem value="TipoArchivoPn" url="#{facesContext.externalContext.request.scheme}://#{facesContext.externalContext.request.serverName}:#{facesContext.externalContext.request.serverPort}#{facesContext.externalContext.request.contextPath}/XHTML/tipoArchivoPnListDataTableEditable.xhtml" />  
+								               	 </p:submenu>
+											 								            	 <p:submenu label="Usuario">  
+								                    <p:menuitem value="Usuario" url="#{facesContext.externalContext.request.scheme}://#{facesContext.externalContext.request.serverName}:#{facesContext.externalContext.request.serverPort}#{facesContext.externalContext.request.contextPath}/XHTML/usuarioListDataTableEditable.xhtml" />  
+								               	 </p:submenu>
+											 								            	 <p:submenu label="UsuarioRol">  
+								                    <p:menuitem value="UsuarioRol" url="#{facesContext.externalContext.request.scheme}://#{facesContext.externalContext.request.serverName}:#{facesContext.externalContext.request.serverPort}#{facesContext.externalContext.request.contextPath}/XHTML/usuarioRolListDataTableEditable.xhtml" />  
+								               	 </p:submenu>
+											 								            	 <p:submenu label="VersionRep">  
+								                    <p:menuitem value="VersionRep" url="#{facesContext.externalContext.request.scheme}://#{facesContext.externalContext.request.serverName}:#{facesContext.externalContext.request.serverPort}#{facesContext.externalContext.request.contextPath}/XHTML/versionRepListDataTableEditable.xhtml" />  
+								               	 </p:submenu>
+											 							            </p:column>  
+							        </p:submenu>  
+						  
+						        	<p:menuitem value="Quit" url="#{facesContext.externalContext.request.scheme}://#{facesContext.externalContext.request.serverName}:#{facesContext.externalContext.request.serverPort}#{facesContext.externalContext.request.contextPath}/index.jsp" icon="ui-icon-close" />  
+						    
+						    </p:megaMenu>  
+						</h:form>
+					
+					<!-- end menu -->
+				</ui:composition>
+			</f:view>
+		</body>
+	</html>
+</jsp:root>

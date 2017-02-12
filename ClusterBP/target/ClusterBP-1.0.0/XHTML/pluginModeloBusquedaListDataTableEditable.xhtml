@@ -1,0 +1,197 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets">
+
+	<h:head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+	</h:head>
+
+	<h:body>
+	    <ui:composition template="/WEB-INF/facelets/template.xhtml">	
+		 
+		 	<ui:define name="body">	
+				<f:view>
+					<p:ajaxStatus onstart="PF('statusDialog').show()" onsuccess="PF('statusDialog').hide()"/>               
+					<p:dialog modal="true" widgetVar="statusDialog" header="Loading"  draggable="false" closable="false">  
+   						<p:graphicImage value="#{facesContext.externalContext.request.scheme}://#{facesContext.externalContext.request.serverName}:#{facesContext.externalContext.request.serverPort}#{facesContext.externalContext.request.contextPath}/images/ajaxloadingbar.gif" />   
+					</p:dialog>
+					
+					
+					<!-- Expired session -->
+					<p:idleMonitor onactive="PF('sessionTimeOutDialog').show();" timeout="#{session.maxInactiveInterval * 1000}" />
+					<p:dialog modal="true" widgetVar="sessionTimeOutDialog" header="Expired session"  draggable="false" closable="false">  
+	   					<h:outputText value="The session is finished" />
+	                 	<input id="confirmBackToLogin" 
+	                 		type="button" 
+	                 		value="Sign in"
+	                    	onclick="window.location='#{facesContext.externalContext.requestContextPath}/index.jsp';" />   
+					</p:dialog>
+		 
+		 <h:form id="form">
+			
+			 
+			<p:panel id="msgProjectClientesTitle" header="PluginModeloBusquedaData">
+					<p:messages id="msg" />
+				<p:dataTable id ="tabla" value="#{pluginModeloBusquedaView.data}" var="pluginModeloBusqueda"
+					paginator="true" rows="5"  editable="true" >
+					 
+					 <p:ajax event ="rowEdit" update=":form:msg,:form:tabla" listener="#{pluginModeloBusquedaView.rowEventListener}" />
+					
+															<p:column filterBy="#{pluginModeloBusqueda.pluginModeloBusquedaCodigo}" sortBy="#{pluginModeloBusqueda.pluginModeloBusquedaCodigo}" headerText="pluginModeloBusquedaCodigo">
+						<p:cellEditor>
+							<f:facet name="output">
+								<h:outputText value="#{pluginModeloBusqueda.pluginModeloBusquedaCodigo}"/>
+							</f:facet>
+							<f:facet name="input">
+								<p:inputText value="#{pluginModeloBusqueda.pluginModeloBusquedaCodigo}"/>
+							</f:facet>
+						</p:cellEditor>
+					</p:column>
+                    										
+											
+						<p:column filterBy="#{pluginModeloBusqueda.activo}" sortBy="#{pluginModeloBusqueda.activo}" 
+							headerText="activo">
+							
+								<p:cellEditor>
+								
+								<f:facet name="output">
+									<h:outputText value="#{pluginModeloBusqueda.activo}"/>
+								</f:facet>
+							
+								<f:facet name="input">
+									<p:inputText value="#{pluginModeloBusqueda.activo}"/>
+								</f:facet>
+								</p:cellEditor>	
+							</p:column>
+						
+											
+						<p:column filterBy="#{pluginModeloBusqueda.usuCreador}" sortBy="#{pluginModeloBusqueda.usuCreador}" 
+							headerText="usuCreador">
+							
+								<p:cellEditor>
+								
+								<f:facet name="output">
+									<h:outputText value="#{pluginModeloBusqueda.usuCreador}"/>
+								</f:facet>
+							
+								<f:facet name="input">
+									<p:inputText value="#{pluginModeloBusqueda.usuCreador}"/>
+								</f:facet>
+								</p:cellEditor>	
+							</p:column>
+						
+											
+						<p:column filterBy="#{pluginModeloBusqueda.usuModificador}" sortBy="#{pluginModeloBusqueda.usuModificador}" 
+							headerText="usuModificador">
+							
+								<p:cellEditor>
+								
+								<f:facet name="output">
+									<h:outputText value="#{pluginModeloBusqueda.usuModificador}"/>
+								</f:facet>
+							
+								<f:facet name="input">
+									<p:inputText value="#{pluginModeloBusqueda.usuModificador}"/>
+								</f:facet>
+								</p:cellEditor>	
+							</p:column>
+						
+											
+						<p:column filterBy="#{pluginModeloBusqueda.modeloBusquedaCodigo_ModeloBusqueda}" sortBy="#{pluginModeloBusqueda.modeloBusquedaCodigo_ModeloBusqueda}" 
+							headerText="modeloBusquedaCodigo_ModeloBusqueda">
+							
+								<p:cellEditor>
+								
+								<f:facet name="output">
+									<h:outputText value="#{pluginModeloBusqueda.modeloBusquedaCodigo_ModeloBusqueda}"/>
+								</f:facet>
+							
+								<f:facet name="input">
+									<p:inputText value="#{pluginModeloBusqueda.modeloBusquedaCodigo_ModeloBusqueda}"/>
+								</f:facet>
+								</p:cellEditor>	
+							</p:column>
+						
+											
+						<p:column filterBy="#{pluginModeloBusqueda.pluginCodigo_Plugin}" sortBy="#{pluginModeloBusqueda.pluginCodigo_Plugin}" 
+							headerText="pluginCodigo_Plugin">
+							
+								<p:cellEditor>
+								
+								<f:facet name="output">
+									<h:outputText value="#{pluginModeloBusqueda.pluginCodigo_Plugin}"/>
+								</f:facet>
+							
+								<f:facet name="input">
+									<p:inputText value="#{pluginModeloBusqueda.pluginCodigo_Plugin}"/>
+								</f:facet>
+								</p:cellEditor>	
+							</p:column>
+						
+										
+										   						 
+						 <p:column filterBy="#{pluginModeloBusqueda.fechaCreacion}" sortBy="#{pluginModeloBusqueda.fechaCreacion}" 
+							headerText="fechaCreacion">
+							
+								<p:cellEditor>
+								
+								<f:facet name="output">
+									<h:outputText value="#{pluginModeloBusqueda.fechaCreacion}">
+									  <f:convertDateTime  pattern="dd/MM/yyyy"/>
+									</h:outputText>		
+								</f:facet>
+							
+								<f:facet name="input">
+									<p:calendar value="#{pluginModeloBusqueda.fechaCreacion}" showOn="button" pattern="dd/MM/yyyy" navigator="true" >
+									  <f:convertDateTime  pattern="dd/MM/yyyy" timeZone="#{pluginModeloBusquedaView.timeZone}" />	
+								    </p:calendar>		
+								</f:facet>
+								</p:cellEditor>	
+							</p:column>
+						
+					   						 
+						 <p:column filterBy="#{pluginModeloBusqueda.fechaModificacion}" sortBy="#{pluginModeloBusqueda.fechaModificacion}" 
+							headerText="fechaModificacion">
+							
+								<p:cellEditor>
+								
+								<f:facet name="output">
+									<h:outputText value="#{pluginModeloBusqueda.fechaModificacion}">
+									  <f:convertDateTime  pattern="dd/MM/yyyy"/>
+									</h:outputText>		
+								</f:facet>
+							
+								<f:facet name="input">
+									<p:calendar value="#{pluginModeloBusqueda.fechaModificacion}" showOn="button" pattern="dd/MM/yyyy" navigator="true" >
+									  <f:convertDateTime  pattern="dd/MM/yyyy" timeZone="#{pluginModeloBusquedaView.timeZone}" />	
+								    </p:calendar>		
+								</f:facet>
+								</p:cellEditor>	
+							</p:column>
+						
+					   											
+					<p:column headerText="Options" >
+						<p:rowEditor id="row"/>
+						<p:tooltip for="row" value="Edit" showEffect="fade" hideEffect="fade" />
+						<p:tooltip for="btnDelete" value="Delete" showEffect="fade" hideEffect="fade" />
+						<p:commandButton id="btnDelete" actionListener="#{pluginModeloBusquedaView.actionDeleteDataTableEditable}" title="Delete" onclick="if(!confirm('Do you really want to delete this Entry?')){return false;}" icon="ui-icon-trash" update=":form:msg,:form:tabla" >
+							<f:attribute name="selectedPluginModeloBusqueda" value="#{pluginModeloBusqueda}" />  
+						</p:commandButton>
+						
+					</p:column>	
+				
+				</p:dataTable>	
+					
+				
+			</p:panel>
+				
+	   </h:form>
+		 </f:view>
+			</ui:define>		
+		</ui:composition>	
+	
+	</h:body>	
+	
+</html>	
