@@ -3,28 +3,29 @@
 "-//Hibernate/Hibernate Configuration DTD 3.0//EN"
 "http://www.hibernate.org/dtd/hibernate-configuration-3.0.dtd">
 <hibernate-configuration>
-    <session-factory>
-        <property name="hibernate.bytecode.use_reflection_optimizer">false</property>
-        <property name="hibernate.connection.driver_class">org.postgresql.Driver</property>
-        <property name="hibernate.connection.password">postgres</property>
-        <property name="hibernate.connection.url">jdbc:postgresql://127.0.0.1:5433/clusterbp</property>
-        <property name="hibernate.connection.username">postgres</property>
-        <mapping resource="co/edu/usb/clusterbp/ModeloBusqueda.hbm.xml" />
-        <mapping resource="co/edu/usb/clusterbp/Pn.hbm.xml" />
-        <mapping resource="co/edu/usb/clusterbp/Rol.hbm.xml" />
-        <mapping resource="co/edu/usb/clusterbp/LogBusqueda.hbm.xml" />
-        <mapping resource="co/edu/usb/clusterbp/GrupoRepositorio.hbm.xml" />
-        <mapping resource="co/edu/usb/clusterbp/Plugin.hbm.xml" />
-        <mapping resource="co/edu/usb/clusterbp/PluginModeloBusqueda.hbm.xml" />
-        <mapping resource="co/edu/usb/clusterbp/Repositorio.hbm.xml" />
-        <mapping resource="co/edu/usb/clusterbp/TipoArchivoPn.hbm.xml" />
-        <mapping resource="co/edu/usb/clusterbp/VersionRep.hbm.xml" />
-        <mapping resource="co/edu/usb/clusterbp/RepositorioPn.hbm.xml" />
-        <mapping resource="co/edu/usb/clusterbp/Grupo.hbm.xml" />
-        <mapping resource="co/edu/usb/clusterbp/Usuario.hbm.xml" />
-        <mapping resource="co/edu/usb/clusterbp/GrupoUsuario.hbm.xml" />
-        <mapping resource="co/edu/usb/clusterbp/Historial.hbm.xml" />
-        <mapping resource="co/edu/usb/clusterbp/UsuarioRol.hbm.xml" />
-        <mapping resource="co/edu/usb/clusterbp/RepositorioPlugin.hbm.xml" />
-    </session-factory>
+	<session-factory>
+		<property name="hibernate.bytecode.use_reflection_optimizer">false</property>
+		<property name="hibernate.connection.driver_class">org.postgresql.Driver</property>
+		<property name="hibernate.connection.password">postgres</property>
+		<property name="hibernate.connection.url">jdbc:postgresql://127.0.0.1:5433/clusterbp</property>
+		<property name="hibernate.connection.username">postgres</property>
+		<mapping resource="co/edu/usb/clusterbp/ModeloBusqueda.hbm.xml" />
+		<mapping resource="co/edu/usb/clusterbp/Pn.hbm.xml" />
+		<mapping resource="co/edu/usb/clusterbp/Rol.hbm.xml" />
+		<mapping resource="co/edu/usb/clusterbp/LogBusqueda.hbm.xml" />
+		<mapping resource="co/edu/usb/clusterbp/GrupoRepositorio.hbm.xml" />
+		<mapping resource="co/edu/usb/clusterbp/Plugin.hbm.xml" />
+		<mapping resource="co/edu/usb/clusterbp/PluginModeloBusqueda.hbm.xml" />
+		<mapping resource="co/edu/usb/clusterbp/Repositorio.hbm.xml" />
+		<mapping resource="co/edu/usb/clusterbp/TipoArchivoPn.hbm.xml" />
+		<mapping resource="co/edu/usb/clusterbp/VersionRep.hbm.xml" />
+		<mapping resource="co/edu/usb/clusterbp/RepositorioPn.hbm.xml" />
+		<mapping resource="co/edu/usb/clusterbp/Grupo.hbm.xml" />
+		<mapping resource="co/edu/usb/clusterbp/Usuario.hbm.xml" />
+		<mapping resource="co/edu/usb/clusterbp/GrupoUsuario.hbm.xml" />
+		<mapping resource="co/edu/usb/clusterbp/Historial.hbm.xml" />
+		<mapping resource="co/edu/usb/clusterbp/UsuarioRol.hbm.xml" />
+		<mapping resource="co/edu/usb/clusterbp/RepositorioPlugin.hbm.xml" />
+		<mapping resource="co/edu/usb/clusterbp/Consultas.hbm.xml" />
+	</session-factory>
 </hibernate-configuration>

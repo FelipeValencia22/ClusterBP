@@ -501,4 +501,13 @@ public interface IBusinessDelegatorView {
     public Long findTotalNumberVersionRep() throws Exception;
 
     public List<VersionRepDTO> getDataVersionRep() throws Exception;
+    
+    
+    //TODO: Metodos
+    public Usuario autenticarUsuario(String correo, String clave) throws Exception;
+    
+    //TODO: Consultas
+    public Usuario consultarUsuarioPorCorreo(String correo);
+    
+    public Usuario consultarRolUsuarioPorCorreo(String correo);
 }

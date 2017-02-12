@@ -53,4 +53,10 @@ public interface IUsuarioLogic {
     public Long findTotalNumberUsuario() throws Exception;
 
     public List<UsuarioDTO> getDataUsuario() throws Exception;
+    
+    
+    //TODO: Consultas
+    public Usuario consultarUsuarioPorCorreo(String correo);
+    
+    public Usuario consultarRolUsuarioPorCorreo(String correo);
 }

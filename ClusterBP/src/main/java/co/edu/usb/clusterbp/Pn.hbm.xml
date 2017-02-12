@@ -3,49 +3,53 @@
 "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
 <!-- Generated 17/01/2017 09:07:38 PM by Hibernate Tools 4.3.1.Final -->
 <hibernate-mapping>
-    <class name="co.edu.usb.clusterbp.Pn" table="pn" schema="public" optimistic-lock="version">
-        <id name="pnCodigo" type="java.lang.Long">
-            <column name="pn_codigo" />
-            <generator class="assigned" />
-        </id>
-        <many-to-one name="tipoArchivoPn" class="co.edu.usb.clusterbp.TipoArchivoPn" fetch="select">
-            <column name="tipo_archivo_pncodigo" not-null="true" />
-        </many-to-one>
-        <property name="titulo" type="java.lang.String">
-            <column name="titulo" not-null="true" />
-        </property>
-        <property name="descripcion" type="java.lang.String">
-            <column name="descripcion" />
-        </property>
-        <property name="usuCreador" type="java.lang.Long">
-            <column name="usu_creador" not-null="true" />
-        </property>
-        <property name="fechaCreacion" type="java.util.Date">
-            <column name="fecha_creacion" length="29" not-null="true" />
-        </property>
-        <property name="usuModificador" type="java.lang.Long">
-            <column name="usu_modificador" />
-        </property>
-        <property name="fechaModificacion" type="java.util.Date">
-            <column name="fecha_modificacion" length="29" />
-        </property>
-        <property name="activo" type="java.lang.String">
-            <column name="activo" length="1" not-null="true" />
-        </property>
-        <property name="archivo" type="binary">
-            <column name="archivo" not-null="true" />
-        </property>
-        <set name="historials" table="historial" inverse="true" lazy="true" fetch="select">
-            <key>
-                <column name="pncodigo" not-null="true" />
-            </key>
-            <one-to-many class="co.edu.usb.clusterbp.Historial" />
-        </set>
-        <set name="repositorioPns" table="repositorio_pn" inverse="true" lazy="true" fetch="select">
-            <key>
-                <column name="pncodigo" not-null="true" />
-            </key>
-            <one-to-many class="co.edu.usb.clusterbp.RepositorioPn" />
-        </set>
-    </class>
+	<class name="co.edu.usb.clusterbp.Pn" table="pn" schema="public"
+		optimistic-lock="version">
+		<id name="pnCodigo" type="java.lang.Long">
+			<column name="pn_codigo" />
+			<generator class="assigned" />
+		</id>
+		<many-to-one name="tipoArchivoPn" class="co.edu.usb.clusterbp.TipoArchivoPn"
+			fetch="select">
+			<column name="tipo_archivo_pncodigo" not-null="true" />
+		</many-to-one>
+		<property name="titulo" type="java.lang.String">
+			<column name="titulo" not-null="true" />
+		</property>
+		<property name="descripcion" type="java.lang.String">
+			<column name="descripcion" />
+		</property>
+		<property name="usuCreador" type="java.lang.Long">
+			<column name="usu_creador" not-null="true" />
+		</property>
+		<property name="fechaCreacion" type="java.util.Date">
+			<column name="fecha_creacion" length="29" not-null="true" />
+		</property>
+		<property name="usuModificador" type="java.lang.Long">
+			<column name="usu_modificador" />
+		</property>
+		<property name="fechaModificacion" type="java.util.Date">
+			<column name="fecha_modificacion" length="29" />
+		</property>
+		<property name="activo" type="java.lang.String">
+			<column name="activo" length="1" not-null="true" />
+		</property>
+		<property name="archivo" type="binary">
+			<column name="archivo" not-null="true" />
+		</property>
+		<set name="historials" table="historial" inverse="true" lazy="true"
+			fetch="select">
+			<key>
+				<column name="pncodigo" not-null="true" />
+			</key>
+			<one-to-many class="co.edu.usb.clusterbp.Historial" />
+		</set>
+		<set name="repositorioPns" table="repositorio_pn" inverse="true"
+			lazy="true" fetch="select">
+			<key>
+				<column name="pncodigo" not-null="true" />
+			</key>
+			<one-to-many class="co.edu.usb.clusterbp.RepositorioPn" />
+		</set>
+	</class>
 </hibernate-mapping>

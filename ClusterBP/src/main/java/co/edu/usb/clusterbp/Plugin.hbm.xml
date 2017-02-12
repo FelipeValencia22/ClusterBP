@@ -3,43 +3,46 @@
 "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
 <!-- Generated 17/01/2017 09:07:38 PM by Hibernate Tools 4.3.1.Final -->
 <hibernate-mapping>
-    <class name="co.edu.usb.clusterbp.Plugin" table="plugin" schema="public" optimistic-lock="version">
-        <id name="pluginCodigo" type="java.lang.Long">
-            <column name="plugin_codigo" />
-            <generator class="assigned" />
-        </id>
-        <property name="titulo" type="java.lang.String">
-            <column name="titulo" not-null="true" />
-        </property>
-        <property name="descripcion" type="java.lang.String">
-            <column name="descripcion" />
-        </property>
-        <property name="usuCreador" type="java.lang.Long">
-            <column name="usu_creador" not-null="true" />
-        </property>
-        <property name="fechaCreacion" type="java.util.Date">
-            <column name="fecha_creacion" length="29" not-null="true" />
-        </property>
-        <property name="usuModificador" type="java.lang.Long">
-            <column name="usu_modificador" />
-        </property>
-        <property name="fechaModificacion" type="java.util.Date">
-            <column name="fecha_modificacion" length="29" />
-        </property>
-        <property name="activo" type="java.lang.String">
-            <column name="activo" length="1" not-null="true" />
-        </property>
-        <set name="pluginModeloBusquedas" table="plugin_modelo_busqueda" inverse="true" lazy="true" fetch="select">
-            <key>
-                <column name="plugincodigo" not-null="true" />
-            </key>
-            <one-to-many class="co.edu.usb.clusterbp.PluginModeloBusqueda" />
-        </set>
-        <set name="repositorioPlugins" table="repositorio_plugin" inverse="true" lazy="true" fetch="select">
-            <key>
-                <column name="plugincodigo" not-null="true" />
-            </key>
-            <one-to-many class="co.edu.usb.clusterbp.RepositorioPlugin" />
-        </set>
-    </class>
+	<class name="co.edu.usb.clusterbp.Plugin" table="plugin" schema="public"
+		optimistic-lock="version">
+		<id name="pluginCodigo" type="java.lang.Long">
+			<column name="plugin_codigo" />
+			<generator class="assigned" />
+		</id>
+		<property name="titulo" type="java.lang.String">
+			<column name="titulo" not-null="true" />
+		</property>
+		<property name="descripcion" type="java.lang.String">
+			<column name="descripcion" />
+		</property>
+		<property name="usuCreador" type="java.lang.Long">
+			<column name="usu_creador" not-null="true" />
+		</property>
+		<property name="fechaCreacion" type="java.util.Date">
+			<column name="fecha_creacion" length="29" not-null="true" />
+		</property>
+		<property name="usuModificador" type="java.lang.Long">
+			<column name="usu_modificador" />
+		</property>
+		<property name="fechaModificacion" type="java.util.Date">
+			<column name="fecha_modificacion" length="29" />
+		</property>
+		<property name="activo" type="java.lang.String">
+			<column name="activo" length="1" not-null="true" />
+		</property>
+		<set name="pluginModeloBusquedas" table="plugin_modelo_busqueda"
+			inverse="true" lazy="true" fetch="select">
+			<key>
+				<column name="plugincodigo" not-null="true" />
+			</key>
+			<one-to-many class="co.edu.usb.clusterbp.PluginModeloBusqueda" />
+		</set>
+		<set name="repositorioPlugins" table="repositorio_plugin" inverse="true"
+			lazy="true" fetch="select">
+			<key>
+				<column name="plugincodigo" not-null="true" />
+			</key>
+			<one-to-many class="co.edu.usb.clusterbp.RepositorioPlugin" />
+		</set>
+	</class>
 </hibernate-mapping>

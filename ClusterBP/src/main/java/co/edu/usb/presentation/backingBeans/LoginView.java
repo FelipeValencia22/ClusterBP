@@ -58,11 +58,11 @@ public class LoginView {
             FacesUtils.getHttpSession(true)
                       .setAttribute("SPRING_SECURITY_CONTEXT", securityContext);
         } catch (AuthenticationException e) {
-            FacesUtils.addErrorMessage("authfailed login or password");
+            FacesUtils.addErrorMessage("Usuario o contraseña inválida");
 
             return "/login.xhtml";
         }
-
+        FacesUtils.addInfoMessage("Bienvenid@!");
         return "/XHTML/initialMenu.xhtml";
     }
 }

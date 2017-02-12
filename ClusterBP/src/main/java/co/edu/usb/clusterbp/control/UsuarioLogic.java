@@ -507,4 +507,17 @@ public class UsuarioLogic implements IUsuarioLogic {
 
         return list;
     }
+    
+    //TODO: Consultas
+	@Override
+	@Transactional(readOnly = true)
+	public Usuario consultarUsuarioPorCorreo(String correo) {
+		return usuarioDAO.consultarUsuarioPorCorreo(correo);
+	}
+	
+	@Override
+	@Transactional(readOnly = true)
+	public Usuario consultarRolUsuarioPorCorreo(String correo) {
+		return usuarioDAO.consultarRolUsuarioPorCorreo(correo);
+	}
 }
