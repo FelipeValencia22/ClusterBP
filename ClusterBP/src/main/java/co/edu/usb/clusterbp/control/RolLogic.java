@@ -445,4 +445,10 @@ public class RolLogic implements IRolLogic {
 
         return list;
     }
+    
+    @Override
+   	@Transactional(readOnly = true)
+   	public String consultarRolUsuarioPorCorreo(String correo) {
+   		return rolDAO.consultarRolUsuarioPorCorreo(correo);
+   	}
 }

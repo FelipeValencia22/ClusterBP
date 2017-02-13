@@ -58,5 +58,5 @@ public interface IUsuarioLogic {
     //TODO: Consultas
     public Usuario consultarUsuarioPorCorreo(String correo);
     
-    public Usuario consultarRolUsuarioPorCorreo(String correo);
+    
 }

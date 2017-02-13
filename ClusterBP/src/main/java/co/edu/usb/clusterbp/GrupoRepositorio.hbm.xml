@@ -7,7 +7,7 @@
 		schema="public" optimistic-lock="version">
 		<id name="grupoRepositorioCodigo" type="java.lang.Long">
 			<column name="grupo_repositorio_codigo" />
-			<generator class="assigned" />
+			<generator class="identity" />
 		</id>
 		<many-to-one name="grupo" class="co.edu.usb.clusterbp.Grupo"
 			fetch="select">

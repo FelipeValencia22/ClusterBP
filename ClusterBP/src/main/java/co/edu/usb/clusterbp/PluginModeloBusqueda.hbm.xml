@@ -7,7 +7,7 @@
 		schema="public" optimistic-lock="version">
 		<id name="pluginModeloBusquedaCodigo" type="java.lang.Long">
 			<column name="plugin_modelo_busqueda_codigo" />
-			<generator class="assigned" />
+			<generator class="identity" />
 		</id>
 		<many-to-one name="modeloBusqueda" class="co.edu.usb.clusterbp.ModeloBusqueda"
 			fetch="select">

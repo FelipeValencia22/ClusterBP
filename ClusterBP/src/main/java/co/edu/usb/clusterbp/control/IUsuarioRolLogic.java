@@ -1,5 +1,6 @@
 package co.edu.usb.clusterbp.control;
 
+import co.edu.usb.clusterbp.Usuario;
 import co.edu.usb.clusterbp.UsuarioRol;
 import co.edu.usb.clusterbp.dto.UsuarioRolDTO;
 
@@ -54,4 +55,6 @@ public interface IUsuarioRolLogic {
     public Long findTotalNumberUsuarioRol() throws Exception;
 
     public List<UsuarioRolDTO> getDataUsuarioRol() throws Exception;
+    
+    
 }

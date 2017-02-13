@@ -1,6 +1,7 @@
 package co.edu.usb.clusterbp.control;
 
 import co.edu.usb.clusterbp.Rol;
+import co.edu.usb.clusterbp.UsuarioRol;
 import co.edu.usb.clusterbp.dto.RolDTO;
 
 import java.math.BigDecimal;
@@ -52,4 +53,6 @@ public interface IRolLogic {
     public Long findTotalNumberRol() throws Exception;
 
     public List<RolDTO> getDataRol() throws Exception;
+    
+    public String consultarRolUsuarioPorCorreo(String correo);
 }

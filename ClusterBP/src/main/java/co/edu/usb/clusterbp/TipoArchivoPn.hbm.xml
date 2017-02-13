@@ -7,7 +7,7 @@
 		schema="public" optimistic-lock="version">
 		<id name="tipoArchivoPnCodigo" type="java.lang.Long">
 			<column name="tipo_archivo_pn_codigo" />
-			<generator class="assigned" />
+			<generator class="identity" />
 		</id>
 		<property name="nombre" type="java.lang.String">
 			<column name="nombre" not-null="true" />

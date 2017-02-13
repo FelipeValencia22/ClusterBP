@@ -7,7 +7,7 @@
 		optimistic-lock="version">
 		<id name="pluginCodigo" type="java.lang.Long">
 			<column name="plugin_codigo" />
-			<generator class="assigned" />
+			<generator class="identity" />
 		</id>
 		<property name="titulo" type="java.lang.String">
 			<column name="titulo" not-null="true" />

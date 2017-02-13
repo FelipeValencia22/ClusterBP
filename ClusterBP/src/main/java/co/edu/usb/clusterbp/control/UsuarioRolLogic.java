@@ -447,4 +447,6 @@ public class UsuarioRolLogic implements IUsuarioRolLogic {
 
         return list;
     }
+    
+   
 }

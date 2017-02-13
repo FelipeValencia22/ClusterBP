@@ -7,7 +7,7 @@
 		schema="public" optimistic-lock="version">
 		<id name="versionRepCodigo" type="java.lang.Long">
 			<column name="version_rep_codigo" />
-			<generator class="assigned" />
+			<generator class="identity" />
 		</id>
 		<many-to-one name="repositorio" class="co.edu.usb.clusterbp.Repositorio"
 			fetch="select">

@@ -7,7 +7,7 @@
 		optimistic-lock="version">
 		<id name="pnCodigo" type="java.lang.Long">
 			<column name="pn_codigo" />
-			<generator class="assigned" />
+			<generator class="identity" />
 		</id>
 		<many-to-one name="tipoArchivoPn" class="co.edu.usb.clusterbp.TipoArchivoPn"
 			fetch="select">

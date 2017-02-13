@@ -509,5 +509,5 @@ public interface IBusinessDelegatorView {
     //TODO: Consultas
     public Usuario consultarUsuarioPorCorreo(String correo);
     
-    public Usuario consultarRolUsuarioPorCorreo(String correo);
+    public String consultarRolUsuarioPorCorreo(String correo);
 }

@@ -4,6 +4,7 @@ import java.io.Serializable;
 
 import java.util.List;
 
+import co.edu.usb.clusterbp.Rol;
 import co.edu.usb.clusterbp.Usuario;
 
 
@@ -301,5 +302,5 @@ public interface Dao<T, PK extends Serializable> {
     
     public Usuario consultarUsuarioPorCorreo(String correo);
     
-    public Usuario consultarRolUsuarioPorCorreo(String correo);
+    public String consultarRolUsuarioPorCorreo(String correo);
 }

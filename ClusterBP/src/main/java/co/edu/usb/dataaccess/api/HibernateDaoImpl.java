@@ -20,6 +20,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import org.springframework.orm.hibernate3.SessionFactoryUtils;
 
+import co.edu.usb.clusterbp.Rol;
 import co.edu.usb.clusterbp.Usuario;
 
 import java.io.Serializable;
@@ -632,10 +633,10 @@ public class HibernateDaoImpl<T, PK extends Serializable> implements Dao<T, PK> 
 	}
 
 	@Override
-	public Usuario consultarRolUsuarioPorCorreo(String correo) {
+	public String consultarRolUsuarioPorCorreo(String correo) {
 		Query query= getSession().getNamedQuery("consultarRolUsuarioPorCorreo");
 		query.setParameter("correo", correo);
-		Usuario usuarioRol = (Usuario) query.uniqueResult();
-		return usuarioRol;
+		String rol = (String) query.uniqueResult();
+		return rol;
 	}
 }

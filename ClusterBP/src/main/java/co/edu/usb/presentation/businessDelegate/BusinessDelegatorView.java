@@ -1027,8 +1027,8 @@ public class BusinessDelegatorView implements IBusinessDelegatorView {
 	}
     
     @Override
-    public Usuario consultarRolUsuarioPorCorreo(String correo) {
-		return usuarioLogic.consultarRolUsuarioPorCorreo(correo);
+    public String consultarRolUsuarioPorCorreo(String correo) {
+		return rolLogic.consultarRolUsuarioPorCorreo(correo);
 	}
 
 	@Override

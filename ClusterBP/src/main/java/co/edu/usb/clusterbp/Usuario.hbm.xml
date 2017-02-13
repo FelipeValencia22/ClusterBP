@@ -7,7 +7,7 @@
 		schema="public" optimistic-lock="version">
 		<id name="usuarioCodigo" type="java.lang.Long">
 			<column name="usuario_codigo" />
-			<generator class="assigned" />
+			<generator class="identity" />
 		</id>
 		<property name="correo" type="java.lang.String">
 			<column name="correo" not-null="true" />
