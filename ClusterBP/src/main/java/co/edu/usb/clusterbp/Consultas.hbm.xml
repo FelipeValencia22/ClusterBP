@@ -9,6 +9,7 @@
   Select usu From Usuario usu where usu.correo=:correo
    ]]>
 	</query>
+	
 
 	<query name="consultarRolUsuarioPorCorreo">
   <![CDATA[
