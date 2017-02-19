@@ -1,6 +1,6 @@
 package co.edu.usb.presentation.backingBeans;
 
-import javax.annotation.PostConstruct;
+import javax.annotation.PostConstruct; 
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
@@ -71,17 +71,45 @@ public class MenuView {
 	}
 
 	public void crearMenuAdmin(){
-		DefaultMenuItem usuarios = new DefaultMenuItem("Usuarios");
-		usuarios.setOutcome("/XHTML/dashboard.xhtml");
+		DefaultMenuItem usuarios = new DefaultMenuItem("Usuario");
+		usuarios.setOutcome("/XHTML/usuario.xhtml");
 		usuarios.setIcon("icon-home-outline");
-		usuarios.setId("sm_dashboard");
+		usuarios.setId("sm_usuario");
 		usuarios.setContainerStyleClass("layout-menubar-active");
 		model.addElement(usuarios);
+		
+		DefaultMenuItem roles= new DefaultMenuItem("Rol");
+		roles.setOutcome("/XHTML/rol.xhtml");
+		roles.setIcon("icon-home-outline");
+		roles.setId("sm_rol");
+		roles.setContainerStyleClass("layout-menubar-active");
+		model.addElement(roles);
+		
+		DefaultMenuItem grupos= new DefaultMenuItem("Grupo");
+		grupos.setOutcome("/XHTML/grupo.xhtml");
+		grupos.setIcon("icon-home-outline");
+		grupos.setId("sm_grupos");
+		grupos.setContainerStyleClass("layout-menubar-active");
+		model.addElement(grupos);
+		
+		DefaultMenuItem repositorios= new DefaultMenuItem("Repositorio");
+		repositorios.setOutcome("/XHTML/repositorio.xhtml");
+		repositorios.setIcon("icon-home-outline");
+		repositorios.setId("sm_repositorios");
+		repositorios.setContainerStyleClass("layout-menubar-active");
+		model.addElement(repositorios);
+		
+		DefaultMenuItem plugins= new DefaultMenuItem("PlugIn");
+		plugins.setOutcome("/XHTML/plugin.xhtml");
+		plugins.setIcon("icon-home-outline");
+		plugins.setId("sm_plugins");
+		plugins.setContainerStyleClass("layout-menubar-active");
+		model.addElement(plugins);
 	}
 	
 	public void crearMenuUsuario(){
 		DefaultMenuItem charts = new DefaultMenuItem("Charts");
-		charts.setOutcome("/XHTML/charts.xhtml");
+		charts.setOutcome("/XHTML/dashboard.xhtml");
 		charts.setIcon("icon-home-outline");
 		charts.setId("sm_charts");
 		charts.setContainerStyleClass("layout-menubar-active");

@@ -506,8 +506,14 @@ public interface IBusinessDelegatorView {
     //TODO: Metodos
     public Usuario autenticarUsuario(String correo, String clave) throws Exception;
     
+    public List<UsuarioDTO> getDataVtUsuario() throws Exception;
+    
+    public List<UsuarioDTO> getDataVtUsuarioI() throws Exception;
+    
     //TODO: Consultas
     public Usuario consultarUsuarioPorCorreo(String correo);
     
     public String consultarRolUsuarioPorCorreo(String correo);
+    
+    public Usuario correoDisponible(String correo);
 }

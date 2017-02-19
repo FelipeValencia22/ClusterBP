@@ -639,4 +639,12 @@ public class HibernateDaoImpl<T, PK extends Serializable> implements Dao<T, PK> 
 		String rol = (String) query.uniqueResult();
 		return rol;
 	}
+
+	@Override
+	public Usuario consultarCorreoDisponible(String correo) {
+		Query query= getSession().getNamedQuery("consultarCorreoDisponible");
+		query.setParameter("correo", correo);
+		Usuario usuario=(Usuario) query.uniqueResult();
+		return usuario;
+	}
 }

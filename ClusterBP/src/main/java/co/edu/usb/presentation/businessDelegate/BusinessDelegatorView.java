@@ -1035,5 +1035,20 @@ public class BusinessDelegatorView implements IBusinessDelegatorView {
 	public Usuario autenticarUsuario(String correo, String clave) throws Exception {
 		return seguridadLogica.autenticarUsuario(correo, clave);
 	}
+
+	@Override
+	public Usuario correoDisponible(String correo) {
+		return usuarioLogic.consultarCorreoDisponible(correo);
+	}
+
+	@Override
+	public List<UsuarioDTO> getDataVtUsuario() throws Exception {
+		return usuarioLogic.getDataUsuario();
+	}
+
+	@Override
+	public List<UsuarioDTO> getDataVtUsuarioI() throws Exception{
+		return usuarioLogic.getDataUsuarioI();
+	}
     
 }

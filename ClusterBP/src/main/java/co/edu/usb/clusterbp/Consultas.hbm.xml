@@ -16,5 +16,14 @@
   Select usuRol.rol.nombre From UsuarioRol usuRol where usuRol.usuario.correo=:correo
    ]]>
 	</query>
+	
+	<query name="consultarCorreoDisponible">
+  <![CDATA[
+  Select usu.correo From Usuario usu where usu.correo=:correo
+   ]]>
+	</query>
+	
+	
+	
 
 </hibernate-mapping>
