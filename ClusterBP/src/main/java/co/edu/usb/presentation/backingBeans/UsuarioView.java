@@ -359,34 +359,26 @@ public class UsuarioView implements Serializable {
 				Long usuaCodigo = new Long(selectedUsuario.getUsuarioCodigo());
 				entity = businessDelegatorView.getUsuario(usuaCodigo);
 			} 
-		}
 
-		Date fechaModificacion= new Date();
-		entity.setFechaModificacion(fechaModificacion);
 
-		Usuario usuarioEnSession =  (Usuario) FacesUtils.getfromSession("usuario");
-		entity.setUsuaModificador(usuarioEnSession.getUsuarioCodigo());
+			Date fechaModificacion= new Date();
+			entity.setFechaModificacion(fechaModificacion);
 
-		String correo=txtCorreoM.getValue().toString().trim();
+			Usuario usuarioEnSession =  (Usuario) FacesUtils.getfromSession("usuario");
+			entity.setUsuaModificador(usuarioEnSession.getUsuarioCodigo());
 
-		if(clave.equals(claveR)){
+			String correo=txtCorreoM.getValue().toString().trim();
 
-			if(correoDisponible(correo)){
+			entity.setCorreo(correo);
+			entity.setNombre(txtNombreM.getValue().toString().trim());
+			entity.setClave(clave);
 
-				entity.setCorreo(correo);
-				entity.setNombre(txtNombreM.getValue().toString().trim());
-				entity.setClave(clave);
+			businessDelegatorView.updateUsuario(entity);
+			FacesUtils.addInfoMessage("El usuario ha sido modificado con exito");
+			data = businessDelegatorView.getDataVtUsuario();
+			dataI = businessDelegatorView.getDataVtUsuarioI();
 
-				businessDelegatorView.updateUsuario(entity);
-				FacesUtils.addInfoMessage("El usuario ha sido modificado con exito");
-				data = businessDelegatorView.getDataVtUsuario();
-				dataI = businessDelegatorView.getDataVtUsuarioI();
-
-			}else{
-				FacesContext.getCurrentInstance().addMessage("", new FacesMessage("El correo ya est&#225; en uso"));
-			}
-		}
-		else{
+		}else{
 			FacesContext.getCurrentInstance().addMessage("", new FacesMessage("Las contraseñas no coinciden"));
 		}
 
@@ -396,7 +388,7 @@ public class UsuarioView implements Serializable {
 
 	public String cambiarEstado(ActionEvent evt){
 		log.info("Cambiando estado..");
-		selectedUsuario = (UsuarioDTO) (evt.getComponent().getAttributes().get("selectedVtUsuario"));	
+		selectedUsuario = (UsuarioDTO) (evt.getComponent().getAttributes().get("selectedUsuario"));	
 
 		Usuario entity=null;
 

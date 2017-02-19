@@ -1,0 +1,239 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui" template="/WEB-INF/template.xhtml">
+
+	<ui:define name="content">
+		<p:ajaxStatus onstart="PF('statusDialog').show()"
+			onsuccess="PF('statusDialog').hide()" />
+		<p:dialog modal="true" widgetVar="statusDialog" header="Loading"
+			draggable="false" closable="false">
+			<p:graphicImage
+				value="#{facesContext.externalContext.request.scheme}://#{facesContext.externalContext.request.serverName}:#{facesContext.externalContext.request.serverPort}#{facesContext.externalContext.request.contextPath}/images/ajaxloadingbar.gif" />
+		</p:dialog>
+
+		<!-- Expired session -->
+		<p:idleMonitor onactive="PF('sessionTimeOutDialog').show();"
+			timeout="#{session.maxInactiveInterval * 1000}" />
+		<p:dialog modal="true" widgetVar="sessionTimeOutDialog"
+			header="Expired session" draggable="false" closable="false">
+			<h:outputText value="The session is finished" />
+			<input id="confirmBackToLogin" type="button" value="Sign in"
+				onclick="window.location='#{facesContext.externalContext.requestContextPath}/index.jsp';" />
+		</p:dialog>
+
+		<h:form id="frm">
+
+			<p:growl id="growl" />
+
+			<p:panel id="pnlUsuarios" header="USUARIOS">
+				<br></br>
+				<p:commandButton value="Crear Usuario" type="button"
+					onclick="PF('dlg').show();" />
+				<br></br>
+				<br></br>
+
+				<p:accordionPanel id="panelDataTableUsuario" header="Usuarios"
+					multiple="true">
+					<p:growl id="men" />
+
+					<p:tab title="Usuarios activos ">
+						<p:dataTable id="dataTableVtUsuarioActivos"
+							emptyMessage="No hay usuarios activos en este momento"
+							value="#{usuarioView.data}" var="usuario" paginator="true"
+							rows="10">
+
+							<p:column filterBy="#{usuario.usuarioCodigo}"
+								sortBy="#{usuario.usuarioCodigo}">
+								<f:facet name="header">
+									<h:outputText value="C&#243;digo" />
+								</f:facet>
+								<h:outputText value="#{usuario.usuarioCodigo}" />
+							</p:column>
+
+							<p:column filterBy="#{usuario.correo}" sortBy="#{usuario.correo}">
+								<f:facet name="header">
+									<h:outputText value="Correo" />
+								</f:facet>
+								<h:outputText value="#{usuario.correo}" />
+							</p:column>
+
+							<p:column filterBy="#{usuario.nombre}" sortBy="#{usuario.nombre}">
+								<f:facet name="header">
+									<h:outputText value="Nombre" />
+								</f:facet>
+								<h:outputText value="#{usuario.nombre}" />
+							</p:column>
+
+							<p:column headerText="Modificar">
+								<div align="center">
+									<p:commandButton id="btnModificar" icon="fa fa-edit"
+										update=":dialogModificarUsuario"
+										actionListener="#{usuarioView.modificarUsuario}">
+										<f:attribute name="selectedUsuario" value="#{usuario}" />
+									</p:commandButton>
+									<p:tooltip id="toolTipFadeMi" for="btnModificar"
+										value="Modificar" />
+								</div>
+							</p:column>
+
+
+							<p:column headerText="Cambiar estado">
+								<div align="center">
+									<p:commandButton id="btnEstado" icon="fa fa-retweet"
+										update=":frm:panelDataTableUsuario, :frm:growl,
+										@([id$=panelDataTableUsuario])"
+										actionListener="#{usuarioView.cambiarEstado}">
+										<f:attribute name="selectedUsuario" value="#{usuario}" />
+									</p:commandButton>
+									<p:tooltip id="toolTipFadeCi" for="btnEstado"
+										value="Cambiar estado" />
+								</div>
+							</p:column>
+
+
+						</p:dataTable>
+					</p:tab>
+
+					<br></br>
+
+					<p:tab title="Usuarios inactivos ">
+						<p:dataTable id="dataTableVtUsuarioInactivos"
+							emptyMessage="No hay usuarios inactivos en este momento"
+							value="#{usuarioView.dataI}" var="usuario" paginator="true"
+							rows="10">
+
+							<p:column filterBy="#{usuario.usuarioCodigo}"
+								sortBy="#{usuario.usuarioCodigo}">
+								<f:facet name="header">
+									<h:outputText value="C&#243;digo" />
+								</f:facet>
+								<h:outputText value="#{usuario.usuarioCodigo}" />
+							</p:column>
+
+							<p:column filterBy="#{usuario.correo}" sortBy="#{usuario.correo}">
+								<f:facet name="header">
+									<h:outputText value="Correo" />
+								</f:facet>
+								<h:outputText value="#{usuario.correo}" />
+							</p:column>
+
+							<p:column filterBy="#{usuario.nombre}" sortBy="#{usuario.nombre}">
+								<f:facet name="header">
+									<h:outputText value="Nombre" />
+								</f:facet>
+								<h:outputText value="#{usuario.nombre}" />
+							</p:column>
+
+							<p:column headerText="Cambiar estado">
+								<div align="center">
+									<p:commandButton id="btnEstado" icon="fa fa-retweet"
+										update=":frm:panelDataTableUsuario, :frm:growl,
+										@([id$=panelDataTableUsuario])"
+										actionListener="#{usuarioView.cambiarEstado}">
+										<f:attribute name="selectedUsuario" value="#{usuario}" />
+									</p:commandButton>
+									<p:tooltip id="toolTipFadeCi" for="btnEstado"
+										value="Cambiar estado" />
+								</div>
+							</p:column>
+
+						</p:dataTable>
+					</p:tab>
+
+				</p:accordionPanel>
+
+			</p:panel>
+
+		</h:form>
+
+		<p:dialog header="Crear usuario" appendTo="@(body)" draggable="true"
+			widgetVar="dlg" resizable="false" modal="true" width="500">
+			<h:form id="formDialogCrear">
+				<p:messages id="msg" />
+				<h:panelGrid id="pnlUsuariosCrear" columns="1">
+
+					<p:inputText id="txtEmailC" placeholder="Correo"
+						style="width:400px" binding="#{usuarioView.txtCorreo}"
+						maxlength="50">
+						<p:ajax listener="#{usuarioView.txtLoginListener}"
+							update="@([id$=txtNombreUC]), @([id$=txtClaveC]), @([id$=txtClaveCR]), @([id$=btnCrearU]), @([id$=btnLimpiar]) " />
+					</p:inputText>
+
+					<p:inputText id="txtNombreUC" placeholder="Nombre"
+						style="width:400px" binding="#{usuarioView.txtNombre}"
+						maxlength="60" />
+
+					<p:password id="txtClaveC" placeholder="Contrase&#241;a"
+						style="width:400px" binding="#{usuarioView.txtClaveC}"
+						maxlength="25" />
+
+					<p:password id="txtClaveCR" placeholder="Repetir contrase&#241;a"
+						style="width:400px" binding="#{usuarioView.txtClaveRC}"
+						maxlength="25" />
+
+				</h:panelGrid>
+
+				<p:commandButton id="btnCrearU" icon="fa fa-save" title="Crear"
+					binding="#{usuarioView.btnCrear}" disabled="true"
+					action="#{usuarioView.crearUsuario}"
+					update="@([id$=frm]), @([id$=pnlUsuariosCrear]),@([id$=growl]), @([id$=dataTableVtUsuarioActivos])" />
+
+
+				<p:commandButton id="btnLimpiar" icon="fa fa-eraser" title="Limpiar"
+					action="#{usuarioView.limpiarCrearUsuario}" update="@([id$=frm])" />
+
+			</h:form>
+		</p:dialog>
+
+		<p:dialog id="dialogModificarUsuario" appendTo="@(body)"
+			draggable="true" header="Modificar usuario" closable="false"
+			visible="#{usuarioView.showDialog}" resizable="false" modal="true"
+			width="500">
+			<h:form id="formDialogEdit">
+				<p:messages id="msg" />
+
+				<p:panel id="panelCampos">
+
+					<h:panelGrid id="pnlUsuariosCrear" columns="1">
+
+						<p:inputText id="txtEmailM" placeholder="Correo"
+							style="width:400px" binding="#{usuarioView.txtCorreoM}"
+							maxlength="50">
+						</p:inputText>
+
+						<p:inputText id="txtNombreM" placeholder="Nombre"
+							style="width:400px" binding="#{usuarioView.txtNombreM}"
+							maxlength="60" />
+
+						<p:password id="txtClaveCM" placeholder="Contrase&#241;a"
+							style="width:400px" binding="#{usuarioView.txtClaveCM}"
+							maxlength="25" />
+
+						<p:password id="txtClaveCRM" placeholder="Repetir contrase&#241;a"
+							style="width:400px" binding="#{usuarioView.txtClaveRCM}"
+							maxlength="25" />
+
+					</h:panelGrid>
+
+				</p:panel>
+
+				<p:panel id="panelBotones">
+					<div align="center">
+						<p:commandButton id="btnSave"
+							binding="#{usuarioView.btnModificar}" value="Guardar"
+							action="#{usuarioView.guardarModificacion}"
+							update="dialogModificarUsuario :frm:panelDataTableUsuario" />
+
+						<p:commandButton id="btnExit" value="Salir"
+							action="#{usuarioView.action_closeDialog()}"
+							update=":dialogModificarUsuario" />
+					</div>
+				</p:panel>
+
+			</h:form>
+		</p:dialog>
+
+	</ui:define>
+</ui:composition>
