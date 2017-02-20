@@ -55,4 +55,7 @@ public interface IRolLogic {
     public List<RolDTO> getDataRol() throws Exception;
     
     public String consultarRolUsuarioPorCorreo(String correo);
+    
+  //TODO: Consultas
+  	public Rol consultarIdRolPorNombre(String nombre);
 }

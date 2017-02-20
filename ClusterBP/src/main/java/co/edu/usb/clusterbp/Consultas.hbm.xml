@@ -23,6 +23,19 @@
    ]]>
 	</query>
 	
+	<query name="consultarIdRolPorNombre">
+  <![CDATA[
+  Select rl From Rol rl where rl.nombre=:nombre
+   ]]>
+	</query>
+	
+	<query name="consultarGrupoPorNombre">
+  <![CDATA[
+  Select grp.nombre From Grupo grp where grp.nombre=:nombre
+   ]]>
+	</query>
+	
+	
 	
 	
 

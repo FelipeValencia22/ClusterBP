@@ -31,7 +31,7 @@ public class SeguridadLogica implements ISeguridadLogica{
 			if(usuario.equals(null)){
 				throw new Exception(mensaje);
 			}else{
-				if(usuario.getClave().equals(clave)){
+				if(usuario.getClave().equalsIgnoreCase(clave)){
 					return usuario;		
 				}
 				else{

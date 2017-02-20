@@ -288,6 +288,11 @@ public class BusinessDelegatorView implements IBusinessDelegatorView {
         throws Exception {
         return grupoUsuarioLogic.getDataGrupoUsuario();
     }
+    
+    public List<GrupoUsuarioDTO> getDataGrupoUsuarioI()
+            throws Exception {
+            return grupoUsuarioLogic.getDataGrupoUsuarioI();
+        }
 
     public List<Historial> getHistorial() throws Exception {
         return historialLogic.getHistorial();
@@ -1049,6 +1054,16 @@ public class BusinessDelegatorView implements IBusinessDelegatorView {
 	@Override
 	public List<UsuarioDTO> getDataVtUsuarioI() throws Exception{
 		return usuarioLogic.getDataUsuarioI();
+	}
+
+	@Override
+	public Rol consultarIdRolPorNombre(String nombre) {
+		return rolLogic.consultarIdRolPorNombre(nombre);
+	}
+
+	@Override
+	public String consultarGrupoPorNombre(String nombre) {
+		return grupoLogic.consultarGrupoPorNombre(nombre);
 	}
     
 }

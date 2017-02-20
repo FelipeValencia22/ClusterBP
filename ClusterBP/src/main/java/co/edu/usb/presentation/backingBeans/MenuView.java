@@ -77,14 +77,7 @@ public class MenuView {
 		usuarios.setId("sm_usuario");
 		usuarios.setContainerStyleClass("layout-menubar-active");
 		model.addElement(usuarios);
-		
-		DefaultMenuItem roles= new DefaultMenuItem("Rol");
-		roles.setOutcome("/XHTML/rol.xhtml");
-		roles.setIcon("icon-home-outline");
-		roles.setId("sm_rol");
-		roles.setContainerStyleClass("layout-menubar-active");
-		model.addElement(roles);
-		
+			
 		DefaultMenuItem grupos= new DefaultMenuItem("Grupo");
 		grupos.setOutcome("/XHTML/grupo.xhtml");
 		grupos.setIcon("icon-home-outline");

@@ -161,8 +161,9 @@ public interface IBusinessDelegatorView {
 
     public Long findTotalNumberGrupoUsuario() throws Exception;
 
-    public List<GrupoUsuarioDTO> getDataGrupoUsuario()
-        throws Exception;
+    public List<GrupoUsuarioDTO> getDataGrupoUsuario() throws Exception;
+    
+    public List<GrupoUsuarioDTO> getDataGrupoUsuarioI() throws Exception; 
 
     public List<Historial> getHistorial() throws Exception;
 
@@ -516,4 +517,8 @@ public interface IBusinessDelegatorView {
     public String consultarRolUsuarioPorCorreo(String correo);
     
     public Usuario correoDisponible(String correo);
+    
+    public Rol consultarIdRolPorNombre(String nombre);
+    
+    public String consultarGrupoPorNombre (String nombre);
 }

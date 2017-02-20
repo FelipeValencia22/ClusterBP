@@ -27,428 +27,460 @@ import java.util.Set;
 
 
 /**
-* @author Zathura Code Generator http://zathuracode.org
-* www.zathuracode.org
-*
-*/
+ * @author Zathura Code Generator http://zathuracode.org
+ * www.zathuracode.org
+ *
+ */
 @Scope("singleton")
 @Service("GrupoUsuarioLogic")
 public class GrupoUsuarioLogic implements IGrupoUsuarioLogic {
-    private static final Logger log = LoggerFactory.getLogger(GrupoUsuarioLogic.class);
+	private static final Logger log = LoggerFactory.getLogger(GrupoUsuarioLogic.class);
 
-    /**
-     * DAO injected by Spring that manages GrupoUsuario entities
-     *
-     */
-    @Autowired
-    private IGrupoUsuarioDAO grupoUsuarioDAO;
+	/**
+	 * DAO injected by Spring that manages GrupoUsuario entities
+	 *
+	 */
+	@Autowired
+	private IGrupoUsuarioDAO grupoUsuarioDAO;
 
-    /**
-    * Logic injected by Spring that manages Grupo entities
-    *
-    */
-    @Autowired
-    IGrupoLogic logicGrupo1;
+	/**
+	 * Logic injected by Spring that manages Grupo entities
+	 *
+	 */
+	@Autowired
+	IGrupoLogic logicGrupo1;
 
-    /**
-    * Logic injected by Spring that manages Usuario entities
-    *
-    */
-    @Autowired
-    IUsuarioLogic logicUsuario2;
+	/**
+	 * Logic injected by Spring that manages Usuario entities
+	 *
+	 */
+	@Autowired
+	IUsuarioLogic logicUsuario2;
 
-    @Transactional(readOnly = true)
-    public List<GrupoUsuario> getGrupoUsuario() throws Exception {
-        log.debug("finding all GrupoUsuario instances");
+	@Transactional(readOnly = true)
+	public List<GrupoUsuario> getGrupoUsuario() throws Exception {
+		log.debug("finding all GrupoUsuario instances");
 
-        List<GrupoUsuario> list = new ArrayList<GrupoUsuario>();
+		List<GrupoUsuario> list = new ArrayList<GrupoUsuario>();
 
-        try {
-            list = grupoUsuarioDAO.findAll();
-        } catch (Exception e) {
-            log.error("finding all GrupoUsuario failed", e);
-            throw new ZMessManager().new GettingException(ZMessManager.ALL +
-                "GrupoUsuario");
-        } finally {
-        }
+		try {
+			list = grupoUsuarioDAO.findAll();
+		} catch (Exception e) {
+			log.error("finding all GrupoUsuario failed", e);
+			throw new ZMessManager().new GettingException(ZMessManager.ALL +
+					"GrupoUsuario");
+		} finally {
+		}
 
-        return list;
-    }
+		return list;
+	}
 
-    @Transactional(readOnly = false, propagation = Propagation.REQUIRED)
-    public void saveGrupoUsuario(GrupoUsuario entity) throws Exception {
-        log.debug("saving GrupoUsuario instance");
+	@Transactional(readOnly = false, propagation = Propagation.REQUIRED)
+	public void saveGrupoUsuario(GrupoUsuario entity) throws Exception {
+		log.debug("saving GrupoUsuario instance");
 
-        try {
-            if (entity.getGrupo() == null) {
-                throw new ZMessManager().new ForeignException("grupo");
-            }
+		try {
+			if (entity.getGrupo() == null) {
+				throw new ZMessManager().new ForeignException("grupo");
+			}
 
-            if (entity.getUsuario() == null) {
-                throw new ZMessManager().new ForeignException("usuario");
-            }
+			if (entity.getUsuario() == null) {
+				throw new ZMessManager().new ForeignException("usuario");
+			}
 
-            if (entity.getFechaCreacion() == null) {
-                throw new ZMessManager().new EmptyFieldException(
-                    "fechaCreacion");
-            }
+			if (entity.getFechaCreacion() == null) {
+				throw new ZMessManager().new EmptyFieldException(
+						"fechaCreacion");
+			}
 
-            if (entity.getGrupoUsuarioCodigo() == null) {
-                throw new ZMessManager().new EmptyFieldException(
-                    "grupoUsuarioCodigo");
-            }
+			if (entity.getUsuCreador() == null) {
+				throw new ZMessManager().new EmptyFieldException("usuCreador");
+			}
 
-            if (entity.getUsuCreador() == null) {
-                throw new ZMessManager().new EmptyFieldException("usuCreador");
-            }
+			if (entity.getGrupo().getGrupoCodigo() == null) {
+				throw new ZMessManager().new EmptyFieldException(
+						"grupoCodigo_Grupo");
+			}
 
-            if (entity.getGrupo().getGrupoCodigo() == null) {
-                throw new ZMessManager().new EmptyFieldException(
-                    "grupoCodigo_Grupo");
-            }
+			if (entity.getUsuario().getUsuarioCodigo() == null) {
+				throw new ZMessManager().new EmptyFieldException(
+						"usuarioCodigo_Usuario");
+			}
 
-            if (entity.getUsuario().getUsuarioCodigo() == null) {
-                throw new ZMessManager().new EmptyFieldException(
-                    "usuarioCodigo_Usuario");
-            }
+			grupoUsuarioDAO.save(entity);
 
-            if (getGrupoUsuario(entity.getGrupoUsuarioCodigo()) != null) {
-                throw new ZMessManager(ZMessManager.ENTITY_WITHSAMEKEY);
-            }
+			log.debug("save GrupoUsuario successful");
+		} catch (Exception e) {
+			log.error("save GrupoUsuario failed", e);
+			throw e;
+		} finally {
+		}
+	}
 
-            grupoUsuarioDAO.save(entity);
+	@Transactional(readOnly = false, propagation = Propagation.REQUIRED)
+	public void deleteGrupoUsuario(GrupoUsuario entity)
+			throws Exception {
+		log.debug("deleting GrupoUsuario instance");
 
-            log.debug("save GrupoUsuario successful");
-        } catch (Exception e) {
-            log.error("save GrupoUsuario failed", e);
-            throw e;
-        } finally {
-        }
-    }
+		if (entity == null) {
+			throw new ZMessManager().new NullEntityExcepcion("GrupoUsuario");
+		}
 
-    @Transactional(readOnly = false, propagation = Propagation.REQUIRED)
-    public void deleteGrupoUsuario(GrupoUsuario entity)
-        throws Exception {
-        log.debug("deleting GrupoUsuario instance");
+		if (entity.getGrupoUsuarioCodigo() == null) {
+			throw new ZMessManager().new EmptyFieldException(
+					"grupoUsuarioCodigo");
+		}
 
-        if (entity == null) {
-            throw new ZMessManager().new NullEntityExcepcion("GrupoUsuario");
-        }
+		try {
+			grupoUsuarioDAO.delete(entity);
 
-        if (entity.getGrupoUsuarioCodigo() == null) {
-            throw new ZMessManager().new EmptyFieldException(
-                "grupoUsuarioCodigo");
-        }
+			log.debug("delete GrupoUsuario successful");
+		} catch (Exception e) {
+			log.error("delete GrupoUsuario failed", e);
+			throw e;
+		} finally {
+		}
+	}
 
-        try {
-            grupoUsuarioDAO.delete(entity);
+	@Transactional(readOnly = false, propagation = Propagation.REQUIRED)
+	public void updateGrupoUsuario(GrupoUsuario entity)
+			throws Exception {
+		log.debug("updating GrupoUsuario instance");
 
-            log.debug("delete GrupoUsuario successful");
-        } catch (Exception e) {
-            log.error("delete GrupoUsuario failed", e);
-            throw e;
-        } finally {
-        }
-    }
+		try {
+			if (entity == null) {
+				throw new ZMessManager().new NullEntityExcepcion("GrupoUsuario");
+			}
 
-    @Transactional(readOnly = false, propagation = Propagation.REQUIRED)
-    public void updateGrupoUsuario(GrupoUsuario entity)
-        throws Exception {
-        log.debug("updating GrupoUsuario instance");
+			if (entity.getGrupo() == null) {
+				throw new ZMessManager().new ForeignException("grupo");
+			}
 
-        try {
-            if (entity == null) {
-                throw new ZMessManager().new NullEntityExcepcion("GrupoUsuario");
-            }
+			if (entity.getUsuario() == null) {
+				throw new ZMessManager().new ForeignException("usuario");
+			}
 
-            if (entity.getGrupo() == null) {
-                throw new ZMessManager().new ForeignException("grupo");
-            }
+			if (entity.getFechaCreacion() == null) {
+				throw new ZMessManager().new EmptyFieldException(
+						"fechaCreacion");
+			}
 
-            if (entity.getUsuario() == null) {
-                throw new ZMessManager().new ForeignException("usuario");
-            }
+			if (entity.getGrupoUsuarioCodigo() == null) {
+				throw new ZMessManager().new EmptyFieldException(
+						"grupoUsuarioCodigo");
+			}
 
-            if (entity.getFechaCreacion() == null) {
-                throw new ZMessManager().new EmptyFieldException(
-                    "fechaCreacion");
-            }
+			if (entity.getUsuCreador() == null) {
+				throw new ZMessManager().new EmptyFieldException("usuCreador");
+			}
 
-            if (entity.getGrupoUsuarioCodigo() == null) {
-                throw new ZMessManager().new EmptyFieldException(
-                    "grupoUsuarioCodigo");
-            }
+			if (entity.getGrupo().getGrupoCodigo() == null) {
+				throw new ZMessManager().new EmptyFieldException(
+						"grupoCodigo_Grupo");
+			}
 
-            if (entity.getUsuCreador() == null) {
-                throw new ZMessManager().new EmptyFieldException("usuCreador");
-            }
+			if (entity.getUsuario().getUsuarioCodigo() == null) {
+				throw new ZMessManager().new EmptyFieldException(
+						"usuarioCodigo_Usuario");
+			}
 
-            if (entity.getGrupo().getGrupoCodigo() == null) {
-                throw new ZMessManager().new EmptyFieldException(
-                    "grupoCodigo_Grupo");
-            }
+			grupoUsuarioDAO.update(entity);
 
-            if (entity.getUsuario().getUsuarioCodigo() == null) {
-                throw new ZMessManager().new EmptyFieldException(
-                    "usuarioCodigo_Usuario");
-            }
+			log.debug("update GrupoUsuario successful");
+		} catch (Exception e) {
+			log.error("update GrupoUsuario failed", e);
+			throw e;
+		} finally {
+		}
+	}
 
-            grupoUsuarioDAO.update(entity);
+	@Transactional(readOnly = true)
+	public List<GrupoUsuarioDTO> getDataGrupoUsuario()
+			throws Exception {
+		try {
+			List<GrupoUsuario> grupoUsuario = grupoUsuarioDAO.findAll();
 
-            log.debug("update GrupoUsuario successful");
-        } catch (Exception e) {
-            log.error("update GrupoUsuario failed", e);
-            throw e;
-        } finally {
-        }
-    }
+			List<GrupoUsuarioDTO> grupoUsuarioDTO = new ArrayList<GrupoUsuarioDTO>();
 
-    @Transactional(readOnly = true)
-    public List<GrupoUsuarioDTO> getDataGrupoUsuario()
-        throws Exception {
-        try {
-            List<GrupoUsuario> grupoUsuario = grupoUsuarioDAO.findAll();
+			for (GrupoUsuario grupoUsuarioTmp : grupoUsuario) {
+				GrupoUsuarioDTO grupoUsuarioDTO2 = new GrupoUsuarioDTO();
+				if(grupoUsuarioTmp.getGrupo().getActivo().equalsIgnoreCase("S")){
+					grupoUsuarioDTO2.setGrupoUsuarioCodigo(grupoUsuarioTmp.getGrupoUsuarioCodigo());
+					grupoUsuarioDTO2.setFechaCreacion(grupoUsuarioTmp.getFechaCreacion());
+					grupoUsuarioDTO2.setFechaModificacion(grupoUsuarioTmp.getFechaModificacion());
+					grupoUsuarioDTO2.setUsuCreador((grupoUsuarioTmp.getUsuCreador() != null)
+							? grupoUsuarioTmp.getUsuCreador() : null);
+					grupoUsuarioDTO2.setUsuModificador((grupoUsuarioTmp.getUsuModificador() != null)
+							? grupoUsuarioTmp.getUsuModificador() : null);
+					grupoUsuarioDTO2.setGrupoCodigo_Grupo((grupoUsuarioTmp.getGrupo()
+							.getGrupoCodigo() != null)
+							? grupoUsuarioTmp.getGrupo().getGrupoCodigo() : null);
+					grupoUsuarioDTO2.setUsuarioCodigo_Usuario((grupoUsuarioTmp.getUsuario()
+							.getUsuarioCodigo() != null)
+							? grupoUsuarioTmp.getUsuario().getUsuarioCodigo() : null);
+					grupoUsuarioDTO2.setCorreoUsuarioGrupo(grupoUsuarioTmp.getUsuario().getCorreo());
+					grupoUsuarioDTO2.setNombreUsuarioGrupo(grupoUsuarioTmp.getUsuario().getNombre());
+					grupoUsuarioDTO2.setNombreGrupo(grupoUsuarioTmp.getGrupo().getNombre());
+					grupoUsuarioDTO.add(grupoUsuarioDTO2);
+				}
+			}
 
-            List<GrupoUsuarioDTO> grupoUsuarioDTO = new ArrayList<GrupoUsuarioDTO>();
+			return grupoUsuarioDTO;
+		} catch (Exception e) {
+			throw e;
+		}
+	}
+	
+	@Transactional(readOnly = true)
+	public List<GrupoUsuarioDTO> getDataGrupoUsuarioI()
+			throws Exception {
+		try {
+			List<GrupoUsuario> grupoUsuario = grupoUsuarioDAO.findAll();
 
-            for (GrupoUsuario grupoUsuarioTmp : grupoUsuario) {
-                GrupoUsuarioDTO grupoUsuarioDTO2 = new GrupoUsuarioDTO();
+			List<GrupoUsuarioDTO> grupoUsuarioDTO = new ArrayList<GrupoUsuarioDTO>();
 
-                grupoUsuarioDTO2.setGrupoUsuarioCodigo(grupoUsuarioTmp.getGrupoUsuarioCodigo());
-                grupoUsuarioDTO2.setFechaCreacion(grupoUsuarioTmp.getFechaCreacion());
-                grupoUsuarioDTO2.setFechaModificacion(grupoUsuarioTmp.getFechaModificacion());
-                grupoUsuarioDTO2.setUsuCreador((grupoUsuarioTmp.getUsuCreador() != null)
-                    ? grupoUsuarioTmp.getUsuCreador() : null);
-                grupoUsuarioDTO2.setUsuModificador((grupoUsuarioTmp.getUsuModificador() != null)
-                    ? grupoUsuarioTmp.getUsuModificador() : null);
-                grupoUsuarioDTO2.setGrupoCodigo_Grupo((grupoUsuarioTmp.getGrupo()
-                                                                      .getGrupoCodigo() != null)
-                    ? grupoUsuarioTmp.getGrupo().getGrupoCodigo() : null);
-                grupoUsuarioDTO2.setUsuarioCodigo_Usuario((grupoUsuarioTmp.getUsuario()
-                                                                          .getUsuarioCodigo() != null)
-                    ? grupoUsuarioTmp.getUsuario().getUsuarioCodigo() : null);
-                grupoUsuarioDTO.add(grupoUsuarioDTO2);
-            }
+			for (GrupoUsuario grupoUsuarioTmp : grupoUsuario) {
+				GrupoUsuarioDTO grupoUsuarioDTO2 = new GrupoUsuarioDTO();
+				if(grupoUsuarioTmp.getGrupo().getActivo().equalsIgnoreCase("N")){
+					grupoUsuarioDTO2.setGrupoUsuarioCodigo(grupoUsuarioTmp.getGrupoUsuarioCodigo());
+					grupoUsuarioDTO2.setFechaCreacion(grupoUsuarioTmp.getFechaCreacion());
+					grupoUsuarioDTO2.setFechaModificacion(grupoUsuarioTmp.getFechaModificacion());
+					grupoUsuarioDTO2.setUsuCreador((grupoUsuarioTmp.getUsuCreador() != null)
+							? grupoUsuarioTmp.getUsuCreador() : null);
+					grupoUsuarioDTO2.setUsuModificador((grupoUsuarioTmp.getUsuModificador() != null)
+							? grupoUsuarioTmp.getUsuModificador() : null);
+					grupoUsuarioDTO2.setGrupoCodigo_Grupo((grupoUsuarioTmp.getGrupo()
+							.getGrupoCodigo() != null)
+							? grupoUsuarioTmp.getGrupo().getGrupoCodigo() : null);
+					grupoUsuarioDTO2.setUsuarioCodigo_Usuario((grupoUsuarioTmp.getUsuario()
+							.getUsuarioCodigo() != null)
+							? grupoUsuarioTmp.getUsuario().getUsuarioCodigo() : null);
+					grupoUsuarioDTO2.setCorreoUsuarioGrupo(grupoUsuarioTmp.getUsuario().getCorreo());
+					grupoUsuarioDTO2.setNombreUsuarioGrupo(grupoUsuarioTmp.getUsuario().getNombre());
+					grupoUsuarioDTO2.setNombreGrupo(grupoUsuarioTmp.getGrupo().getNombre());
+					grupoUsuarioDTO.add(grupoUsuarioDTO2);
+				}
+			}
 
-            return grupoUsuarioDTO;
-        } catch (Exception e) {
-            throw e;
-        }
-    }
+			return grupoUsuarioDTO;
+		} catch (Exception e) {
+			throw e;
+		}
+	}
 
-    @Transactional(readOnly = true)
-    public GrupoUsuario getGrupoUsuario(Long grupoUsuarioCodigo)
-        throws Exception {
-        log.debug("getting GrupoUsuario instance");
+	@Transactional(readOnly = true)
+	public GrupoUsuario getGrupoUsuario(Long grupoUsuarioCodigo)
+			throws Exception {
+		log.debug("getting GrupoUsuario instance");
 
-        GrupoUsuario entity = null;
+		GrupoUsuario entity = null;
 
-        try {
-            entity = grupoUsuarioDAO.findById(grupoUsuarioCodigo);
-        } catch (Exception e) {
-            log.error("get GrupoUsuario failed", e);
-            throw new ZMessManager().new FindingException("GrupoUsuario");
-        } finally {
-        }
+		try {
+			entity = grupoUsuarioDAO.findById(grupoUsuarioCodigo);
+		} catch (Exception e) {
+			log.error("get GrupoUsuario failed", e);
+			throw new ZMessManager().new FindingException("GrupoUsuario");
+		} finally {
+		}
 
-        return entity;
-    }
+		return entity;
+	}
 
-    @Transactional(readOnly = true)
-    public List<GrupoUsuario> findPageGrupoUsuario(String sortColumnName,
-        boolean sortAscending, int startRow, int maxResults)
-        throws Exception {
-        List<GrupoUsuario> entity = null;
+	@Transactional(readOnly = true)
+	public List<GrupoUsuario> findPageGrupoUsuario(String sortColumnName,
+			boolean sortAscending, int startRow, int maxResults)
+					throws Exception {
+		List<GrupoUsuario> entity = null;
 
-        try {
-            entity = grupoUsuarioDAO.findPage(sortColumnName, sortAscending,
-                    startRow, maxResults);
-        } catch (Exception e) {
-            throw new ZMessManager().new FindingException("GrupoUsuario Count");
-        } finally {
-        }
+		try {
+			entity = grupoUsuarioDAO.findPage(sortColumnName, sortAscending,
+					startRow, maxResults);
+		} catch (Exception e) {
+			throw new ZMessManager().new FindingException("GrupoUsuario Count");
+		} finally {
+		}
 
-        return entity;
-    }
+		return entity;
+	}
 
-    @Transactional(readOnly = true)
-    public Long findTotalNumberGrupoUsuario() throws Exception {
-        Long entity = null;
+	@Transactional(readOnly = true)
+	public Long findTotalNumberGrupoUsuario() throws Exception {
+		Long entity = null;
 
-        try {
-            entity = grupoUsuarioDAO.count();
-        } catch (Exception e) {
-            throw new ZMessManager().new FindingException("GrupoUsuario Count");
-        } finally {
-        }
+		try {
+			entity = grupoUsuarioDAO.count();
+		} catch (Exception e) {
+			throw new ZMessManager().new FindingException("GrupoUsuario Count");
+		} finally {
+		}
 
-        return entity;
-    }
+		return entity;
+	}
 
-    /**
-    *
-    * @param varibles
-    *            este arreglo debera tener:
-    *
-    * [0] = String variable = (String) varibles[i]; representa como se llama la
-    * variable en el pojo
-    *
-    * [1] = Boolean booVariable = (Boolean) varibles[i + 1]; representa si el
-    * valor necesita o no ''(comillas simples)usado para campos de tipo string
-    *
-    * [2] = Object value = varibles[i + 2]; representa el valor que se va a
-    * buscar en la BD
-    *
-    * [3] = String comparator = (String) varibles[i + 3]; representa que tipo
-    * de busqueda voy a hacer.., ejemplo: where nombre=william o where nombre<>william,
-        * en este campo iria el tipo de comparador que quiero si es = o <>
-            *
-            * Se itera de 4 en 4..., entonces 4 registros del arreglo representan 1
-            * busqueda en un campo, si se ponen mas pues el continuara buscando en lo
-            * que se le ingresen en los otros 4
-            *
-            *
-            * @param variablesBetween
-            *
-            * la diferencia son estas dos posiciones
-            *
-            * [0] = String variable = (String) varibles[j]; la variable ne la BD que va
-            * a ser buscada en un rango
-            *
-            * [1] = Object value = varibles[j + 1]; valor 1 para buscar en un rango
-            *
-            * [2] = Object value2 = varibles[j + 2]; valor 2 para buscar en un rango
-            * ejempolo: a > 1 and a < 5 --> 1 seria value y 5 seria value2
-                *
-                * [3] = String comparator1 = (String) varibles[j + 3]; comparador 1
-                * ejemplo: a comparator1 1 and a < 5
-                    *
-                    * [4] = String comparator2 = (String) varibles[j + 4]; comparador 2
-                    * ejemplo: a comparador1>1  and a comparador2<5  (el original: a > 1 and a <
-                            * 5) *
-                            * @param variablesBetweenDates(en
-                            *            este caso solo para mysql)
-                            *  [0] = String variable = (String) varibles[k]; el nombre de la variable que hace referencia a
-                            *            una fecha
-                            *
-                            * [1] = Object object1 = varibles[k + 2]; fecha 1 a comparar(deben ser
-                            * dates)
-                            *
-                            * [2] = Object object2 = varibles[k + 3]; fecha 2 a comparar(deben ser
-                            * dates)
-                            *
-                            * esto hace un between entre las dos fechas.
-                            *
-                            * @return lista con los objetos que se necesiten
-                            * @throws Exception
-                            */
-    @Transactional(readOnly = true)
-    public List<GrupoUsuario> findByCriteria(Object[] variables,
-        Object[] variablesBetween, Object[] variablesBetweenDates)
-        throws Exception {
-        List<GrupoUsuario> list = new ArrayList<GrupoUsuario>();
-        String where = new String();
-        String tempWhere = new String();
+	/**
+	 *
+	 * @param varibles
+	 *            este arreglo debera tener:
+	 *
+	 * [0] = String variable = (String) varibles[i]; representa como se llama la
+	 * variable en el pojo
+	 *
+	 * [1] = Boolean booVariable = (Boolean) varibles[i + 1]; representa si el
+	 * valor necesita o no ''(comillas simples)usado para campos de tipo string
+	 *
+	 * [2] = Object value = varibles[i + 2]; representa el valor que se va a
+	 * buscar en la BD
+	 *
+	 * [3] = String comparator = (String) varibles[i + 3]; representa que tipo
+	 * de busqueda voy a hacer.., ejemplo: where nombre=william o where nombre<>william,
+	 * en este campo iria el tipo de comparador que quiero si es = o <>
+	 *
+	 * Se itera de 4 en 4..., entonces 4 registros del arreglo representan 1
+	 * busqueda en un campo, si se ponen mas pues el continuara buscando en lo
+	 * que se le ingresen en los otros 4
+	 *
+	 *
+	 * @param variablesBetween
+	 *
+	 * la diferencia son estas dos posiciones
+	 *
+	 * [0] = String variable = (String) varibles[j]; la variable ne la BD que va
+	 * a ser buscada en un rango
+	 *
+	 * [1] = Object value = varibles[j + 1]; valor 1 para buscar en un rango
+	 *
+	 * [2] = Object value2 = varibles[j + 2]; valor 2 para buscar en un rango
+	 * ejempolo: a > 1 and a < 5 --> 1 seria value y 5 seria value2
+	 *
+	 * [3] = String comparator1 = (String) varibles[j + 3]; comparador 1
+	 * ejemplo: a comparator1 1 and a < 5
+	 *
+	 * [4] = String comparator2 = (String) varibles[j + 4]; comparador 2
+	 * ejemplo: a comparador1>1  and a comparador2<5  (el original: a > 1 and a <
+	 * 5) *
+	 * @param variablesBetweenDates(en
+	 *            este caso solo para mysql)
+	 *  [0] = String variable = (String) varibles[k]; el nombre de la variable que hace referencia a
+	 *            una fecha
+	 *
+	 * [1] = Object object1 = varibles[k + 2]; fecha 1 a comparar(deben ser
+	 * dates)
+	 *
+	 * [2] = Object object2 = varibles[k + 3]; fecha 2 a comparar(deben ser
+	 * dates)
+	 *
+	 * esto hace un between entre las dos fechas.
+	 *
+	 * @return lista con los objetos que se necesiten
+	 * @throws Exception
+	 */
+	@Transactional(readOnly = true)
+	public List<GrupoUsuario> findByCriteria(Object[] variables,
+			Object[] variablesBetween, Object[] variablesBetweenDates)
+					throws Exception {
+		List<GrupoUsuario> list = new ArrayList<GrupoUsuario>();
+		String where = new String();
+		String tempWhere = new String();
 
-        if (variables != null) {
-            for (int i = 0; i < variables.length; i++) {
-                if ((variables[i] != null) && (variables[i + 1] != null) &&
-                        (variables[i + 2] != null) &&
-                        (variables[i + 3] != null)) {
-                    String variable = (String) variables[i];
-                    Boolean booVariable = (Boolean) variables[i + 1];
-                    Object value = variables[i + 2];
-                    String comparator = (String) variables[i + 3];
+		if (variables != null) {
+			for (int i = 0; i < variables.length; i++) {
+				if ((variables[i] != null) && (variables[i + 1] != null) &&
+						(variables[i + 2] != null) &&
+						(variables[i + 3] != null)) {
+					String variable = (String) variables[i];
+					Boolean booVariable = (Boolean) variables[i + 1];
+					Object value = variables[i + 2];
+					String comparator = (String) variables[i + 3];
 
-                    if (booVariable.booleanValue()) {
-                        tempWhere = (tempWhere.length() == 0)
-                            ? ("(model." + variable + " " + comparator + " \'" +
-                            value + "\' )")
-                            : (tempWhere + " AND (model." + variable + " " +
-                            comparator + " \'" + value + "\' )");
-                    } else {
-                        tempWhere = (tempWhere.length() == 0)
-                            ? ("(model." + variable + " " + comparator + " " +
-                            value + " )")
-                            : (tempWhere + " AND (model." + variable + " " +
-                            comparator + " " + value + " )");
-                    }
-                }
+					if (booVariable.booleanValue()) {
+						tempWhere = (tempWhere.length() == 0)
+								? ("(model." + variable + " " + comparator + " \'" +
+										value + "\' )")
+										: (tempWhere + " AND (model." + variable + " " +
+												comparator + " \'" + value + "\' )");
+					} else {
+						tempWhere = (tempWhere.length() == 0)
+								? ("(model." + variable + " " + comparator + " " +
+										value + " )")
+										: (tempWhere + " AND (model." + variable + " " +
+												comparator + " " + value + " )");
+					}
+				}
 
-                i = i + 3;
-            }
-        }
+				i = i + 3;
+			}
+		}
 
-        if (variablesBetween != null) {
-            for (int j = 0; j < variablesBetween.length; j++) {
-                if ((variablesBetween[j] != null) &&
-                        (variablesBetween[j + 1] != null) &&
-                        (variablesBetween[j + 2] != null) &&
-                        (variablesBetween[j + 3] != null) &&
-                        (variablesBetween[j + 4] != null)) {
-                    String variable = (String) variablesBetween[j];
-                    Object value = variablesBetween[j + 1];
-                    Object value2 = variablesBetween[j + 2];
-                    String comparator1 = (String) variablesBetween[j + 3];
-                    String comparator2 = (String) variablesBetween[j + 4];
-                    tempWhere = (tempWhere.length() == 0)
-                        ? ("(" + value + " " + comparator1 + " " + variable +
-                        " and " + variable + " " + comparator2 + " " + value2 +
-                        " )")
-                        : (tempWhere + " AND (" + value + " " + comparator1 +
-                        " " + variable + " and " + variable + " " +
-                        comparator2 + " " + value2 + " )");
-                }
+		if (variablesBetween != null) {
+			for (int j = 0; j < variablesBetween.length; j++) {
+				if ((variablesBetween[j] != null) &&
+						(variablesBetween[j + 1] != null) &&
+						(variablesBetween[j + 2] != null) &&
+						(variablesBetween[j + 3] != null) &&
+						(variablesBetween[j + 4] != null)) {
+					String variable = (String) variablesBetween[j];
+					Object value = variablesBetween[j + 1];
+					Object value2 = variablesBetween[j + 2];
+					String comparator1 = (String) variablesBetween[j + 3];
+					String comparator2 = (String) variablesBetween[j + 4];
+					tempWhere = (tempWhere.length() == 0)
+							? ("(" + value + " " + comparator1 + " " + variable +
+									" and " + variable + " " + comparator2 + " " + value2 +
+									" )")
+									: (tempWhere + " AND (" + value + " " + comparator1 +
+											" " + variable + " and " + variable + " " +
+											comparator2 + " " + value2 + " )");
+				}
 
-                j = j + 4;
-            }
-        }
+				j = j + 4;
+			}
+		}
 
-        if (variablesBetweenDates != null) {
-            for (int k = 0; k < variablesBetweenDates.length; k++) {
-                if ((variablesBetweenDates[k] != null) &&
-                        (variablesBetweenDates[k + 1] != null) &&
-                        (variablesBetweenDates[k + 2] != null)) {
-                    String variable = (String) variablesBetweenDates[k];
-                    Object object1 = variablesBetweenDates[k + 1];
-                    Object object2 = variablesBetweenDates[k + 2];
-                    String value = null;
-                    String value2 = null;
+		if (variablesBetweenDates != null) {
+			for (int k = 0; k < variablesBetweenDates.length; k++) {
+				if ((variablesBetweenDates[k] != null) &&
+						(variablesBetweenDates[k + 1] != null) &&
+						(variablesBetweenDates[k + 2] != null)) {
+					String variable = (String) variablesBetweenDates[k];
+					Object object1 = variablesBetweenDates[k + 1];
+					Object object2 = variablesBetweenDates[k + 2];
+					String value = null;
+					String value2 = null;
 
-                    try {
-                        Date date1 = (Date) object1;
-                        Date date2 = (Date) object2;
-                        value = Utilities.formatDateWithoutTimeInAStringForBetweenWhere(date1);
-                        value2 = Utilities.formatDateWithoutTimeInAStringForBetweenWhere(date2);
-                    } catch (Exception e) {
-                        list = null;
-                        throw e;
-                    }
+					try {
+						Date date1 = (Date) object1;
+						Date date2 = (Date) object2;
+						value = Utilities.formatDateWithoutTimeInAStringForBetweenWhere(date1);
+						value2 = Utilities.formatDateWithoutTimeInAStringForBetweenWhere(date2);
+					} catch (Exception e) {
+						list = null;
+						throw e;
+					}
 
-                    tempWhere = (tempWhere.length() == 0)
-                        ? ("(model." + variable + " between \'" + value +
-                        "\' and \'" + value2 + "\')")
-                        : (tempWhere + " AND (model." + variable +
-                        " between \'" + value + "\' and \'" + value2 + "\')");
-                }
+					tempWhere = (tempWhere.length() == 0)
+							? ("(model." + variable + " between \'" + value +
+									"\' and \'" + value2 + "\')")
+									: (tempWhere + " AND (model." + variable +
+											" between \'" + value + "\' and \'" + value2 + "\')");
+				}
 
-                k = k + 2;
-            }
-        }
+				k = k + 2;
+			}
+		}
 
-        if (tempWhere.length() == 0) {
-            where = null;
-        } else {
-            where = "(" + tempWhere + ")";
-        }
+		if (tempWhere.length() == 0) {
+			where = null;
+		} else {
+			where = "(" + tempWhere + ")";
+		}
 
-        try {
-            list = grupoUsuarioDAO.findByCriteria(where);
-        } catch (Exception e) {
-            throw new Exception(e.getMessage());
-        } finally {
-        }
+		try {
+			list = grupoUsuarioDAO.findByCriteria(where);
+		} catch (Exception e) {
+			throw new Exception(e.getMessage());
+		} finally {
+		}
 
-        return list;
-    }
+		return list;
+	}
 }

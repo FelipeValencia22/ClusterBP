@@ -18,8 +18,8 @@
 			timeout="#{session.maxInactiveInterval * 1000}" />
 		<p:dialog modal="true" widgetVar="sessionTimeOutDialog"
 			header="Expired session" draggable="false" closable="false">
-			<h:outputText value="The session is finished" />
-			<input id="confirmBackToLogin" type="button" value="Sign in"
+			<h:outputText value="Su sesión ha expirado" />
+			<input id="confirmBackToLogin" type="button" value="Iniciar sesión"
 				onclick="window.location='#{facesContext.externalContext.requestContextPath}/index.jsp';" />
 		</p:dialog>
 
@@ -27,7 +27,7 @@
 
 			<p:growl id="growl" />
 
-			<p:panel id="pnlUsuarios" header="USUARIOS">
+			<p:panel id="pnlUsuarios" header="Administraci&#243;n de usuarios">
 				<br></br>
 				<p:commandButton value="Crear Usuario" type="button"
 					onclick="PF('dlg').show();" />
@@ -149,7 +149,7 @@
 		</h:form>
 
 		<p:dialog header="Crear usuario" appendTo="@(body)" draggable="true"
-			widgetVar="dlg" resizable="false" modal="true" width="500">
+			widgetVar="dlg" resizable="false" modal="true" width="600">
 			<h:form id="formDialogCrear">
 				<p:messages id="msg" />
 				<h:panelGrid id="pnlUsuariosCrear" columns="1">
@@ -158,8 +158,14 @@
 						style="width:400px" binding="#{usuarioView.txtCorreo}"
 						maxlength="50">
 						<p:ajax listener="#{usuarioView.txtLoginListener}"
-							update="@([id$=txtNombreUC]), @([id$=txtClaveC]), @([id$=txtClaveCR]), @([id$=btnCrearU]), @([id$=btnLimpiar]) " />
+							update="@([id$=msg]), @([id$=esAdmin]), @([id$=txtNombreUC]), @([id$=txtClaveC]), @([id$=txtClaveCR]), @([id$=btnCrearU]), @([id$=btnLimpiar]) " />
 					</p:inputText>
+
+					<h:panelGrid id="pnlAdministrador" columns="2">
+						<h:outputText value="¿Administrador?" />
+						<p:selectBooleanCheckbox id="esAdmin" label="Administrador"
+							style="width:400px" binding="#{usuarioView.esAdmin}" />
+					</h:panelGrid>
 
 					<p:inputText id="txtNombreUC" placeholder="Nombre"
 						style="width:400px" binding="#{usuarioView.txtNombre}"
@@ -224,7 +230,7 @@
 						<p:commandButton id="btnSave"
 							binding="#{usuarioView.btnModificar}" value="Guardar"
 							action="#{usuarioView.guardarModificacion}"
-							update="dialogModificarUsuario :frm:panelDataTableUsuario" />
+							update="@([id$=frm]), @([id$=pnlUsuariosCrear]),@([id$=growl]), @([id$=dataTableVtUsuarioActivos])" />
 
 						<p:commandButton id="btnExit" value="Salir"
 							action="#{usuarioView.action_closeDialog()}"

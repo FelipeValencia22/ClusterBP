@@ -10,7 +10,7 @@ import org.primefaces.component.calendar.*;
 import org.primefaces.component.commandbutton.CommandButton;
 import org.primefaces.component.inputtext.InputText;
 import org.primefaces.component.password.Password;
-
+import org.primefaces.component.selectbooleancheckbox.SelectBooleanCheckbox;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -61,6 +61,7 @@ public class UsuarioView implements Serializable {
 	private Password txtClaveRCM;
 	private InputText txtCorreoM;
 	private InputText txtNombreM;
+	private SelectBooleanCheckbox esAdmin;
 
 	private CommandButton btnCrear;
 	private CommandButton btnModificar;
@@ -304,26 +305,40 @@ public class UsuarioView implements Serializable {
 	public void setEntity(Usuario entity) {
 		this.entity = entity;
 	}
+	
+
+	public SelectBooleanCheckbox getEsAdmin() {
+		return esAdmin;
+	}
+
+	public void setEsAdmin(SelectBooleanCheckbox esAdmin) {
+		this.esAdmin = esAdmin;
+	}
 
 	//TODO: Metodos
 	public String crearUsuario() throws Exception{
+		String mensaje="";
 		try {
-			log.info("Creando usuario");
+			
+			log.info("Creando usuario..");
+			Date fechaCreacion= new Date();
+			Usuario usuarioCreador=  (Usuario) FacesUtils.getfromSession("usuario");
+			
 			String claveR=txtClaveRC.getValue().toString().trim();
 			String clave=txtClaveC.getValue().toString().trim();
+			String correo=txtCorreo.getValue().toString().trim();
+			
+			
 
 			if(clave.equals(claveR)){
-				String correo=txtCorreo.getValue().toString().trim();
 				if(correoDisponible(correo)){
-
+	
 					Usuario usuario = new Usuario();
 					usuario.setActivo("S");
 					usuario.setClave(clave);
 					usuario.setCorreo(correo);
-					Date fechaCreacion= new Date();
 					usuario.setFechaCreacion(fechaCreacion);
 					usuario.setNombre(txtNombre.getValue().toString().trim());
-					Usuario usuarioCreador=  (Usuario) FacesUtils.getfromSession("usuario");
 					usuario.setUsuCreador(usuarioCreador.getUsuarioCodigo());
 
 					businessDelegatorView.saveUsuario(usuario);
@@ -339,10 +354,44 @@ public class UsuarioView implements Serializable {
 			else{
 				FacesContext.getCurrentInstance().addMessage("", new FacesMessage("Las contraseñas no coinciden"));
 			}
+			
+			/// Crearle el rol a el usuario despues del registro. Lo consulto si existe y si es asi le asigno el rol
+			Usuario usuarioRegistrado= businessDelegatorView.consultarUsuarioPorCorreo(correo);
+			
+			if(usuarioRegistrado!=null){
+				UsuarioRol usuarioRol = new UsuarioRol();
+				usuarioRol.setFechaCreacion(fechaCreacion);
+				usuarioRol.setUsuCreador(usuarioCreador.getUsuarioCodigo());
+				Rol rol=null;
+				if(esAdmin.isSelected()){
+					rol=businessDelegatorView.consultarIdRolPorNombre("Admin");
+					if(rol!=null){
+						usuarioRol.setRol(rol);
+					}
+					else{
+						mensaje="El rol del administraor no existe";
+					}
+				}else{
+					rol=businessDelegatorView.consultarIdRolPorNombre("Usuario");
+					if(rol!=null){
+						usuarioRol.setRol(rol);
+					}
+					else{
+						mensaje="El rol del usuario no existe";
+					}
+				}
+				
+				usuarioRol.setUsuario(usuarioRegistrado);
+				
+				businessDelegatorView.saveUsuarioRol(usuarioRol);
+			}
+			///
+			
 		}catch (Exception e) {
 			log.error(e.toString());
 			log.error(e.getLocalizedMessage());
-			FacesContext.getCurrentInstance().addMessage("", new FacesMessage(e.getMessage()));
+			mensaje=e.toString();
+			FacesContext.getCurrentInstance().addMessage("", new FacesMessage(""+mensaje));
 		}
 
 		return "";
@@ -491,9 +540,11 @@ public class UsuarioView implements Serializable {
 			txtClaveC.resetValue();
 			txtClaveRC.resetValue();
 			btnCrear.setDisabled(false);
+			FacesUtils.addErrorMessage("El usuario no existe");
 		}else{
 			txtNombre.setValue(usuario.getNombre());
 			btnCrear.setDisabled(true);
+			FacesUtils.addInfoMessage("El usuario existe!");
 		}
 	}
 

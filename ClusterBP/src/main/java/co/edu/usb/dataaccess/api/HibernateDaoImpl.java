@@ -647,4 +647,20 @@ public class HibernateDaoImpl<T, PK extends Serializable> implements Dao<T, PK> 
 		Usuario usuario=(Usuario) query.uniqueResult();
 		return usuario;
 	}
+
+	@Override
+	public Rol consultarIdRolPorNombre(String nombre) {
+		Query query= getSession().getNamedQuery("consultarIdRolPorNombre");
+		query.setParameter("nombre", nombre);
+		Rol rol= (Rol) query.uniqueResult();
+		return rol;
+	}
+
+	@Override
+	public String consultarGrupoPorNombre(String nombre) {
+		Query query= getSession().getNamedQuery("consultarGrupoPorNombre");
+		query.setParameter("nombre", nombre);
+		String nombreGrupo= (String) query.uniqueResult();
+		return nombreGrupo;
+	}
 }

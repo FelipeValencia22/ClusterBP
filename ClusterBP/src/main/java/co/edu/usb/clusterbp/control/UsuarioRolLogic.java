@@ -97,10 +97,7 @@ public class UsuarioRolLogic implements IUsuarioRolLogic {
                 throw new ZMessManager().new EmptyFieldException("usuCreador");
             }
 
-            if (entity.getUsuarioRolCodigo() == null) {
-                throw new ZMessManager().new EmptyFieldException(
-                    "usuarioRolCodigo");
-            }
+
 
             if (entity.getRol().getRolCodigo() == null) {
                 throw new ZMessManager().new EmptyFieldException(
@@ -112,9 +109,6 @@ public class UsuarioRolLogic implements IUsuarioRolLogic {
                     "usuarioCodigo_Usuario");
             }
 
-            if (getUsuarioRol(entity.getUsuarioRolCodigo()) != null) {
-                throw new ZMessManager(ZMessManager.ENTITY_WITHSAMEKEY);
-            }
 
             usuarioRolDAO.save(entity);
 

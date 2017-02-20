@@ -18,16 +18,175 @@
 			timeout="#{session.maxInactiveInterval * 1000}" />
 		<p:dialog modal="true" widgetVar="sessionTimeOutDialog"
 			header="Expired session" draggable="false" closable="false">
-			<h:outputText value="The session is finished" />
-			<input id="confirmBackToLogin" type="button" value="Sign in"
+			<h:outputText value="Su sesión ha expirado" />
+			<input id="confirmBackToLogin" type="button" value="Iniciar sesión"
 				onclick="window.location='#{facesContext.externalContext.requestContextPath}/index.jsp';" />
 		</p:dialog>
 
 		<h:form id="frm">
 
 			<p:growl id="growl" />
+			<p:panel id="pnlGrupos" header="Administraci&#243;n de grupos">
+				<br></br>
+				<p:commandButton value="Crear grupo" type="button"
+					onclick="PF('dlg').show();" />
+				<br></br>
+				<br></br>
+
+				<p:accordionPanel id="panelDataTableGrupo" header="Usuarios"
+					multiple="true">
+					<p:growl id="men" />
+
+					<p:tab title="Grupos activos ">
+						<p:dataTable id="dataTableGruposActivos"
+							emptyMessage="No hay grupos activos en este momento"
+							value="#{grupoView.data}" var="grupo" paginator="true" rows="10">
+
+							<p:column filterBy="#{grupo.grupoUsuarioCodigo}"
+								sortBy="#{grupo.grupoUsuarioCodigo}">
+								<f:facet name="header">
+									<h:outputText value="C&#243;digo grupo" />
+								</f:facet>
+								<h:outputText value="#{grupo.grupoUsuarioCodigo}" />
+							</p:column>
+							
+							<p:column filterBy="#{grupo.nombreGrupo}"
+								sortBy="#{grupo.nombreGrupo}">
+								<f:facet name="header">
+									<h:outputText value="Nombre grupo" />
+								</f:facet>
+								<h:outputText value="#{grupo.nombreGrupo}" />
+							</p:column>
+							
+
+							<p:column filterBy="#{grupo.nombreUsuarioGrupo}"
+								sortBy="#{grupo.nombreUsuarioGrupo}">
+								<f:facet name="header">
+									<h:outputText value="Nombre usuario" />
+								</f:facet>
+								<h:outputText value="#{grupo.nombreUsuarioGrupo}" />
+							</p:column>
+
+							<p:column filterBy="#{grupo.correoUsuarioGrupo}"
+								sortBy="#{grupo.correoUsuarioGrupo}">
+								<f:facet name="header">
+									<h:outputText value="Correo usuario" />
+								</f:facet>
+								<h:outputText value="#{grupo.correoUsuarioGrupo}" />
+							</p:column>
+
+							<p:column headerText="Modificar">
+								<div align="center">
+									<p:commandButton id="btnModificar" icon="fa fa-edit"
+										update=":dialogModificarGrupo"
+										actionListener="#{grupoView.modificarGrupo}">
+										<f:attribute name="selectedGrupo" value="#{grupo}" />
+									</p:commandButton>
+									<p:tooltip id="toolTipFadeMi" for="btnModificar"
+										value="Modificar" />
+								</div>
+							</p:column>
+
+
+							<p:column headerText="Cambiar estado">
+								<div align="center">
+									<p:commandButton id="btnEstado" icon="fa fa-retweet"
+										update=":frm:panelDataTableGrupo, :frm:growl,
+										@([id$=panelDataTableGrupo])"
+										actionListener="#{grupoView.cambiarEstado}">
+										<f:attribute name="selectedGrupo" value="#{grupo}" />
+									</p:commandButton>
+									<p:tooltip id="toolTipFadeCi" for="btnEstado"
+										value="Cambiar estado" />
+								</div>
+							</p:column>
+
+						</p:dataTable>
+					</p:tab>
+
+					<p:tab title="Grupos inactivos ">
+						<p:dataTable id="dataTableGruposInactivos"
+							emptyMessage="No hay grupos activos en este momento"
+							value="#{grupoView.dataI}" var="grupo" paginator="true" rows="10">
+
+							<p:column headerText="Cambiar estado">
+								<div align="center">
+									<p:commandButton id="btnEstado" icon="fa fa-retweet"
+										update=":frm:panelDataTableGrupo, :frm:growl,
+										@([id$=panelDataTableGrupo])"
+										actionListener="#{grupoView.cambiarEstado}">
+										<f:attribute name="selectedGrupo" value="#{grupo}" />
+									</p:commandButton>
+									<p:tooltip id="toolTipFadeCi" for="btnEstado"
+										value="Cambiar estado" />
+								</div>
+							</p:column>
+
+						</p:dataTable>
+					</p:tab>
+
+				</p:accordionPanel>
+			</p:panel>
 
 		</h:form>
+
+		<p:dialog header="Crear grupo" appendTo="@(body)" draggable="true"
+			widgetVar="dlg" resizable="false" modal="true" width="600">
+			<h:form id="formDialogCrear">
+				<p:messages id="msg" />
+				<h:panelGrid id="pnlGruposCrear" columns="1">
+
+					<p:inputText id="txtNombre" placeholder="Nombre grupo"
+						style="width:400px" binding="#{grupoView.txtNombre}"
+						maxlength="50">
+					</p:inputText>
+
+					<p:inputText id="txtCorreoUsuarioGrupo"
+						placeholder="Correo: due&#241;o del grupo" style="width:400px"
+						binding="#{grupoView.txtCorreoUsuarioGrupo}" maxlength="50">
+						<p:ajax listener="#{grupoView.txtLoginListener}"
+							update="@([id$=msg), @([id$=txtNombreUsuarioGrupo), @([id$=btnCrear)" />
+					</p:inputText>
+
+					<p:inputText id="txtNombreUsuarioGrupo"
+						placeholder="Nombre Usuario" style="width:400px"
+						binding="#{grupoView.txtNombreUsuarioGrupo}" maxlength="50"
+						disabled="true">
+					</p:inputText>
+
+				</h:panelGrid>
+
+				<p:commandButton id="btnCrear" icon="fa fa-save" title="Crear"
+					binding="#{grupoView.btnCrear}" disabled="true"
+					action="#{grupoView.crearGrupo}"
+					update="@([id$=frm]), @([id$=formDialogCrear]), @([id$=panelDataTableGrupo]), @([id$=dataTableGruposActivos]) " />
+
+
+				<p:commandButton id="btnLimpiar" icon="fa fa-eraser" title="Limpiar"
+					action="#{grupoView.limpiarCrearGrupo}"
+					update="@([id$=formDialogCrear])" />
+
+			</h:form>
+		</p:dialog>
+
+		<p:dialog id="dialogModificarGrupo" appendTo="@(body)"
+			draggable="true" header="Modificar grupo" closable="false"
+			visible="#{grupoView.showDialog}" resizable="false" modal="true"
+			width="500">
+			<h:form id="formDialogEdit">
+				<p:messages id="msg" />
+
+				<p:panel id="panelCampos">
+
+					<h:panelGrid id="pnlUsuariosCrear" columns="1">
+					</h:panelGrid>
+
+				</p:panel>
+
+			</h:form>
+
+		</p:dialog>
+
 
 	</ui:define>
 </ui:composition>

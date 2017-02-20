@@ -446,9 +446,18 @@ public class RolLogic implements IRolLogic {
         return list;
     }
     
+    
+    //TODO: Consultas
+    
     @Override
    	@Transactional(readOnly = true)
    	public String consultarRolUsuarioPorCorreo(String correo) {
    		return rolDAO.consultarRolUsuarioPorCorreo(correo);
    	}
+
+	@Override
+	@Transactional(readOnly = true)
+	public Rol consultarIdRolPorNombre(String nombre) {
+		return rolDAO.consultarIdRolPorNombre(nombre);
+	}
 }

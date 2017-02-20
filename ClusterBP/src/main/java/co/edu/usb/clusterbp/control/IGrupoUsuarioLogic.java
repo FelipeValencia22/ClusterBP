@@ -57,4 +57,7 @@ public interface IGrupoUsuarioLogic {
 
     public List<GrupoUsuarioDTO> getDataGrupoUsuario()
         throws Exception;
+    
+    public List<GrupoUsuarioDTO> getDataGrupoUsuarioI()
+            throws Exception;
 }

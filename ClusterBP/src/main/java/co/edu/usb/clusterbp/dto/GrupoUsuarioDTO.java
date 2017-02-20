@@ -26,6 +26,9 @@ public class GrupoUsuarioDTO implements Serializable {
     private Long usuModificador;
     private Long grupoCodigo_Grupo;
     private Long usuarioCodigo_Usuario;
+    private String nombreUsuarioGrupo;
+    private String correoUsuarioGrupo;
+    private String nombreGrupo;
 
     public Date getFechaCreacion() {
         return fechaCreacion;
@@ -82,4 +85,29 @@ public class GrupoUsuarioDTO implements Serializable {
     public void setUsuarioCodigo_Usuario(Long usuarioCodigo_Usuario) {
         this.usuarioCodigo_Usuario = usuarioCodigo_Usuario;
     }
+
+	public String getNombreUsuarioGrupo() {
+		return nombreUsuarioGrupo;
+	}
+
+	public void setNombreUsuarioGrupo(String nombreUsuarioGrupo) {
+		this.nombreUsuarioGrupo = nombreUsuarioGrupo;
+	}
+
+	public String getCorreoUsuarioGrupo() {
+		return correoUsuarioGrupo;
+	}
+
+	public void setCorreoUsuarioGrupo(String correoUsuarioGrupo) {
+		this.correoUsuarioGrupo = correoUsuarioGrupo;
+	}
+
+	public String getNombreGrupo() {
+		return nombreGrupo;
+	}
+
+	public void setNombreGrupo(String nombreGrupo) {
+		this.nombreGrupo = nombreGrupo;
+	}
+    
 }

@@ -26,6 +26,8 @@ public class GrupoDTO implements Serializable {
     private String nombre;
     private Long usuCreador;
     private Long usuModificador;
+    private String nombreUsuario;
+    private String correoUsuario;
 
     public String getActivo() {
         return activo;
@@ -82,4 +84,21 @@ public class GrupoDTO implements Serializable {
     public void setUsuModificador(Long usuModificador) {
         this.usuModificador = usuModificador;
     }
+
+	public String getNombreUsuario() {
+		return nombreUsuario;
+	}
+
+	public void setNombreUsuario(String nombreUsuario) {
+		this.nombreUsuario = nombreUsuario;
+	}
+
+	public String getCorreoUsuario() {
+		return correoUsuario;
+	}
+
+	public void setCorreoUsuario(String correoUsuario) {
+		this.correoUsuario = correoUsuario;
+	}
+    
 }

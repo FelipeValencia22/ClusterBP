@@ -53,4 +53,7 @@ public interface IGrupoLogic {
     public Long findTotalNumberGrupo() throws Exception;
 
     public List<GrupoDTO> getDataGrupo() throws Exception;
+    
+  //TODO: Consultas
+  	public String consultarGrupoPorNombre (String nombre);
 }
