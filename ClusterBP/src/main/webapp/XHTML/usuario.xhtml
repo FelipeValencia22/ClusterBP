@@ -149,27 +149,21 @@
 		</h:form>
 
 		<p:dialog header="Crear usuario" appendTo="@(body)" draggable="true"
-			widgetVar="dlg" resizable="false" modal="true" width="600">
+			widgetVar="dlg" resizable="false" modal="true" width="600" >
 			<h:form id="formDialogCrear">
-				<p:messages id="msg" />
 				<h:panelGrid id="pnlUsuariosCrear" columns="1">
 
-					<p:inputText id="txtEmailC" placeholder="Correo"
+					<p:inputText id="txtCorreo" placeholder="Correo"
 						style="width:400px" binding="#{usuarioView.txtCorreo}"
 						maxlength="50">
 						<p:ajax listener="#{usuarioView.txtLoginListener}"
-							update="@([id$=msg]), @([id$=esAdmin]), @([id$=txtNombreUC]), @([id$=txtClaveC]), @([id$=txtClaveCR]), @([id$=btnCrearU]), @([id$=btnLimpiar]) " />
+							update="@([id$=esAdmin]), @([id$=txtNombreUC]), @([id$=txtClaveC]), @([id$=txtClaveCR]), @([id$=btnCrearU]), @([id$=btnLimpiar]) " />
 					</p:inputText>
-
-					<h:panelGrid id="pnlAdministrador" columns="2">
-						<h:outputText value="¿Administrador?" />
-						<p:selectBooleanCheckbox id="esAdmin" label="Administrador"
-							style="width:400px" binding="#{usuarioView.esAdmin}" />
-					</h:panelGrid>
 
 					<p:inputText id="txtNombreUC" placeholder="Nombre"
 						style="width:400px" binding="#{usuarioView.txtNombre}"
 						maxlength="60" />
+
 
 					<p:password id="txtClaveC" placeholder="Contrase&#241;a"
 						style="width:400px" binding="#{usuarioView.txtClaveC}"
@@ -179,16 +173,23 @@
 						style="width:400px" binding="#{usuarioView.txtClaveRC}"
 						maxlength="25" />
 
+					<h:panelGrid id="pnlAdministrador" columns="2">
+						<h:outputText value="¿Administrador?" />
+						<p:selectBooleanCheckbox id="esAdmin" label="Administrador"
+							style="width:400px" binding="#{usuarioView.esAdmin}" disabled="true"/>
+					</h:panelGrid>
+
 				</h:panelGrid>
 
 				<p:commandButton id="btnCrearU" icon="fa fa-save" title="Crear"
 					binding="#{usuarioView.btnCrear}" disabled="true"
 					action="#{usuarioView.crearUsuario}"
-					update="@([id$=frm]), @([id$=pnlUsuariosCrear]),@([id$=growl]), @([id$=dataTableVtUsuarioActivos])" />
+					update="@([id$=frm]), @([id$=formDialogCrear]), @([id$=mensajes]) @([id$=pnlUsuariosCrear]),@([id$=growl]), @([id$=dataTableVtUsuarioActivos])" />
 
 
 				<p:commandButton id="btnLimpiar" icon="fa fa-eraser" title="Limpiar"
-					action="#{usuarioView.limpiarCrearUsuario}" update="@([id$=frm])" />
+					action="#{usuarioView.limpiarCrearUsuario}"
+					update="@([id$=pnlUsuariosCrear])" />
 
 			</h:form>
 		</p:dialog>

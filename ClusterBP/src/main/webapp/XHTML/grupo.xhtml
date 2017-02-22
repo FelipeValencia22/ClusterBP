@@ -41,39 +41,39 @@
 						<p:dataTable id="dataTableGruposActivos"
 							emptyMessage="No hay grupos activos en este momento"
 							value="#{grupoView.data}" var="grupo" paginator="true" rows="10">
-
-							<p:column filterBy="#{grupo.grupoUsuarioCodigo}"
-								sortBy="#{grupo.grupoUsuarioCodigo}">
+<!-- Modificar grupos deshabilitado 
+							<p:column filterBy="#{grupo.grupoCodigo}"
+								sortBy="#{grupo.grupoCodigo}">
 								<f:facet name="header">
 									<h:outputText value="C&#243;digo grupo" />
 								</f:facet>
-								<h:outputText value="#{grupo.grupoUsuarioCodigo}" />
+								<h:outputText value="#{grupo.grupoCodigo}" />
 							</p:column>
 							
-							<p:column filterBy="#{grupo.nombreGrupo}"
-								sortBy="#{grupo.nombreGrupo}">
+							<p:column filterBy="#{grupo.nombre}"
+								sortBy="#{grupo.nombre}">
 								<f:facet name="header">
 									<h:outputText value="Nombre grupo" />
 								</f:facet>
-								<h:outputText value="#{grupo.nombreGrupo}" />
+								<h:outputText value="#{grupo.nombre}" />
 							</p:column>
 							
-
-							<p:column filterBy="#{grupo.nombreUsuarioGrupo}"
-								sortBy="#{grupo.nombreUsuarioGrupo}">
+							<p:column filterBy="#{grupo.nombreUsuario}"
+								sortBy="#{grupo.nombreUsuario}">
 								<f:facet name="header">
 									<h:outputText value="Nombre usuario" />
 								</f:facet>
-								<h:outputText value="#{grupo.nombreUsuarioGrupo}" />
+								<h:outputText value="#{grupo.nombreUsuario}" />
 							</p:column>
-
-							<p:column filterBy="#{grupo.correoUsuarioGrupo}"
-								sortBy="#{grupo.correoUsuarioGrupo}">
+							
+							<p:column filterBy="#{grupo.correoUsuario}"
+								sortBy="#{grupo.correoUsuario}">
 								<f:facet name="header">
 									<h:outputText value="Correo usuario" />
 								</f:facet>
-								<h:outputText value="#{grupo.correoUsuarioGrupo}" />
+								<h:outputText value="#{grupo.correoUsuario}" />
 							</p:column>
+							
 
 							<p:column headerText="Modificar">
 								<div align="center">
@@ -87,7 +87,7 @@
 								</div>
 							</p:column>
 
-
+-->
 							<p:column headerText="Cambiar estado">
 								<div align="center">
 									<p:commandButton id="btnEstado" icon="fa fa-retweet"
@@ -108,7 +108,8 @@
 						<p:dataTable id="dataTableGruposInactivos"
 							emptyMessage="No hay grupos activos en este momento"
 							value="#{grupoView.dataI}" var="grupo" paginator="true" rows="10">
-
+							
+							
 							<p:column headerText="Cambiar estado">
 								<div align="center">
 									<p:commandButton id="btnEstado" icon="fa fa-retweet"
@@ -178,9 +179,39 @@
 
 				<p:panel id="panelCampos">
 
-					<h:panelGrid id="pnlUsuariosCrear" columns="1">
-					</h:panelGrid>
+					<h:panelGrid id="pnlUsuariosCrearM" columns="1">
+					<p:inputText id="txtNombre" placeholder="Nombre grupo"
+						style="width:400px" binding="#{grupoView.txtNombreM}"
+						maxlength="50">
+					</p:inputText>
 
+					<p:inputText id="txtCorreoUsuarioGrupoM"
+						placeholder="Correo: due&#241;o del grupo" style="width:400px"
+						binding="#{grupoView.txtCorreoUsuarioGrupoM}" maxlength="50">
+						<p:ajax listener="#{grupoView.txtLoginListener}" 
+							update="@([id$=msg), @([id$=txtNombreUsuarioGrupo), @([id$=btnCrear)" />
+					</p:inputText>
+
+					<p:inputText id="txtNombreUsuarioGrupoM"
+						placeholder="Nombre Usuario" style="width:400px"
+						binding="#{grupoView.txtNombreUsuarioGrupoM}" maxlength="50"
+						disabled="true">
+					</p:inputText>
+					
+					</h:panelGrid>
+				</p:panel>
+				
+				<p:panel id="panelBotones">
+					<div align="center">
+						<p:commandButton id="btnSave"
+							binding="#{grupoView.btnModificar}" value="Guardar"
+							action="#{grupoView.guardarModificacion}"
+							update="@([id$=frm]), @([id$=pnlUsuariosCrear]),@([id$=growl]), @([id$=dataTableVtUsuarioActivos])" />
+
+						<p:commandButton id="btnExit" value="Salir"
+							action="#{grupoView.action_closeDialog()}"  
+							update=":dialogModificarGrupo" />
+					</div>
 				</p:panel>
 
 			</h:form>

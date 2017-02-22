@@ -9,6 +9,7 @@ import co.edu.usb.utilities.*;
 import org.primefaces.component.calendar.*;
 import org.primefaces.component.commandbutton.CommandButton;
 import org.primefaces.component.inputtext.InputText;
+import org.primefaces.component.messages.Messages;
 import org.primefaces.component.password.Password;
 import org.primefaces.component.selectbooleancheckbox.SelectBooleanCheckbox;
 import org.slf4j.Logger;
@@ -70,6 +71,7 @@ public class UsuarioView implements Serializable {
 
 	private List<UsuarioDTO> data;
 	private List<UsuarioDTO> dataI;
+	
 
 	private UsuarioDTO selectedUsuario;
 
@@ -305,7 +307,7 @@ public class UsuarioView implements Serializable {
 	public void setEntity(Usuario entity) {
 		this.entity = entity;
 	}
-	
+
 
 	public SelectBooleanCheckbox getEsAdmin() {
 		return esAdmin;
@@ -315,87 +317,115 @@ public class UsuarioView implements Serializable {
 		this.esAdmin = esAdmin;
 	}
 
+
 	//TODO: Metodos
 	public String crearUsuario() throws Exception{
-		String mensaje="";
 		try {
-			
+
 			log.info("Creando usuario..");
-			Date fechaCreacion= new Date();
-			Usuario usuarioCreador=  (Usuario) FacesUtils.getfromSession("usuario");
-			
-			String claveR=txtClaveRC.getValue().toString().trim();
-			String clave=txtClaveC.getValue().toString().trim();
-			String correo=txtCorreo.getValue().toString().trim();
-			
-			
+			if(validarCamposCrearUsuario()){
+				Date fechaCreacion= new Date();
+				Usuario usuarioCreador=  (Usuario) FacesUtils.getfromSession("usuario");
 
-			if(clave.equals(claveR)){
-				if(correoDisponible(correo)){
-	
-					Usuario usuario = new Usuario();
-					usuario.setActivo("S");
-					usuario.setClave(clave);
-					usuario.setCorreo(correo);
-					usuario.setFechaCreacion(fechaCreacion);
-					usuario.setNombre(txtNombre.getValue().toString().trim());
-					usuario.setUsuCreador(usuarioCreador.getUsuarioCodigo());
+				String claveR=txtClaveRC.getValue().toString().trim();
+				String clave=txtClaveC.getValue().toString().trim();
+				String correo=txtCorreo.getValue().toString().trim();
 
-					businessDelegatorView.saveUsuario(usuario);
-					limpiarCrearUsuario();
-					FacesContext.getCurrentInstance().addMessage("", new FacesMessage("El usuario se guardo con exito"));
-					data=businessDelegatorView.getDataUsuario();
 
+
+				if(clave.equals(claveR)){
+					if(correoDisponible(correo)){
+
+						Usuario usuario = new Usuario();
+						usuario.setActivo("S");
+						usuario.setClave(clave);
+						usuario.setCorreo(correo);
+						usuario.setFechaCreacion(fechaCreacion);
+						usuario.setNombre(txtNombre.getValue().toString().trim());
+						usuario.setUsuCreador(usuarioCreador.getUsuarioCodigo());
+
+						businessDelegatorView.saveUsuario(usuario);
+						limpiarCrearUsuario();
+						FacesContext.getCurrentInstance().addMessage("", new FacesMessage("El usuario se guardo con exito"));
+						data=businessDelegatorView.getDataUsuario();
+
+					}
+					else{
+						FacesContext.getCurrentInstance().addMessage("", new FacesMessage("El correo ya est&#225; en uso"));
+					}
 				}
 				else{
-					FacesContext.getCurrentInstance().addMessage("", new FacesMessage("El correo ya est&#225; en uso"));
+					FacesContext.getCurrentInstance().addMessage("", new FacesMessage("Las contraseñas no coinciden"));
 				}
-			}
-			else{
-				FacesContext.getCurrentInstance().addMessage("", new FacesMessage("Las contraseñas no coinciden"));
-			}
-			
-			/// Crearle el rol a el usuario despues del registro. Lo consulto si existe y si es asi le asigno el rol
-			Usuario usuarioRegistrado= businessDelegatorView.consultarUsuarioPorCorreo(correo);
-			
-			if(usuarioRegistrado!=null){
-				UsuarioRol usuarioRol = new UsuarioRol();
-				usuarioRol.setFechaCreacion(fechaCreacion);
-				usuarioRol.setUsuCreador(usuarioCreador.getUsuarioCodigo());
-				Rol rol=null;
-				if(esAdmin.isSelected()){
-					rol=businessDelegatorView.consultarIdRolPorNombre("Admin");
-					if(rol!=null){
-						usuarioRol.setRol(rol);
+
+				/// Crearle el rol a el usuario despues del registro. Lo consulto si existe y si es asi le asigno el rol
+				Usuario usuarioRegistrado= businessDelegatorView.consultarUsuarioPorCorreo(correo);
+
+				if(usuarioRegistrado!=null){
+					UsuarioRol usuarioRol = new UsuarioRol();
+					usuarioRol.setFechaCreacion(fechaCreacion);
+					usuarioRol.setUsuCreador(usuarioCreador.getUsuarioCodigo());
+					Rol rol=null;
+					if(esAdmin.isSelected()){
+						rol=businessDelegatorView.consultarIdRolPorNombre("Admin");
+						if(rol!=null){
+							usuarioRol.setRol(rol);
+						}
+						else{
+
+						}
+					}else{
+						rol=businessDelegatorView.consultarIdRolPorNombre("Usuario");
+						if(rol!=null){
+							usuarioRol.setRol(rol);
+						}
 					}
-					else{
-						mensaje="El rol del administraor no existe";
-					}
-				}else{
-					rol=businessDelegatorView.consultarIdRolPorNombre("Usuario");
-					if(rol!=null){
-						usuarioRol.setRol(rol);
-					}
-					else{
-						mensaje="El rol del usuario no existe";
-					}
+
+					usuarioRol.setUsuario(usuarioRegistrado);
+
+					businessDelegatorView.saveUsuarioRol(usuarioRol);
 				}
-				
-				usuarioRol.setUsuario(usuarioRegistrado);
-				
-				businessDelegatorView.saveUsuarioRol(usuarioRol);
+				///
+			}else{
+
 			}
-			///
-			
+
 		}catch (Exception e) {
+			e.printStackTrace();
 			log.error(e.toString());
 			log.error(e.getLocalizedMessage());
-			mensaje=e.toString();
-			FacesContext.getCurrentInstance().addMessage("", new FacesMessage(""+mensaje));
 		}
 
 		return "";
 
+	}
+
+	public Boolean validarCamposCrearUsuario(){
+		Boolean validar=true;
+
+		if(txtCorreo.getValue().toString().trim().isEmpty()){
+			validar=false;
+			advertenciaCampo("Correo");
+		}
+		if(txtNombre.getValue().toString().trim().isEmpty()){
+			validar=false;
+			advertenciaCampo("Nombre");
+		}
+		if(txtClaveC.getValue().toString().trim().isEmpty()){
+			validar=false;
+			advertenciaCampo("Contraseña");
+		}
+		if(txtClaveRC.getValue().toString().trim().isEmpty()){
+			validar=false;
+			advertenciaCampo("Repetir Contraseña");
+		}		
+		return validar;
+	}
+
+	public String advertenciaCampo(String mensaje) {
+		FacesContext.getCurrentInstance().addMessage(null, new FacesMessage
+				(FacesMessage.SEVERITY_WARN, "Atención:", "El campo: "+mensaje+" es obligatorio."));
+		return "";
 	}
 
 	public String guardarModificacion() throws Exception{
@@ -460,7 +490,7 @@ public class UsuarioView implements Serializable {
 			}	
 
 			businessDelegatorView.updateUsuario(entity); 
-			FacesUtils.addInfoMessage("El usuario ha sido modificado con exito");
+			FacesUtils.addInfoMessage("El usuario ha sido modificado con éxito");
 			data = businessDelegatorView.getDataVtUsuario();
 			dataI = businessDelegatorView.getDataVtUsuarioI();
 
@@ -494,7 +524,9 @@ public class UsuarioView implements Serializable {
 		txtCorreo.resetValue();
 		txtClaveC.resetValue();
 		txtClaveRC.resetValue();
-		btnCrear.setDisabled(true);
+		esAdmin.resetValue();
+		esAdmin.setDisabled(true);
+		btnCrear.setDisabled(true);		
 		return "";
 	}
 
@@ -534,14 +566,21 @@ public class UsuarioView implements Serializable {
 		Usuario usuario=null;
 		String correo=txtCorreo.getValue().toString().trim();
 		usuario=businessDelegatorView.consultarUsuarioPorCorreo(correo);
+	
 
 		if(usuario==null){
 			txtNombre.resetValue();
 			txtClaveC.resetValue();
 			txtClaveRC.resetValue();
-			btnCrear.setDisabled(false);
+			esAdmin.setDisabled(false);
+			btnCrear.setDisabled(false);			
 			FacesUtils.addErrorMessage("El usuario no existe");
 		}else{
+			String rol=businessDelegatorView.consultarRolUsuarioPorCorreo(correo);
+			if(rol.equals("Admin")){
+				esAdmin.setSelected(true);
+				esAdmin.setDisabled(true);
+			}
 			txtNombre.setValue(usuario.getNombre());
 			btnCrear.setDisabled(true);
 			FacesUtils.addInfoMessage("El usuario existe!");

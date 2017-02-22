@@ -109,6 +109,8 @@ public interface IBusinessDelegatorView {
     public Long findTotalNumberGrupo() throws Exception;
 
     public List<GrupoDTO> getDataGrupo() throws Exception;
+    
+    public List<GrupoDTO> getDataGrupoI() throws Exception;
 
     public List<GrupoRepositorio> getGrupoRepositorio()
         throws Exception;
@@ -331,6 +333,9 @@ public interface IBusinessDelegatorView {
     public Long findTotalNumberRepositorio() throws Exception;
 
     public List<RepositorioDTO> getDataRepositorio() throws Exception;
+    
+    public List<RepositorioDTO> getDataRepositorioI() throws Exception;
+
 
     public List<RepositorioPlugin> getRepositorioPlugin()
         throws Exception;
@@ -521,4 +526,6 @@ public interface IBusinessDelegatorView {
     public Rol consultarIdRolPorNombre(String nombre);
     
     public String consultarGrupoPorNombre (String nombre);
+    
+    public Usuario consultarUsuarioPorID(Long usuarioCodigo);
 }

@@ -1,6 +1,7 @@
 package co.edu.usb.clusterbp.control;
 
 import co.edu.usb.clusterbp.Grupo;
+import co.edu.usb.clusterbp.Usuario;
 import co.edu.usb.clusterbp.dto.GrupoDTO;
 
 import java.math.BigDecimal;
@@ -54,6 +55,9 @@ public interface IGrupoLogic {
 
     public List<GrupoDTO> getDataGrupo() throws Exception;
     
+    public List<GrupoDTO> getDataGrupoI() throws Exception;
+    
   //TODO: Consultas
   	public String consultarGrupoPorNombre (String nombre);
+
 }

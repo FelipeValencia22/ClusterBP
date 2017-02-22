@@ -54,13 +54,17 @@ public class GrupoView implements Serializable {
     private InputText txtCorreoUsuarioGrupo;
     private InputText txtNombreUsuarioGrupo;
     
+    private InputText txtNombreM;
+    private InputText txtCorreoUsuarioGrupoM;
+    private InputText txtNombreUsuarioGrupoM;
+    
     private CommandButton btnCrear;
 	private CommandButton btnModificar;
 	private CommandButton btnBorrar;
 	private CommandButton btnLimpiar;
     
-    private List<GrupoUsuarioDTO> data;
-    private List<GrupoUsuarioDTO> dataI;
+    private List<GrupoDTO> data;
+    private List<GrupoDTO> dataI;
     
     private GrupoDTO selectedGrupo;
     private Grupo entity;
@@ -121,44 +125,6 @@ public class GrupoView implements Serializable {
 		this.txtCorreoUsuarioGrupo = txtCorreoUsuarioGrupo;
 	}
 	
-	public List<GrupoUsuarioDTO> getData() {
-		try {
-			if (data == null) {
-				data = businessDelegatorView.getDataGrupoUsuario(); 
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		return data;
-	}
-
-	public void setData(List<GrupoUsuarioDTO> data) {
-		this.data = data;
-	}
-
-	public List<GrupoUsuarioDTO> getDataI() {
-		try {
-			if (dataI == null) {
-				dataI = businessDelegatorView.getDataGrupoUsuarioI(); 
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		return dataI;
-	}
-
-	public void setDataI(List<GrupoUsuarioDTO> dataI) {
-		this.dataI = dataI;
-	}
-
-	public GrupoDTO getSelectedGrupo() {
-		return selectedGrupo;
-	}
-
-	public void setSelectedGrupo(GrupoDTO selectedGrupo) {
-		this.selectedGrupo = selectedGrupo;
-	}
-
 	public Grupo getEntity() {
 		return entity;
 	}
@@ -169,6 +135,36 @@ public class GrupoView implements Serializable {
 
 	public InputText getTxtNombreUsuarioGrupo() {
 		return txtNombreUsuarioGrupo;
+	}
+
+	public List<GrupoDTO> getData() {
+		try {
+			if (data == null) {
+				data = businessDelegatorView.getDataGrupo(); 
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return data;
+	}
+
+	public void setData(List<GrupoDTO> data) {
+		this.data = data;
+	}
+
+	public List<GrupoDTO> getDataI() {
+		try {
+			if (dataI == null) {
+				dataI = businessDelegatorView.getDataGrupoI(); 
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return dataI;
+	}
+
+	public void setDataI(List<GrupoDTO> dataI) {
+		this.dataI = dataI;
 	}
 
 	public void setTxtNombreUsuarioGrupo(InputText txtNombreUsuarioGrupo) {
@@ -205,9 +201,35 @@ public class GrupoView implements Serializable {
 	public void setBtnLimpiar(CommandButton btnLimpiar) {
 		this.btnLimpiar = btnLimpiar;
 	}
+	public InputText getTxtNombreM() {
+		return txtNombreM;
+	}
+
+	public void setTxtNombreM(InputText txtNombreM) {
+		this.txtNombreM = txtNombreM;
+	}
+
+	public InputText getTxtCorreoUsuarioGrupoM() {
+		return txtCorreoUsuarioGrupoM;
+	}
+
+	public void setTxtCorreoUsuarioGrupoM(InputText txtCorreoUsuarioGrupoM) {
+		this.txtCorreoUsuarioGrupoM = txtCorreoUsuarioGrupoM;
+	}
+
+	public InputText getTxtNombreUsuarioGrupoM() {
+		return txtNombreUsuarioGrupoM;
+	}
+
+	public void setTxtNombreUsuarioGrupoM(InputText txtNombreUsuarioGrupoM) {
+		this.txtNombreUsuarioGrupoM = txtNombreUsuarioGrupoM;
+	}
+
+	public static long getSerialversionuid() {
+		return serialVersionUID;
+	}
 
 	//TODO: Metodos
-	
 	public void txtLoginListener(){
 		log.info("Se ejecuto el listener crear Usuario");
 
@@ -225,24 +247,15 @@ public class GrupoView implements Serializable {
 		}
 	}
 	
-	public String limpiarCrearGrupo(){
-		log.info("Limpiando campos de texto de Grupo nuevo");
-		txtNombre.resetValue();
-		txtCorreoUsuarioGrupo.resetValue();
-		txtNombreUsuarioGrupo.resetValue();
-		btnCrear.setDisabled(true);
-		return "";
-	}
-	
 	public String crearGrupo() throws Exception{
 		String mensaje="";
 		try {
 			log.info("Creando grupo..");
 			Grupo grupo = new Grupo();
 			Date fechaCreacion= new Date();
-			Usuario usuarioCreador=  (Usuario) FacesUtils.getfromSession("usuario");
+			Usuario usuarioCreador= businessDelegatorView.consultarUsuarioPorCorreo
+					(txtCorreoUsuarioGrupo.getValue().toString().trim());
 			String nombre=txtNombre.getValue().toString().trim();
-			String correoUsuario=txtCorreoUsuarioGrupo.getValue().toString().trim();
 			
 			if(nombreDisponible(nombre)){				
 				grupo.setActivo("S");
@@ -252,21 +265,28 @@ public class GrupoView implements Serializable {
 				
 				businessDelegatorView.saveGrupo(grupo);
 				limpiarCrearGrupo();
+				data=businessDelegatorView.getDataGrupo();
+				dataI=businessDelegatorView.getDataGrupoI();
 				FacesUtils.addInfoMessage("El grupo se creó con exito");
+				
+				// Crear el GrupoUsuario despues de crear el usuario 
+				/*
+				GrupoUsuario grupoUsuario= new GrupoUsuario();
+				Usuario usuarioGrupo=businessDelegatorView.consultarUsuarioPorCorreo(correoUsuario);
+				grupoUsuario.setFechaCreacion(fechaCreacion);			
+				grupoUsuario.setGrupo(grupo);
+				grupoUsuario.setUsuario(usuarioGrupo);
+				grupoUsuario.setUsuCreador(usuarioGrupo.getUsuarioCodigo());
+				
+				businessDelegatorView.saveGrupoUsuario(grupoUsuario);
+				
+				*/
+				//
 			}else{
-				FacesUtils.addInfoMessage("El correo ya está en uso");
+				FacesUtils.addInfoMessage("El Nombre del Grupo ya está en uso");
 			}
 			
-			// Crear el GrupoUsuario despues de crear el usuario 
-			GrupoUsuario grupoUsuario= new GrupoUsuario();
-			Usuario usuarioGrupo=businessDelegatorView.consultarUsuarioPorCorreo(correoUsuario);
-			grupoUsuario.setFechaCreacion(fechaCreacion);			
-			grupoUsuario.setGrupo(grupo);
-			grupoUsuario.setUsuario(usuarioGrupo);
-			grupoUsuario.setUsuCreador(usuarioGrupo.getUsuarioCodigo());
 			
-			businessDelegatorView.saveGrupoUsuario(grupoUsuario);
-			//
 			
 		}catch (Exception e) {
 			log.error(e.toString());
@@ -276,6 +296,63 @@ public class GrupoView implements Serializable {
 		}
 
 		
+		return "";
+	}
+	
+	public String cambiarEstado(ActionEvent evt){
+		log.info("Cambiando estado..");
+		selectedGrupo=(GrupoDTO) (evt.getComponent().getAttributes().get("selectedGrupo"));	
+		
+		Grupo entity=null;
+		
+		try {
+			if (entity == null) {
+				entity=businessDelegatorView.getGrupo(selectedGrupo.getGrupoCodigo());
+			}
+			
+			Date fechaModificacion= new Date();
+			entity.setFechaModificacion(fechaModificacion);
+
+			Usuario usuarioEnSession =  (Usuario) FacesUtils.getfromSession("usuario");
+			entity.setUsuModificador(usuarioEnSession.getUsuarioCodigo());
+			
+			String cambio=entity.getActivo().toString().trim();
+			if (cambio.equalsIgnoreCase("S")) {
+				entity.setActivo("N");
+			}else{
+				entity.setActivo("S");
+			}
+			
+			businessDelegatorView.updateGrupo(entity);
+			FacesUtils.addInfoMessage("El Grupo ha sido modificado con éxito");
+			data=businessDelegatorView.getDataGrupo();
+			dataI=businessDelegatorView.getDataGrupoI();
+			
+			entity=null;
+			selectedGrupo=null;
+			
+			
+		}catch (Exception e) {
+			FacesUtils.addErrorMessage(e.getMessage());
+		}
+		return "";
+	}
+	
+	public String limpiarCrearGrupo(){
+		log.info("Limpiando campos de texto de Grupo nuevo");
+		txtNombre.resetValue();
+		txtCorreoUsuarioGrupo.resetValue();
+		txtNombreUsuarioGrupo.resetValue();
+		btnCrear.setDisabled(true);
+		return "";
+	}
+	
+	public String limpiarModificarGrupo(){
+		log.info("Limpiando campos de texto de Grupo nuevo");
+		txtNombre.resetValue();
+		txtCorreoUsuarioGrupo.resetValue();
+		txtNombreUsuarioGrupo.resetValue();
+		btnCrear.setDisabled(true);
 		return "";
 	}
 
@@ -296,16 +373,21 @@ public class GrupoView implements Serializable {
 	
 	public String modificarGrupo(ActionEvent evt){
 		selectedGrupo=(GrupoDTO) evt.getComponent().getAttributes().get("selectedGrupo");
-		
-		
+
 		setShowDialog(true);
 
 		return "";
 	}
 	
-	public String cambiarEstado(){
-		log.info("Estado cambiado");
+	public String guardarModificacion(){
 		return "";
-	}    
+	}
+	
+	public String action_closeDialog() {
+		setShowDialog(false);
+		return "";
+	}
+	
+   
     
 }

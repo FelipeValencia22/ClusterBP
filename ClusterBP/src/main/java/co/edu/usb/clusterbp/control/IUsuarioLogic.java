@@ -57,6 +57,8 @@ public interface IUsuarioLogic {
 
 	//TODO: Consultas
 	public Usuario consultarUsuarioPorCorreo(String correo);
+	
+	public Usuario consultarUsuarioPorID(Long usuarioCodigo);
 
 	public Usuario consultarCorreoDisponible(String correo);
 

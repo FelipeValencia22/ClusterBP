@@ -35,7 +35,11 @@
    ]]>
 	</query>
 	
-	
+	<query name="consultarUsuarioPorID">
+  <![CDATA[
+  Select usu From Usuario usu where usu.usuarioCodigo=:usuarioCodigo
+   ]]>
+	</query>
 	
 	
 

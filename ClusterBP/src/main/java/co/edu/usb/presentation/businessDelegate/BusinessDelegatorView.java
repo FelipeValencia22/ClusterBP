@@ -178,6 +178,10 @@ public class BusinessDelegatorView implements IBusinessDelegatorView {
     public List<GrupoDTO> getDataGrupo() throws Exception {
         return grupoLogic.getDataGrupo();
     }
+    
+    public List<GrupoDTO> getDataGrupoI() throws Exception {
+        return grupoLogic.getDataGrupoI();
+    }
 
     public List<GrupoRepositorio> getGrupoRepositorio()
         throws Exception {
@@ -656,6 +660,10 @@ public class BusinessDelegatorView implements IBusinessDelegatorView {
     public List<RepositorioDTO> getDataRepositorio() throws Exception {
         return repositorioLogic.getDataRepositorio();
     }
+    
+    public List<RepositorioDTO> getDataRepositorioI() throws Exception {
+        return repositorioLogic.getDataRepositorioI();
+    }
 
     public List<RepositorioPlugin> getRepositorioPlugin()
         throws Exception {
@@ -1064,6 +1072,11 @@ public class BusinessDelegatorView implements IBusinessDelegatorView {
 	@Override
 	public String consultarGrupoPorNombre(String nombre) {
 		return grupoLogic.consultarGrupoPorNombre(nombre);
+	}
+	
+	@Override
+	public Usuario consultarUsuarioPorID(Long usuarioCodigo) {
+		return usuarioLogic.consultarUsuarioPorID(usuarioCodigo);
 	}
     
 }

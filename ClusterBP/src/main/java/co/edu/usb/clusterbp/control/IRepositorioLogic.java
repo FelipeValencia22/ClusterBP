@@ -54,4 +54,6 @@ public interface IRepositorioLogic {
     public Long findTotalNumberRepositorio() throws Exception;
 
     public List<RepositorioDTO> getDataRepositorio() throws Exception;
+    
+    public List<RepositorioDTO> getDataRepositorioI() throws Exception;
 }

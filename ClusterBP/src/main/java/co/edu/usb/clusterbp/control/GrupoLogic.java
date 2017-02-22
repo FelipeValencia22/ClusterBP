@@ -42,7 +42,11 @@ public class GrupoLogic implements IGrupoLogic {
 	 */
 	@Autowired
 	private IGrupoDAO grupoDAO;
-
+	
+	private UsuarioDAO usuarioDAO;
+	
+	private IUsuarioLogic usuarioLogic;
+	
 	/**
 	 * DAO injected by Spring that manages GrupoRepositorio entities
 	 *
@@ -210,6 +214,7 @@ public class GrupoLogic implements IGrupoLogic {
 		}
 	}
 
+
 	@Transactional(readOnly = true)
 	public List<GrupoDTO> getDataGrupo() throws Exception {
 		try {
@@ -220,20 +225,53 @@ public class GrupoLogic implements IGrupoLogic {
 			for (Grupo grupoTmp : grupo) {
 				GrupoDTO grupoDTO2 = new GrupoDTO();
 
-				grupoDTO2.setGrupoCodigo(grupoTmp.getGrupoCodigo());
-				grupoDTO2.setActivo((grupoTmp.getActivo() != null)
-						? grupoTmp.getActivo() : null);
-				grupoDTO2.setFechaCreacion(grupoTmp.getFechaCreacion());
-				grupoDTO2.setFechaModificacion(grupoTmp.getFechaModificacion());
-				grupoDTO2.setNombre((grupoTmp.getNombre() != null)
-						? grupoTmp.getNombre() : null);
-				grupoDTO2.setUsuCreador((grupoTmp.getUsuCreador() != null)
-						? grupoTmp.getUsuCreador() : null);
-				grupoDTO2.setUsuModificador((grupoTmp.getUsuModificador() != null)
-						? grupoTmp.getUsuModificador() : null);
-				grupoDTO.add(grupoDTO2);
+				if(grupoTmp.getActivo().equalsIgnoreCase("S")){
+					grupoDTO2.setGrupoCodigo(grupoTmp.getGrupoCodigo());
+					grupoDTO2.setActivo((grupoTmp.getActivo() != null)
+							? grupoTmp.getActivo() : null);
+					grupoDTO2.setFechaCreacion(grupoTmp.getFechaCreacion());
+					grupoDTO2.setFechaModificacion(grupoTmp.getFechaModificacion());
+					grupoDTO2.setNombre((grupoTmp.getNombre() != null)
+							? grupoTmp.getNombre() : null);
+					grupoDTO2.setUsuCreador((grupoTmp.getUsuCreador() != null)
+							? grupoTmp.getUsuCreador() : null);
+					grupoDTO2.setUsuModificador((grupoTmp.getUsuModificador() != null)
+							? grupoTmp.getUsuModificador() : null);
+					grupoDTO.add(grupoDTO2);
+				}
 			}
 
+			return grupoDTO;
+		} catch (Exception e) {
+			throw e;
+		}
+	}
+	
+	@Transactional(readOnly = true)
+	public List<GrupoDTO> getDataGrupoI() throws Exception {
+		try {
+			List<Grupo> grupo = grupoDAO.findAll();
+
+			List<GrupoDTO> grupoDTO = new ArrayList<GrupoDTO>();
+
+			for (Grupo grupoTmp : grupo) {
+				GrupoDTO grupoDTO2 = new GrupoDTO();
+				if(grupoTmp.getActivo().equalsIgnoreCase("N")){
+					grupoDTO2.setGrupoCodigo(grupoTmp.getGrupoCodigo());
+					grupoDTO2.setActivo((grupoTmp.getActivo() != null)
+							? grupoTmp.getActivo() : null);
+					grupoDTO2.setFechaCreacion(grupoTmp.getFechaCreacion());
+					grupoDTO2.setFechaModificacion(grupoTmp.getFechaModificacion());
+					grupoDTO2.setNombre((grupoTmp.getNombre() != null)
+							? grupoTmp.getNombre() : null);
+					grupoDTO2.setUsuCreador((grupoTmp.getUsuCreador() != null)
+							? grupoTmp.getUsuCreador() : null);
+					grupoDTO2.setUsuModificador((grupoTmp.getUsuModificador() != null)
+							? grupoTmp.getUsuModificador() : null);
+					
+					grupoDTO.add(grupoDTO2);
+				}
+			}
 			return grupoDTO;
 		} catch (Exception e) {
 			throw e;

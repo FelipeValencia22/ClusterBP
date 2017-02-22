@@ -548,6 +548,12 @@ public class UsuarioLogic implements IUsuarioLogic {
 	public Usuario consultarCorreoDisponible(String correo) {
 		return usuarioDAO.consultarCorreoDisponible(correo);
 	}
+	
+	@Override
+	@Transactional(readOnly = true)
+	public Usuario consultarUsuarioPorID(Long usuarioCodigo) {
+		return usuarioDAO.consultarUsuarioPorID(usuarioCodigo);
+	}
 
 
 }

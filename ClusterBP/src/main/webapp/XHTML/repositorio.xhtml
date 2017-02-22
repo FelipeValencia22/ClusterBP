@@ -27,6 +27,57 @@
 
 			<p:growl id="growl" />
 
+
+			<p:panel id="pnlRepositorios"
+				header="Administraci&#243;n de Repositorios">
+				<br></br>
+				<p:commandButton value="Crear repositorio" type="button"
+					onclick="PF('dlg').show();" />
+				<br></br>
+				<br></br>
+
+				<p:accordionPanel id="panelDataTablerepositorio" header="repositorios"
+					multiple="true">
+					<p:growl id="men" />
+
+					<p:tab title="Repositorios activos ">
+						<p:dataTable id="dataTableRepositoriosActivos"
+							emptyMessage="No hay repositorios activos en este momento"
+							value="#{repositorioView.data}" var="repositorio" paginator="true"
+							rows="10">
+							
+							<p:column filterBy="#{repositorio.repositorioCodigo}"
+								sortBy="#{repositorio.repositorioCodigo}">
+								<f:facet name="header">
+									<h:outputText value="C&#243;digo" />
+								</f:facet>
+								<h:outputText value="#{repositorio.repositorioCodigo}" />
+							</p:column>
+							
+							<p:column filterBy="#{repositorio.nombre}"
+								sortBy="#{repositorio.nombre}">
+								<f:facet name="header">
+									<h:outputText value="Nombre" />
+								</f:facet>
+								<h:outputText value="#{repositorio.nombre}" />
+							</p:column>
+							
+							<p:column filterBy="#{repositorio.descripcion}"
+								sortBy="#{repositorio.descripcion}">
+								<f:facet name="header">
+									<h:outputText value="Descripci&#243;n" />
+								</f:facet>
+								<h:outputText value="#{repositorio.descripcion}" />
+							</p:column>
+							
+						</p:dataTable>
+					</p:tab>
+
+
+				</p:accordionPanel>
+
+			</p:panel>
+
 		</h:form>
 
 	</ui:define>
