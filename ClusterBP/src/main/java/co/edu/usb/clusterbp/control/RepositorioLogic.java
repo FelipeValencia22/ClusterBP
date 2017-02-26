@@ -136,18 +136,11 @@ public class RepositorioLogic implements IRepositorioLogic {
 				throw new ZMessManager().new NotValidFormatException("nombre");
 			}
 
-			if (entity.getRepositorioCodigo() == null) {
-				throw new ZMessManager().new EmptyFieldException(
-						"repositorioCodigo");
-			}
 
 			if (entity.getUsuCreador() == null) {
 				throw new ZMessManager().new EmptyFieldException("usuCreador");
 			}
 
-			if (getRepositorio(entity.getRepositorioCodigo()) != null) {
-				throw new ZMessManager(ZMessManager.ENTITY_WITHSAMEKEY);
-			}
 
 			repositorioDAO.save(entity);
 

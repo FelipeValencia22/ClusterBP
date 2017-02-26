@@ -59,7 +59,9 @@ public class RepositorioView implements Serializable {
 
 	private Calendar txtFechaCreacion;
 	private Calendar txtFechaModificacion;
+	
 	private CommandButton btnSave;
+	private CommandButton btnCrear;
 	private CommandButton btnModify;
 	private CommandButton btnDelete;
 	private CommandButton btnClear;
@@ -621,7 +623,53 @@ public class RepositorioView implements Serializable {
 		this.btnModificar = btnModificar;
 	}
 
+	public CommandButton getBtnCrear() {
+		return btnCrear;
+	}
+
+	public void setBtnCrear(CommandButton btnCrear) {
+		this.btnCrear = btnCrear;
+	}
+
 	//TODO: Metodos
+	public String crearRepositorio(){
+		try {
+			log.info("Creando repositorio..");
+			Repositorio repositorio=new Repositorio();
+			Date fechaCreacion= new Date();
+			Usuario usuarioCreador=  (Usuario) FacesUtils.getfromSession("usuario");
+			String nombre=txtNombre.getValue().toString().trim();
+			String descripcion=txtDescripcion.getValue().toString().trim();
+			
+			if(validarCampos(nombre, descripcion)){
+				if(nombreDisponible(nombre)){
+					repositorio.setActivo("S");
+					repositorio.setDescripcion(descripcion);
+					repositorio.setFechaCreacion(fechaCreacion);
+					repositorio.setNombre(nombre);
+					repositorio.setUsuCreador(usuarioCreador.getUsuarioCodigo());
+					
+					businessDelegatorView.saveRepositorio(repositorio);
+					FacesUtils.addInfoMessage("El Repositorio ha sido creado con exito");
+					data=businessDelegatorView.getDataRepositorio();
+					dataI=businessDelegatorView.getDataRepositorioI();
+					limpiarCamposCrear();
+				}else{
+					FacesUtils.addErrorMessage("El Nombre del Repositorio ya está en uso");
+				}
+				
+			}else{
+				FacesUtils.addErrorMessage("Todos los campos son obligatorios");
+			}
+			
+		}catch (Exception e) {
+			FacesUtils.addErrorMessage("Error! No se creó el repositorio");
+			log.error(e.toString());
+			log.error(e.getLocalizedMessage());
+		}
+		return "";
+	}
+	
 	public String modificarRepositorio(ActionEvent evt){
 		selectedRepositorio= (RepositorioDTO) evt.getComponent().getAttributes().get("selectedRepositorio");
 		txtNombreM.setValue(selectedRepositorio.getNombre());
@@ -634,38 +682,131 @@ public class RepositorioView implements Serializable {
 		try{
 			String nombre=txtNombreM.getValue().toString().trim();
 			String descripcion=txtDescripcionM.getValue().toString().trim();
-			if(nombreDisponible(nombre)){
-				if(descripcion!=null){
-					if (entity == null) {
-						Long repositorioCodigo = new Long(selectedRepositorio.getRepositorioCodigo());
-						entity = businessDelegatorView.getRepositorio(repositorioCodigo);
-					} 
+
+			if(validarCampos(nombre, descripcion)){
+
+				if (entity == null) {
+					Long repositorioCodigo = new Long(selectedRepositorio.getRepositorioCodigo());
+					entity = businessDelegatorView.getRepositorio(repositorioCodigo);
+
+				} 
+				String nombreAntiguo=entity.getNombre();
+
+				if(nombreAntiguo.equals(nombre)){
 					Date fechaModificacion= new Date();
 					entity.setFechaModificacion(fechaModificacion);
 
 					Usuario usuarioEnSession =  (Usuario) FacesUtils.getfromSession("usuario");
 					entity.setUsuModificador(usuarioEnSession.getUsuarioCodigo());
 
-					entity.setNombre(nombre);
 					entity.setDescripcion(descripcion);
-					
+
 					businessDelegatorView.updateRepositorio(entity);
 					FacesUtils.addInfoMessage("El Repositorio ha sido modificado con exito");
 					data=businessDelegatorView.getDataRepositorio();
 					dataI=businessDelegatorView.getDataRepositorioI();
-				}else{	
-					FacesUtils.addInfoMessage("Debe de contener una descripción");
+
+				}else{
+
+					if(nombreDisponible(nombre)){
+
+						Date fechaModificacion= new Date();
+						entity.setFechaModificacion(fechaModificacion);
+
+						Usuario usuarioEnSession =  (Usuario) FacesUtils.getfromSession("usuario");
+						entity.setUsuModificador(usuarioEnSession.getUsuarioCodigo());
+
+						entity.setNombre(nombre);
+						entity.setDescripcion(descripcion);
+
+						businessDelegatorView.updateRepositorio(entity);
+						FacesUtils.addInfoMessage("El Repositorio ha sido modificado con exito");
+						data=businessDelegatorView.getDataRepositorio();
+						dataI=businessDelegatorView.getDataRepositorioI();
+						limpiarCamposModificar();
+					}else{
+						FacesUtils.addErrorMessage("El Nombre del Repositorio ya está en uso");
+					}
 				}
 			}else{
-				FacesUtils.addInfoMessage("El Nombre del Repositorio ya está en uso");
+				FacesUtils.addErrorMessage("Todos los campos son obligatorios");
 			}
+
 
 		}catch (Exception e) {
 			log.error("Error! No se pudo modificar:"+e.toString());
 			log.error("Error! No se pudo modificar:"+e.getLocalizedMessage());
+			FacesUtils.addErrorMessage("Error! No se pudo modificar:"+e.toString());
 		}
 
 
+		return "";
+	}
+	
+	public String cambiarEstado(ActionEvent evt){
+		selectedRepositorio= (RepositorioDTO) (evt.getComponent().getAttributes().get("selectedRepositorio"));	
+		try {
+			log.info("codigo:"+selectedRepositorio.getRepositorioCodigo());
+			if (entity == null) {
+				entity = businessDelegatorView.getRepositorio(selectedRepositorio.getRepositorioCodigo());
+			} 
+
+			Date fechaModificacion= new Date();
+			entity.setFechaModificacion(fechaModificacion);
+
+			Usuario usuarioEnSession =  (Usuario) FacesUtils.getfromSession("usuario");
+			entity.setUsuModificador(usuarioEnSession.getUsuarioCodigo());
+
+			String cambio=entity.getActivo().toString().trim();
+			if (cambio.equalsIgnoreCase("S")) {
+				entity.setActivo("N");
+			}else{
+				entity.setActivo("S");
+			}	
+
+			businessDelegatorView.updateRepositorio(entity);
+			FacesUtils.addInfoMessage("El estado del Repositorio ha sido cambiado con exito");
+			data=businessDelegatorView.getDataRepositorio();
+			dataI=businessDelegatorView.getDataRepositorioI();
+
+			entity=null;
+			selectedRepositorio=null;
+
+		}catch (Exception e) {
+			FacesUtils.addErrorMessage("Error! No se cambió el estado del repositorio");
+			log.error(e.toString());
+			log.error(e.getLocalizedMessage());
+		}
+
+		return "";
+	}
+	
+	public void txtCrearListener(){
+		log.info("Se ejecuto el listener crear Repositorio");
+		
+		String nombre=txtNombre.getValue().toString().trim();
+		
+		if(nombreDisponible(nombre)){
+			btnCrear.setDisabled(false);
+		}else{
+			FacesUtils.addInfoMessage("El nombre del Repositorio ya existe");
+			btnCrear.setDisabled(true);
+		}
+	}
+
+	public boolean validarCampos(String nombre, String descripcion){
+		boolean resultado=true;;
+
+		if(nombre.isEmpty() || descripcion.isEmpty()){
+			resultado=false;
+		}
+
+		return resultado;
+	}
+	
+	public String limpiarCamposModificar(){
+		txtNombreM.resetValue();
+		txtDescripcionM.resetValue();
 		return "";
 	}
 
@@ -681,42 +822,20 @@ public class RepositorioView implements Serializable {
 		}
 
 		return resultado;
+	}	
+	
+	public String limpiarCamposCrear(){
+		txtNombre.resetValue();
+		txtDescripcion.resetValue();
+		btnCrear.setDisabled(true);
+		return "";
 	}
-
-	public String cambiarEstado(ActionEvent evt){
-		selectedRepositorio= (RepositorioDTO) (evt.getComponent().getAttributes().get("selectedRepositorio"));	
-		try {
-			log.info("codigo:"+selectedRepositorio.getRepositorioCodigo());
-			if (entity == null) {
-				entity = businessDelegatorView.getRepositorio(selectedRepositorio.getRepositorioCodigo());
-			} 
-			
-			Date fechaModificacion= new Date();
-			entity.setFechaModificacion(fechaModificacion);
-
-			Usuario usuarioEnSession =  (Usuario) FacesUtils.getfromSession("usuario");
-			entity.setUsuModificador(usuarioEnSession.getUsuarioCodigo());
-			
-			String cambio=entity.getActivo().toString().trim();
-			if (cambio.equalsIgnoreCase("S")) {
-				entity.setActivo("N");
-			}else{
-				entity.setActivo("S");
-			}	
-			
-			businessDelegatorView.updateRepositorio(entity);
-			FacesUtils.addInfoMessage("El estado del Repositorio ha sido cambiado con exito");
-			data=businessDelegatorView.getDataRepositorio();
-			dataI=businessDelegatorView.getDataRepositorioI();
-			
-			entity=null;
-			selectedRepositorio=null;
-			
-		}catch (Exception e) {
-			FacesUtils.addErrorMessage("Error! No se cambió el estado del repositorio");
-			log.error(e.toString());
-		}
-
+	
+	public String salirCrearRepositorio(){
+		txtNombre.resetValue();
+		txtDescripcion.resetValue();
+		btnCrear.setDisabled(true);
+		setShowDialog(false);		
 		return "";
 	}
 }

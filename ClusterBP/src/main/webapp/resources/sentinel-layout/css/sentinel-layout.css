@@ -569,16 +569,7 @@ box-shadow: inset 0px 0px 0px 1px rgba(100,100,100,1);
 		.layout-menubar-container{margin-top: 55px;}
 		.layout-menubar-search{border-bottom:none;}
 		        
-        /* LOGIN */
-        .login-back{ background-size: 300%; background-position: -300px;}
-        #login-logo{ line-height: 20px;}
-        #login-logo span{font-size: 20px !important;}
-        #login-logo img{ height:20px;}
-        .TabBtn{ font-size: 12px;}
-        #login-box input[type="text"]{border: solid 1px #C0C5C7 !important; padding: 10px !important; box-shadow: none; color:#00AEEF !important; text-align: center; font-size: 14px !important;}
-        #login-box .ui-button{border:none !important; box-shadow: none; width:90%;}
-            #login-box .ui-button .ui-button-text{padding:12px !important; font-size: 14px !important;}
-            
+        
     /* RTL */
     .ui-sentinel-rtl #buttonArea {float: left; padding-left: 4%;}
     .ui-sentinel-rtl #searchArea{float:right !important; padding-right: 3% !important;}
