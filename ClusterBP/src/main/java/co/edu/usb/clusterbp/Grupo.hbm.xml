@@ -28,14 +28,14 @@
 			<column name="activo" length="1" not-null="true" />
 		</property>
 		<set name="grupoRepositorios" table="grupo_repositorio" inverse="true"
-			lazy="true" fetch="select">
+			lazy="false" fetch="select">
 			<key>
 				<column name="grupocodigo" not-null="true" />
 			</key>
 			<one-to-many class="co.edu.usb.clusterbp.GrupoRepositorio" />
 		</set>
 		<set name="grupoUsuarios" table="grupo_usuario" inverse="true"
-			lazy="true" fetch="select">
+			lazy="false" fetch="select">
 			<key>
 				<column name="grupocodigo" not-null="true" />
 			</key>

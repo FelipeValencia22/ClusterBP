@@ -310,5 +310,7 @@ public interface Dao<T, PK extends Serializable> {
     
     public String consultarGrupoPorNombre (String nombre);
     
+    public String consultarRepositorioPorNombre (String nombre);
+    
     public Usuario consultarUsuarioPorID(Long usuarioCodigo);
 }

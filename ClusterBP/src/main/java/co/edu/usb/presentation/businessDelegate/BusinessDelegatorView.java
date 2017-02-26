@@ -1075,6 +1075,11 @@ public class BusinessDelegatorView implements IBusinessDelegatorView {
 	}
 	
 	@Override
+	public String consultarRepositorioPorNombre(String nombre) {
+		return repositorioLogic.consultarRepositorioPorNombre(nombre);
+	}
+	
+	@Override
 	public Usuario consultarUsuarioPorID(Long usuarioCodigo) {
 		return usuarioLogic.consultarUsuarioPorID(usuarioCodigo);
 	}

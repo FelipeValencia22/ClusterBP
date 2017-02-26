@@ -289,6 +289,7 @@ public class RepositorioLogic implements IRepositorioLogic {
 		}
 	}
 
+	@Transactional(readOnly = true)
 	public Repositorio getRepositorio(Long repositorioCodigo)
 			throws Exception {
 		log.debug("getting Repositorio instance");
@@ -538,7 +539,8 @@ public class RepositorioLogic implements IRepositorioLogic {
 			throw e;
 		}
 	}
-
+	
+	@Transactional(readOnly = true)
 	public List<RepositorioDTO> getDataRepositorioI() throws Exception {
 		try {
 			List<Repositorio> repositorio = repositorioDAO.findAll();
@@ -571,6 +573,11 @@ public class RepositorioLogic implements IRepositorioLogic {
 		} catch (Exception e) {
 			throw e;
 		}
+	}
+	
+	@Transactional(readOnly = true)
+	public String consultarRepositorioPorNombre (String nombre){
+		return repositorioDAO.consultarRepositorioPorNombre(nombre);
 	}
 
 }

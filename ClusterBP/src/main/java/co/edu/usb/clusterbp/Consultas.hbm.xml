@@ -35,6 +35,12 @@
    ]]>
 	</query>
 	
+	<query name="consultarRepositorioPorNombre">
+  <![CDATA[
+  Select rep.nombre From Repositorio rep where rep.nombre=:nombre
+   ]]>
+	</query>
+	
 	<query name="consultarUsuarioPorID">
   <![CDATA[
   Select usu From Usuario usu where usu.usuarioCodigo=:usuarioCodigo

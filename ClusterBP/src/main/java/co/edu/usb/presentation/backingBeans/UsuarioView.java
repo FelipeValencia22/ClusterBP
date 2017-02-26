@@ -12,6 +12,8 @@ import org.primefaces.component.inputtext.InputText;
 import org.primefaces.component.messages.Messages;
 import org.primefaces.component.password.Password;
 import org.primefaces.component.selectbooleancheckbox.SelectBooleanCheckbox;
+import org.primefaces.event.CellEditEvent;
+import org.primefaces.event.RowEditEvent;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -498,7 +500,9 @@ public class UsuarioView implements Serializable {
 			selectedUsuario=null;
 			limpiarUsuarioModificacion();
 		}catch (Exception e) {
-			FacesUtils.addErrorMessage(e.getMessage());
+			FacesUtils.addErrorMessage("Error! No se cambió el estado del Usuario");
+			log.error(e.toString());
+			
 		}
 
 		return "";
@@ -586,5 +590,88 @@ public class UsuarioView implements Serializable {
 			FacesUtils.addInfoMessage("El usuario existe!");
 		}
 	}
+	
+	//TODO:RowEdit
+	
+	public void rowEventListener(RowEditEvent e) {
+        try {
+            UsuarioDTO usuarioDTO = (UsuarioDTO) e.getObject();
 
+            if (txtActivo == null) {
+                txtActivo = new InputText();
+            }
+
+            txtActivo.setValue(usuarioDTO.getActivo());
+
+            if (txtClaveC == null) {
+            	txtClaveC = new Password();
+            }
+
+            txtClaveC.setValue(usuarioDTO.getClave());
+
+            if (txtCorreo == null) {
+                txtCorreo = new InputText();
+            }
+
+            txtCorreo.setValue(usuarioDTO.getCorreo());
+
+            if (txtNombre == null) {
+                txtNombre = new InputText();
+            }
+
+            txtNombre.setValue(usuarioDTO.getNombre());
+
+            if (txtUsuCreador == null) {
+                txtUsuCreador = new InputText();
+            }
+
+            txtUsuCreador.setValue(usuarioDTO.getUsuCreador());
+
+            if (txtUsuaModificador == null) {
+                txtUsuaModificador = new InputText();
+            }
+
+            txtUsuaModificador.setValue(usuarioDTO.getUsuaModificador());
+
+            if (txtUsuarioCodigo == null) {
+                txtUsuarioCodigo = new InputText();
+            }
+
+            txtUsuarioCodigo.setValue(usuarioDTO.getUsuarioCodigo());
+
+            if (txtFechaCreacion == null) {
+                txtFechaCreacion = new Calendar();
+            }
+
+            txtFechaCreacion.setValue(usuarioDTO.getFechaCreacion());
+
+            if (txtFechaModificacion == null) {
+                txtFechaModificacion = new Calendar();
+            }
+
+            txtFechaModificacion.setValue(usuarioDTO.getFechaModificacion());
+
+            Long usuarioCodigo = FacesUtils.checkLong(txtUsuarioCodigo);
+            entity = businessDelegatorView.getUsuario(usuarioCodigo);
+
+        } catch (Exception ex) {
+        }
+    }
+	
+	 public String actionDeleteDataTableEditable(ActionEvent evt) {
+	        try {
+	            selectedUsuario = (UsuarioDTO) (evt.getComponent().getAttributes()
+	                                               .get("selectedUsuario"));
+
+	            Long usuarioCodigo = new Long(selectedUsuario.getUsuarioCodigo());
+	            entity = businessDelegatorView.getUsuario(usuarioCodigo);
+	            businessDelegatorView.deleteUsuario(entity);
+	            data.remove(selectedUsuario);
+	            FacesUtils.addInfoMessage(ZMessManager.ENTITY_SUCCESFULLYDELETED);
+	        } catch (Exception e) {
+	            FacesUtils.addErrorMessage(e.getMessage());
+	        }
+
+	        return "";
+	    }
 }

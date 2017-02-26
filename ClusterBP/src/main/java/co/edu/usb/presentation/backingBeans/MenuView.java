@@ -58,7 +58,7 @@ public class MenuView {
 				crearMenuAdmin();
 			}else{
 				log.info("CrearMenuUsuario");
-				crearMenuUsuario();
+				crearMenuSinRol();
 			}
 
 
@@ -92,26 +92,32 @@ public class MenuView {
 		repositorios.setContainerStyleClass("layout-menubar-active");
 		model.addElement(repositorios);
 		
+		DefaultMenuItem pn= new DefaultMenuItem("ProcesoNegocio");
+		pn.setOutcome("/XHTML/pn.xhtml");
+		pn.setIcon("icon-home-outline");
+		pn.setId("sm_pns");
+		pn.setContainerStyleClass("layout-menubar-active");
+		model.addElement(pn);
+		
 		DefaultMenuItem plugins= new DefaultMenuItem("PlugIn");
 		plugins.setOutcome("/XHTML/plugin.xhtml");
 		plugins.setIcon("icon-home-outline");
 		plugins.setId("sm_plugins");
 		plugins.setContainerStyleClass("layout-menubar-active");
 		model.addElement(plugins);
+		
+		DefaultMenuItem modbusqueda= new DefaultMenuItem("ModeloBusqueda");
+		modbusqueda.setOutcome("/XHTML/modbusqueda.xhtml");
+		modbusqueda.setIcon("icon-home-outline");
+		modbusqueda.setId("sm_modbusq");
+		modbusqueda.setContainerStyleClass("layout-menubar-active");
+		model.addElement(modbusqueda);
 	}
 	
-	public void crearMenuUsuario(){
-		DefaultMenuItem charts = new DefaultMenuItem("Charts");
-		charts.setOutcome("/XHTML/dashboard.xhtml");
-		charts.setIcon("icon-home-outline");
-		charts.setId("sm_charts");
-		charts.setContainerStyleClass("layout-menubar-active");
-		model.addElement(charts);	
-	}
 	
 	public void crearMenuSinRol(){
 		DefaultMenuItem sinRol = new DefaultMenuItem("");
-		sinRol.setOutcome("/XHTML/access-denied.xhtml");
+		sinRol.setOutcome("/XHTML/404.xhtml");
 		sinRol.setIcon("icon-home-outline");
 		sinRol.setId("sm_access_denied");
 		sinRol.setContainerStyleClass("layout-menubar-active");

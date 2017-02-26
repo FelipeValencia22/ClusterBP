@@ -56,4 +56,7 @@ public interface IRepositorioLogic {
     public List<RepositorioDTO> getDataRepositorio() throws Exception;
     
     public List<RepositorioDTO> getDataRepositorioI() throws Exception;
+    
+  //TODO: Consultas
+  	public String consultarRepositorioPorNombre (String nombre);
 }

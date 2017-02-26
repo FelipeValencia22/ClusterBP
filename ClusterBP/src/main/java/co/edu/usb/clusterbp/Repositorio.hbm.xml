@@ -38,20 +38,20 @@
 			<one-to-many class="co.edu.usb.clusterbp.VersionRep" />
 		</set>
 		<set name="repositorioPns" table="repositorio_pn" inverse="true"
-			lazy="true" fetch="select">
+			lazy="false" fetch="select">
 			<key>
 				<column name="repositoriocodigo" not-null="true" />
 			</key>
 			<one-to-many class="co.edu.usb.clusterbp.RepositorioPn" />
 		</set>
 		<set name="grupoRepositorios" table="grupo_repositorio" inverse="true"
-			lazy="true" fetch="select">
+			lazy="false" fetch="select">
 			<key>
 				<column name="repositoriocodigo" not-null="true" />
 			</key>
 			<one-to-many class="co.edu.usb.clusterbp.GrupoRepositorio" />
 		</set>
-		<set name="logBusquedas" table="log_busqueda" inverse="true" lazy="true"
+		<set name="logBusquedas" table="log_busqueda" inverse="true" lazy="false"
 			fetch="select">
 			<key>
 				<column name="repositoriocodigo" not-null="true" />
@@ -59,7 +59,7 @@
 			<one-to-many class="co.edu.usb.clusterbp.LogBusqueda" />
 		</set>
 		<set name="repositorioPlugins" table="repositorio_plugin" inverse="true"
-			lazy="true" fetch="select">
+			lazy="false" fetch="select">
 			<key>
 				<column name="repositoriocodigo" not-null="true" />
 			</key>

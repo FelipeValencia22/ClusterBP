@@ -36,16 +36,16 @@
 				<br></br>
 				<br></br>
 
-				<p:accordionPanel id="panelDataTablerepositorio" header="repositorios"
-					multiple="true">
+				<p:accordionPanel id="panelDataTableRepositorio"
+					header="repositorios" multiple="true">
 					<p:growl id="men" />
 
 					<p:tab title="Repositorios activos ">
 						<p:dataTable id="dataTableRepositoriosActivos"
 							emptyMessage="No hay repositorios activos en este momento"
-							value="#{repositorioView.data}" var="repositorio" paginator="true"
-							rows="10">
-							
+							value="#{repositorioView.data}" var="repositorio"
+							paginator="true" rows="10">
+
 							<p:column filterBy="#{repositorio.repositorioCodigo}"
 								sortBy="#{repositorio.repositorioCodigo}">
 								<f:facet name="header">
@@ -53,7 +53,7 @@
 								</f:facet>
 								<h:outputText value="#{repositorio.repositorioCodigo}" />
 							</p:column>
-							
+
 							<p:column filterBy="#{repositorio.nombre}"
 								sortBy="#{repositorio.nombre}">
 								<f:facet name="header">
@@ -61,7 +61,7 @@
 								</f:facet>
 								<h:outputText value="#{repositorio.nombre}" />
 							</p:column>
-							
+
 							<p:column filterBy="#{repositorio.descripcion}"
 								sortBy="#{repositorio.descripcion}">
 								<f:facet name="header">
@@ -69,7 +69,78 @@
 								</f:facet>
 								<h:outputText value="#{repositorio.descripcion}" />
 							</p:column>
-							
+
+							<p:column headerText="Modificar">
+								<div align="center">
+									<p:commandButton id="btnModificar" icon="fa fa-edit"
+										update=":dialogModificarRepositorio"
+										actionListener="#{repositorioView.modificarRepositorio}">
+										<f:attribute name="selectedRepositorio" value="#{repositorio}" />
+									</p:commandButton>
+									<p:tooltip id="toolTipFadeMi" for="btnModificar"
+										value="Modificar" />
+								</div>
+							</p:column>
+
+
+							<p:column headerText="Cambiar estado">
+								<div align="center">
+									<p:commandButton id="btnEstado" icon="fa fa-retweet"
+										update=":frm:panelDataTableRepositorio, :frm:growl,
+										@([id$=panelDataTableRepositorio])"
+										actionListener="#{repositorioView.cambiarEstado}">
+										<f:attribute name="selectedRepositorio" value="#{repositorio}" />
+									</p:commandButton> 
+									<p:tooltip id="toolTipFadeCi" for="btnEstado"
+										value="Cambiar estado" />
+								</div>
+							</p:column>
+						</p:dataTable>
+					</p:tab>
+
+					<p:tab title="Repositorios Inactivos ">
+						<p:dataTable id="dataTableRepositoriosInactivos"
+							emptyMessage="No hay repositorios inactivos en este momento"
+							value="#{repositorioView.dataI}" var="repositorio"
+							paginator="true" rows="10">
+
+							<p:column filterBy="#{repositorio.repositorioCodigo}"
+								sortBy="#{repositorio.repositorioCodigo}">
+								<f:facet name="header">
+									<h:outputText value="C&#243;digo" />
+								</f:facet>
+								<h:outputText value="#{repositorio.repositorioCodigo}" />
+							</p:column>
+
+							<p:column filterBy="#{repositorio.nombre}"
+								sortBy="#{repositorio.nombre}">
+								<f:facet name="header">
+									<h:outputText value="Nombre" />
+								</f:facet>
+								<h:outputText value="#{repositorio.nombre}" />
+							</p:column>
+
+							<p:column filterBy="#{repositorio.descripcion}"
+								sortBy="#{repositorio.descripcion}">
+								<f:facet name="header">
+									<h:outputText value="Descripci&#243;n" />
+								</f:facet>
+								<h:outputText value="#{repositorio.descripcion}" />
+							</p:column>
+
+							<p:column headerText="Cambiar estado">
+								<div align="center">
+									<p:commandButton id="btnEstado" icon="fa fa-retweet"
+										update=":frm:panelDataTableRepositorio, :frm:growl,
+										@([id$=panelDataTableRepositorio])"
+										actionListener="#{repositorioView.cambiarEstado}">
+										<f:attribute name="selectedRepositorio" value="#{repositorio}" />
+									</p:commandButton>
+									<p:tooltip id="toolTipFadeCi" for="btnEstado"
+										value="Cambiar estado" />
+								</div>
+							</p:column>
+
 						</p:dataTable>
 					</p:tab>
 
@@ -79,6 +150,57 @@
 			</p:panel>
 
 		</h:form>
+
+
+		<p:dialog header="Crear repositorio" appendTo="@(body)"
+			draggable="true" widgetVar="dlg" resizable="false" modal="true"
+			width="600">
+			<h:form id="formDialogCrear">
+				<h:panelGrid id="pnlRepositorioCrear" columns="1">
+
+				</h:panelGrid>
+
+			</h:form>
+		</p:dialog>
+
+		<p:dialog id="dialogModificarRepositorio" appendTo="@(body)"
+			draggable="true" header="Modificar usuario" closable="false"
+			visible="#{usuarioView.showDialog}" resizable="false" modal="true"
+			width="500">
+			<h:form id="formDialogEdit">
+				<p:messages id="msg" />
+
+				<p:panel id="panelCampos">
+
+					<h:panelGrid id="pnlUsuariosCrear" columns="1">
+						<p:inputText id="txtNombreM" placeholder="Nombre"
+							style="width:400px" binding="#{repositorioView.txtNombreM}"
+							maxlength="50">
+						</p:inputText>
+
+						<p:inputText id="txtDescripcionM" placeholder="Descripción"
+							style="width:400px" binding="#{repositorioView.txtDescripcionM}"
+							maxlength="60" />
+					</h:panelGrid>
+
+				</p:panel>
+
+				<p:panel id="panelBotones">
+					<div align="center"> 
+						<p:commandButton id="btnSave"
+							binding="#{repositorioView.btnModificar}" value="Modificar"
+							action="#{repositorioView.guardarModificacion}"
+							update="@([id$=frm]), @([id$=pnlRepositoriosCrear]),@([id$=growl]), @([id$=dataTableRepositoriosActivos])" />
+
+						<p:commandButton id="btnExit" value="Salir"
+							action="#{repositorioView.action_closeDialog()}"
+							update=":dialogModificarRepositorio" />
+
+					</div>
+				</p:panel>
+				
+			</h:form>
+		</p:dialog>
 
 	</ui:define>
 </ui:composition>

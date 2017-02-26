@@ -41,7 +41,7 @@
 						<p:dataTable id="dataTableGruposActivos"
 							emptyMessage="No hay grupos activos en este momento"
 							value="#{grupoView.data}" var="grupo" paginator="true" rows="10">
-<!-- Modificar grupos deshabilitado 
+
 							<p:column filterBy="#{grupo.grupoCodigo}"
 								sortBy="#{grupo.grupoCodigo}">
 								<f:facet name="header">
@@ -74,7 +74,7 @@
 								<h:outputText value="#{grupo.correoUsuario}" />
 							</p:column>
 							
-
+							<!-- Modificar grupos deshabilitado 
 							<p:column headerText="Modificar">
 								<div align="center">
 									<p:commandButton id="btnModificar" icon="fa fa-edit"
@@ -105,9 +105,41 @@
 					</p:tab>
 
 					<p:tab title="Grupos inactivos ">
-						<p:dataTable id="dataTableGruposInactivos"
-							emptyMessage="No hay grupos activos en este momento"
+						<p:dataTable id="dataTableGruposInactivos" 
+							emptyMessage="No hay grupos activos en este momento" 
 							value="#{grupoView.dataI}" var="grupo" paginator="true" rows="10">
+							
+							<p:column filterBy="#{grupo.grupoCodigo}"
+								sortBy="#{grupo.grupoCodigo}">
+								<f:facet name="header">
+									<h:outputText value="C&#243;digo grupo" />
+								</f:facet>
+								<h:outputText value="#{grupo.grupoCodigo}" />
+							</p:column>
+							
+							<p:column filterBy="#{grupo.nombre}"
+								sortBy="#{grupo.nombre}">
+								<f:facet name="header">
+									<h:outputText value="Nombre grupo" />
+								</f:facet>
+								<h:outputText value="#{grupo.nombre}" />
+							</p:column>
+							
+							<p:column filterBy="#{grupo.nombreUsuario}"
+								sortBy="#{grupo.nombreUsuario}">
+								<f:facet name="header">
+									<h:outputText value="Nombre usuario" />
+								</f:facet>
+								<h:outputText value="#{grupo.nombreUsuario}" />
+							</p:column>
+							
+							<p:column filterBy="#{grupo.correoUsuario}"
+								sortBy="#{grupo.correoUsuario}">
+								<f:facet name="header">
+									<h:outputText value="Correo usuario" />
+								</f:facet>
+								<h:outputText value="#{grupo.correoUsuario}" />
+							</p:column>
 							
 							
 							<p:column headerText="Cambiar estado">
