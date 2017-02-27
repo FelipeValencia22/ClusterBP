@@ -148,98 +148,106 @@
 
 		</h:form>
 
-		<p:dialog header="Crear usuario" appendTo="@(body)" draggable="true"
-			widgetVar="dlg" resizable="false" modal="true" width="600" >
+		<p:dialog id="dialogCrearUsuario" header="Crear usuario" appendTo="@(body)" draggable="true"
+			closable="false" widgetVar="dlg" resizable="false" modal="true"
+			width="550" >
+			<div align="center">
 			<h:form id="formDialogCrear">
-				<h:panelGrid id="pnlUsuariosCrear" columns="1">
+				<h:panelGrid id="pnlUsuariosCrear" columns="1" width="400">
 
 					<p:inputText id="txtCorreo" placeholder="Correo"
-						style="width:400px" binding="#{usuarioView.txtCorreo}"
+						style="width:450px" binding="#{usuarioView.txtCorreo}"
 						maxlength="50">
 						<p:ajax listener="#{usuarioView.txtLoginListener}"
 							update="@([id$=esAdmin]), @([id$=txtNombreUC]), @([id$=txtClaveC]), @([id$=txtClaveCR]), @([id$=btnCrearU]), @([id$=btnLimpiar]) " />
-					</p:inputText>
+					</p:inputText> 
 
 					<p:inputText id="txtNombreUC" placeholder="Nombre"
-						style="width:400px" binding="#{usuarioView.txtNombre}"
+						style="width:450px" binding="#{usuarioView.txtNombre}"
 						maxlength="60" />
 
 
 					<p:password id="txtClaveC" placeholder="Contrase&#241;a"
-						style="width:400px" binding="#{usuarioView.txtClaveC}"
+						style="width:450px" binding="#{usuarioView.txtClaveC}"
 						maxlength="25" />
 
 					<p:password id="txtClaveCR" placeholder="Repetir contrase&#241;a"
-						style="width:400px" binding="#{usuarioView.txtClaveRC}"
+						style="width:450px" binding="#{usuarioView.txtClaveRC}"
 						maxlength="25" />
 
 					<h:panelGrid id="pnlAdministrador" columns="2">
 						<h:outputText value="¿Administrador?" />
 						<p:selectBooleanCheckbox id="esAdmin" label="Administrador"
-							style="width:400px" binding="#{usuarioView.esAdmin}" disabled="true"/>
+							style="width:400px" binding="#{usuarioView.esAdmin}"
+							disabled="true" />
 					</h:panelGrid>
 
 				</h:panelGrid>
-
-				<p:commandButton id="btnCrearU" icon="fa fa-save" title="Crear"
-					binding="#{usuarioView.btnCrear}" disabled="true"
+				
+				<h:panelGrid id="pnlUsuariosBtns" columns="3" width="400">
+				
+				<p:commandButton id="btnCrearU" icon="fa fa-save" title="Crear" 
+					value="Crear" binding="#{usuarioView.btnCrear}" disabled="true"
 					action="#{usuarioView.crearUsuario}"
 					update="@([id$=frm]), @([id$=formDialogCrear]), @([id$=mensajes]) @([id$=pnlUsuariosCrear]),@([id$=growl]), @([id$=dataTableVtUsuarioActivos])" />
 
-
 				<p:commandButton id="btnLimpiar" icon="fa fa-eraser" title="Limpiar"
-					action="#{usuarioView.limpiarCrearUsuario}"
-					update="@([id$=pnlUsuariosCrear])" />
+					value="Limpiar" action="#{usuarioView.limpiarCrearUsuario}"
+					update="@([id$=pnlUsuariosCrear]), @([id$=btnCrearU])" />
 
+				<p:commandButton id="btnExit" icon="fa fa-close" title="Salir"
+					value="Salir" action="#{usuarioView.salirCrearUsuario}"
+					update=":dialogCrearUsuario, @([id$=btnCrearU])" />
+				</h:panelGrid>
 			</h:form>
+			</div>
 		</p:dialog>
 
 		<p:dialog id="dialogModificarUsuario" appendTo="@(body)"
 			draggable="true" header="Modificar usuario" closable="false"
 			visible="#{usuarioView.showDialog}" resizable="false" modal="true"
-			width="500">
+			width="550">
+			
+			<div align="center">
+			
 			<h:form id="formDialogEdit">
 				<p:messages id="msg" />
 
-				<p:panel id="panelCampos">
-
-					<h:panelGrid id="pnlUsuariosCrear" columns="1">
+					<h:panelGrid id="pnlUsuariosCrear" columns="1" width="400">
 
 						<p:inputText id="txtEmailM" placeholder="Correo"
-							style="width:400px" binding="#{usuarioView.txtCorreoM}"
+							style="width:450px" binding="#{usuarioView.txtCorreoM}"
 							maxlength="50">
 						</p:inputText>
 
 						<p:inputText id="txtNombreM" placeholder="Nombre"
-							style="width:400px" binding="#{usuarioView.txtNombreM}"
+							style="width:450px" binding="#{usuarioView.txtNombreM}"
 							maxlength="60" />
 
 						<p:password id="txtClaveCM" placeholder="Contrase&#241;a"
-							style="width:400px" binding="#{usuarioView.txtClaveCM}"
+							style="width:450px" binding="#{usuarioView.txtClaveCM}"
 							maxlength="25" />
 
 						<p:password id="txtClaveCRM" placeholder="Repetir contrase&#241;a"
-							style="width:400px" binding="#{usuarioView.txtClaveRCM}"
+							style="width:450px" binding="#{usuarioView.txtClaveRCM}"
 							maxlength="25" />
 
 					</h:panelGrid>
 
-				</p:panel>
 
-				<p:panel id="panelBotones">
-					<div align="center">
-						<p:commandButton id="btnSave"
-							binding="#{usuarioView.btnModificar}" value="Guardar"
+					<h:panelGrid id="pnlUsuariosBotones" columns="2" width="400">
+						<p:commandButton id="btnSave" icon="fa fa-save"
+							binding="#{usuarioView.btnModificar}" value="Modificar"
 							action="#{usuarioView.guardarModificacion}"
 							update="@([id$=frm]), @([id$=pnlUsuariosCrear]),@([id$=growl]), @([id$=dataTableVtUsuarioActivos])" />
 
-						<p:commandButton id="btnExit" value="Salir"
-							action="#{usuarioView.action_closeDialog()}"
+						<p:commandButton id="btnExit" icon="fa fa-close" value="Salir"
+							action="#{usuarioView.salirModificarUsuario}"
 							update=":dialogModificarUsuario" />
-					</div>
-				</p:panel>
+					</h:panelGrid>
 
 			</h:form>
+			</div>
 		</p:dialog>
 
 	</ui:define>

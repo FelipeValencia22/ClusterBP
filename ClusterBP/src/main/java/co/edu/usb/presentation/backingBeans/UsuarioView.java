@@ -674,4 +674,24 @@ public class UsuarioView implements Serializable {
 
 	        return "";
 	    }
+	 
+	 public String salirCrearUsuario(){
+		 txtCorreo.resetValue();
+		 txtNombre.resetValue(); 
+		 txtClaveC.resetValue();
+		 txtClaveRC.resetValue();
+		 esAdmin.setSelected(false);
+		 setShowDialog(false);
+		 
+		 return "";
+	 }
+	 
+	 public String salirModificarUsuario(){
+		 txtCorreoM.resetValue();
+		 txtNombreM.resetValue();
+		 txtClaveCM.resetValue();
+		 txtClaveRCM.resetValue();
+		 setShowDialog(false);
+		 return "";
+	 }
 }
