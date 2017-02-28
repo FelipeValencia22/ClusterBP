@@ -247,19 +247,35 @@ public class GrupoView implements Serializable {
 		}
 	}
 	
+	/* codigoXhtmlModificar
+	<p:inputText id="txtCorreoUsuarioGrupoM"
+		placeholder="Correo: due&#241;o del grupo" style="width:400px"
+		binding="#{grupoView.txtCorreoUsuarioGrupoM}" maxlength="50">
+		<p:ajax listener="#{grupoView.txtLoginListener}"
+			update="@([id$=msg), @([id$=txtNombreUsuarioGrupo), @([id$=btnCrear)" />
+	</p:inputText>
+
+	<p:inputText id="txtNombreUsuarioGrupoM"
+		placeholder="Nombre Usuario" style="width:400px"
+		binding="#{grupoView.txtNombreUsuarioGrupoM}" maxlength="50"
+		disabled="true">
+	</p:inputText>
+*/
+	
 	public String crearGrupo() throws Exception{
 		String mensaje="";
 		try {
 			log.info("Creando grupo..");
 			Grupo grupo = new Grupo();
 			Date fechaCreacion= new Date();
-			Usuario usuarioCreador= businessDelegatorView.consultarUsuarioPorCorreo
-					(txtCorreoUsuarioGrupo.getValue().toString().trim());
+//			Usuario usuarioCreador= businessDelegatorView.consultarUsuarioPorCorreo
+//					(txtCorreoUsuarioGrupo.getValue().toString().trim());
 			String nombre=txtNombre.getValue().toString().trim();
 			
 			if(nombreDisponible(nombre)){				
 				grupo.setActivo("S");
 				grupo.setFechaCreacion(fechaCreacion);
+				Usuario usuarioCreador=  (Usuario) FacesUtils.getfromSession("usuario");
 				grupo.setUsuCreador(usuarioCreador.getUsuarioCodigo());
 				grupo.setNombre(nombre);
 				
@@ -388,6 +404,16 @@ public class GrupoView implements Serializable {
 		return "";
 	}
 	
+   public String salirCrearGrupo(){
+	   txtNombre.resetValue();
+	   setShowDialog(false);
+	   return "";
+   }
    
+   public String salirModificarGrupo(){
+	   txtNombreM.resetValue();
+	   setShowDialog(false);
+	   return "";
+   }
     
 }

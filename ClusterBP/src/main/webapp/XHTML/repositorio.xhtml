@@ -156,8 +156,8 @@
 			closable="false" appendTo="@(body)" draggable="true" widgetVar="dlg"
 			resizable="false" modal="true" width="500">
 			<h:form id="formDialogCrear">
-				<h:panelGrid id="pnlRepositorioCrear" columns="1">
-					<br></br>
+				<h:panelGrid id="pnlRepositorioCrear" columns="1" width="400">
+
 					<p:inputText id="txtNombre" placeholder="Nombre"
 						style="width:400px" binding="#{repositorioView.txtNombre}"
 						maxlength="50">
@@ -171,58 +171,61 @@
 					</p:inputText>
 
 				</h:panelGrid>
-				<br></br>
-				<p:commandButton id="btnCrear" icon="fa fa-save" title="Crear"
-					value="Crear" binding="#{repositorioView.btnCrear}" disabled="true"
-					action="#{repositorioView.crearRepositorio}"
-					update="@([id$=frm]), @([id$=formDialogCrear]), @([id$=panelDataTableRepositorio]), @([id$=dataTableRepositoriosActivos]) " />
 
-				<p:commandButton id="btnLimpiar" icon="fa fa-eraser" title="Limpiar"
-					value="Limpiar" action="#{repositorioView.limpiarCamposCrear}"
-					update="@([id$=formDialogCrear])" />
+				<h:panelGrid id="pnlUsuariosBtns" columns="3" width="400">
 
-				<p:commandButton id="btnExit" icon="fa fa-close" title="Salir"
-					value="Salir" action="#{repositorioView.salirCrearRepositorio}"
-					update=":dialogCrearRepositorio, @([id$=btnCrear])" />
+					<p:commandButton id="btnCrear" icon="fa fa-save" title="Crear"
+						value="Crear" binding="#{repositorioView.btnCrear}"
+						disabled="true" action="#{repositorioView.crearRepositorio}"
+						update="@([id$=frm]), @([id$=formDialogCrear]), @([id$=panelDataTableRepositorio]), @([id$=dataTableRepositoriosActivos]) " />
 
+					<p:commandButton id="btnLimpiar" icon="fa fa-eraser"
+						title="Limpiar" value="Limpiar"
+						action="#{repositorioView.limpiarCamposCrear}"
+						update="@([id$=formDialogCrear])" />
+
+					<p:commandButton id="btnExit" icon="fa fa-close" title="Salir"
+						value="Salir" action="#{repositorioView.salirCrearRepositorio}"
+						update=":dialogCrearRepositorio, @([id$=btnCrear])" />
+
+				</h:panelGrid>
 			</h:form>
 		</p:dialog>
 
 		<p:dialog id="dialogModificarRepositorio" appendTo="@(body)"
 			draggable="true" header="Modificar Repositorio" closable="false"
 			visible="#{repositorioView.showDialog}" resizable="false"
-			modal="true" width="500">
+			modal="true" width="470">
 			<h:form id="formDialogEdit">
 				<p:messages id="msg" />
 
-				<p:panel id="panelCampos">
+				<h:panelGrid id="pnlRepositoriosModificar" columns="1" width="400">
 
-					<h:panelGrid id="pnlUsuariosCrear" columns="1">
-						<p:inputText id="txtNombreM" placeholder="Nombre"
-							style="width:400px" binding="#{repositorioView.txtNombreM}"
-							maxlength="50">
-						</p:inputText>
+					<p:inputText id="txtNombreM" placeholder="Nombre"
+						style="width:400px" binding="#{repositorioView.txtNombreM}"
+						maxlength="50">
+					</p:inputText>
 
-						<p:inputText id="txtDescripcionM" placeholder="Descripción"
-							style="width:400px" binding="#{repositorioView.txtDescripcionM}"
-							maxlength="60" />
-					</h:panelGrid>
+					<p:inputText id="txtDescripcionM" placeholder="Descripción"
+						style="width:400px" binding="#{repositorioView.txtDescripcionM}"
+						maxlength="60" />
 
-				</p:panel>
-
-				<p:panel id="panelBotones">
-					<div align="center">
-						<p:commandButton id="btnSave"
+				</h:panelGrid>
+				
+				<br></br>
+				
+				<h:panelGrid id="pnlUsuariosBotones" columns="2" width="400">
+						
+						<p:commandButton id="btnSave" icon="fa fa-save"
 							binding="#{repositorioView.btnModificar}" value="Modificar"
 							action="#{repositorioView.guardarModificacion}"
 							update="@([id$=frm]), @([id$=pnlRepositoriosCrear]),@([id$=growl]), @([id$=dataTableRepositoriosActivos])" />
 
-						<p:commandButton id="btnExit" value="Salir"
+						<p:commandButton id="btnExit" icon="fa fa-close" value="Salir"
 							action="#{repositorioView.action_closeDialog()}"
 							update=":dialogModificarRepositorio" />
 
-					</div>
-				</p:panel>
+					</h:panelGrid>
 
 			</h:form>
 		</p:dialog>

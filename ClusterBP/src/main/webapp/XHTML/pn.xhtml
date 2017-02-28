@@ -26,7 +26,8 @@
 		<h:form id="frm">
 
 			<p:growl id="growl" />
-			<p:panel id="pnlPn" header="Administraci&#243;n de Modelos de Proceso de Negocio">
+			<p:panel id="pnlPn"
+				header="Administraci&#243;n de Modelos de Proceso de Negocio">
 				<br></br>
 				<p:commandButton value="Subir PN" type="button"
 					onclick="PF('dlg').show();" />
@@ -36,48 +37,52 @@
 
 
 		</h:form>
-		
+
 		<p:dialog header="Subir PN" appendTo="@(body)" draggable="true"
-			widgetVar="dlg" resizable="false" modal="true" width="500" >
+			closable="false" widgetVar="dlg" resizable="false" modal="true"
+			width="550">
 			<h:form id="formDialogCrear">
-				<h:panelGrid id="pnlPnCrear" columns="1" width="450">
+
+				<h:panelGrid id="pnlPnCrear" columns="1" width="400">
 
 					<p:inputText id="txtTitulo" placeholder="Nombre"
-						style="width:400px" binding="#{pnView.txtTitulo}"
-						maxlength="50">
+						style="width:400px" binding="#{pnView.txtTitulo}" maxlength="50">
 					</p:inputText>
-					
+
 					<p:inputText id="txtDescripcion" placeholder="Descripcion"
 						style="width:400px" binding="#{pnView.txtDescripcion}"
 						maxlength="50">
 					</p:inputText>
-					
-					<h:outputText id="somTipoPn" value=" Tipo archivo" />
-						<p:selectOneMenu id="somTipoArchivoPn"
-							binding="#{vtUsuarioView.somTipoArchivoPn}">
-							<f:selectItem itemValue="-1" itemLabel="Seleccionar tipo archivo" />
-							<f:selectItems value="#{vtUsuarioView.listTiposArchivoItems}" />
-						</p:selectOneMenu> 
-					
-					<p:fileUpload id="fileUpload" sequential="true"
-							fileUploadListener="#{pnView.handleFileUpload}" 
-							mode="simple" update="frm" multiple="true"
-							label="Seleccionar" cancelLabel="Cancelar"
-							uploadLabel="Subir archivo(s)" dragdropsupport="true"
-							sizeLimit="500000000" />
 
+					<h:panelGrid id="pnlPnCrear2" columns="2">
+						<h:outputText id="somTipoPn" value=" Tipo archivo" />
+						<p:selectOneMenu id="somTipoArchivoPn"
+							binding="#{pnView.somTipoArchivoPn}">
+							<f:selectItem itemValue="-1" itemLabel="Seleccionar tipo archivo" />
+							<f:selectItems value="#{pnView.listTiposArchivoItems}" />
+						</p:selectOneMenu>
+					</h:panelGrid>
 					
+					<h:panelGrid id="pnlPnCrear3" columns="2">
+					<h:outputText id="file" value="Subir PN" />
+					<p:fileUpload id="fileUpload" sequential="true" 
+						fileUploadListener="#{pnView.handleFileUpload}" mode="advanced"
+						update="frm" label="Seleccionar"
+						cancelLabel="Cancelar" uploadLabel="Subir archivo(s)"
+						dragdropsupport="true" sizeLimit="500000000" />
+						</h:panelGrid>
+
+
 				</h:panelGrid>
 
 				<p:commandButton id="btnSubir" icon="fa fa-save" title="Crear"
-					binding="#{pnView.btnSubir}" disabled="true"
-					action="#{pnView.subirPn}"
+					binding="#{pnView.btnSubir}" 
+					action="#{pnView.handleFileUpload}"
 					update="@([id$=frm]), @([id$=formDialogCrear])" />
 
- 
+
 				<p:commandButton id="btnLimpiar" icon="fa fa-eraser" title="Limpiar"
-					action="#{pnView.limpiarSubirPn}"
-					update="@([id$=pnlPnCrear])" />
+					action="#{pnView.limpiarSubirPn}" update="@([id$=pnlPnCrear])" />
 
 			</h:form>
 		</p:dialog>

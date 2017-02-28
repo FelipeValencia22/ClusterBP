@@ -49,15 +49,14 @@
 								</f:facet>
 								<h:outputText value="#{grupo.grupoCodigo}" />
 							</p:column>
-							
-							<p:column filterBy="#{grupo.nombre}"
-								sortBy="#{grupo.nombre}">
+
+							<p:column filterBy="#{grupo.nombre}" sortBy="#{grupo.nombre}">
 								<f:facet name="header">
 									<h:outputText value="Nombre grupo" />
 								</f:facet>
 								<h:outputText value="#{grupo.nombre}" />
 							</p:column>
-							
+
 							<p:column filterBy="#{grupo.nombreUsuario}"
 								sortBy="#{grupo.nombreUsuario}">
 								<f:facet name="header">
@@ -65,7 +64,7 @@
 								</f:facet>
 								<h:outputText value="#{grupo.nombreUsuario}" />
 							</p:column>
-							
+
 							<p:column filterBy="#{grupo.correoUsuario}"
 								sortBy="#{grupo.correoUsuario}">
 								<f:facet name="header">
@@ -73,7 +72,7 @@
 								</f:facet>
 								<h:outputText value="#{grupo.correoUsuario}" />
 							</p:column>
-							
+
 							<!-- Modificar grupos deshabilitado 
 							<p:column headerText="Modificar">
 								<div align="center">
@@ -105,10 +104,10 @@
 					</p:tab>
 
 					<p:tab title="Grupos inactivos ">
-						<p:dataTable id="dataTableGruposInactivos" 
-							emptyMessage="No hay grupos activos en este momento" 
+						<p:dataTable id="dataTableGruposInactivos"
+							emptyMessage="No hay grupos activos en este momento"
 							value="#{grupoView.dataI}" var="grupo" paginator="true" rows="10">
-							
+
 							<p:column filterBy="#{grupo.grupoCodigo}"
 								sortBy="#{grupo.grupoCodigo}">
 								<f:facet name="header">
@@ -116,15 +115,14 @@
 								</f:facet>
 								<h:outputText value="#{grupo.grupoCodigo}" />
 							</p:column>
-							
-							<p:column filterBy="#{grupo.nombre}"
-								sortBy="#{grupo.nombre}">
+
+							<p:column filterBy="#{grupo.nombre}" sortBy="#{grupo.nombre}">
 								<f:facet name="header">
 									<h:outputText value="Nombre grupo" />
 								</f:facet>
 								<h:outputText value="#{grupo.nombre}" />
 							</p:column>
-							
+
 							<p:column filterBy="#{grupo.nombreUsuario}"
 								sortBy="#{grupo.nombreUsuario}">
 								<f:facet name="header">
@@ -132,7 +130,7 @@
 								</f:facet>
 								<h:outputText value="#{grupo.nombreUsuario}" />
 							</p:column>
-							
+
 							<p:column filterBy="#{grupo.correoUsuario}"
 								sortBy="#{grupo.correoUsuario}">
 								<f:facet name="header">
@@ -140,8 +138,8 @@
 								</f:facet>
 								<h:outputText value="#{grupo.correoUsuario}" />
 							</p:column>
-							
-							
+
+
 							<p:column headerText="Cambiar estado">
 								<div align="center">
 									<p:commandButton id="btnEstado" icon="fa fa-retweet"
@@ -163,41 +161,37 @@
 
 		</h:form>
 
-		<p:dialog header="Crear grupo" appendTo="@(body)" draggable="true"
-			widgetVar="dlg" resizable="false" modal="true" width="600">
+		<p:dialog id="dialogCrearGrupo" header="Crear grupo"
+			appendTo="@(body)" draggable="true" widgetVar="dlg" resizable="false"
+			modal="true" width="600" closable="false">
 			<h:form id="formDialogCrear">
 				<p:messages id="msg" />
-				<h:panelGrid id="pnlGruposCrear" columns="1">
+				<h:panelGrid id="pnlGruposCrear" columns="1" width="400">
 
 					<p:inputText id="txtNombre" placeholder="Nombre grupo"
 						style="width:400px" binding="#{grupoView.txtNombre}"
 						maxlength="50">
 					</p:inputText>
 
-					<p:inputText id="txtCorreoUsuarioGrupo"
-						placeholder="Correo: due&#241;o del grupo" style="width:400px"
-						binding="#{grupoView.txtCorreoUsuarioGrupo}" maxlength="50">
-						<p:ajax listener="#{grupoView.txtLoginListener}"
-							update="@([id$=msg), @([id$=txtNombreUsuarioGrupo), @([id$=btnCrear)" />
-					</p:inputText>
-
-					<p:inputText id="txtNombreUsuarioGrupo"
-						placeholder="Nombre Usuario" style="width:400px"
-						binding="#{grupoView.txtNombreUsuarioGrupo}" maxlength="50"
-						disabled="true">
-					</p:inputText>
-
 				</h:panelGrid>
 
-				<p:commandButton id="btnCrear" icon="fa fa-save" title="Crear"
-					binding="#{grupoView.btnCrear}" disabled="true"
-					action="#{grupoView.crearGrupo}"
-					update="@([id$=frm]), @([id$=formDialogCrear]), @([id$=panelDataTableGrupo]), @([id$=dataTableGruposActivos]) " />
+				<h:panelGrid id="pnlGrupoBtns" columns="3" width="400">
+
+					<p:commandButton id="btnCrear" icon="fa fa-save" title="Crear"
+						value="Crear" binding="#{grupoView.btnCrear}" disabled="true"
+						action="#{grupoView.crearGrupo}"
+						update="@([id$=frm]), @([id$=formDialogCrear]), @([id$=panelDataTableGrupo]), @([id$=dataTableGruposActivos]) " />
 
 
-				<p:commandButton id="btnLimpiar" icon="fa fa-eraser" title="Limpiar"
-					action="#{grupoView.limpiarCrearGrupo}"
-					update="@([id$=formDialogCrear])" />
+					<p:commandButton id="btnLimpiar" icon="fa fa-eraser"
+						title="Limpiar" value="Limpiar"
+						action="#{grupoView.limpiarCrearGrupo}"
+						update="@([id$=formDialogCrear])" />
+ 
+					<p:commandButton id="btnExit" icon="fa fa-close" title="Salir"
+						value="Salir" action="#{grupoView.salirCrearGrupo}"
+						update=":dialogCrearGrupo, @([id$=btnCrear])" />
+				</h:panelGrid>
 
 			</h:form>
 		</p:dialog>
@@ -212,39 +206,23 @@
 				<p:panel id="panelCampos">
 
 					<h:panelGrid id="pnlUsuariosCrearM" columns="1">
-					<p:inputText id="txtNombre" placeholder="Nombre grupo"
-						style="width:400px" binding="#{grupoView.txtNombreM}"
-						maxlength="50">
-					</p:inputText>
+						<p:inputText id="txtNombre" placeholder="Nombre grupo"
+							style="width:400px" binding="#{grupoView.txtNombreM}"
+							maxlength="50"> 
+						</p:inputText>
 
-					<p:inputText id="txtCorreoUsuarioGrupoM"
-						placeholder="Correo: due&#241;o del grupo" style="width:400px"
-						binding="#{grupoView.txtCorreoUsuarioGrupoM}" maxlength="50">
-						<p:ajax listener="#{grupoView.txtLoginListener}" 
-							update="@([id$=msg), @([id$=txtNombreUsuarioGrupo), @([id$=btnCrear)" />
-					</p:inputText>
-
-					<p:inputText id="txtNombreUsuarioGrupoM"
-						placeholder="Nombre Usuario" style="width:400px"
-						binding="#{grupoView.txtNombreUsuarioGrupoM}" maxlength="50"
-						disabled="true">
-					</p:inputText>
-					
 					</h:panelGrid>
 				</p:panel>
-				
-				<p:panel id="panelBotones">
-					<div align="center">
-						<p:commandButton id="btnSave"
-							binding="#{grupoView.btnModificar}" value="Guardar"
-							action="#{grupoView.guardarModificacion}"
+
+				<h:panelGrid id="pnlUsuariosBotones" columns="2" width="400">
+						<p:commandButton id="btnSave" binding="#{grupoView.btnModificar}"
+							value="Guardar" action="#{grupoView.guardarModificacion}"
 							update="@([id$=frm]), @([id$=pnlUsuariosCrear]),@([id$=growl]), @([id$=dataTableVtUsuarioActivos])" />
 
 						<p:commandButton id="btnExit" value="Salir"
-							action="#{grupoView.action_closeDialog()}"  
+							action="#{grupoView.salirModificarGrupo}"
 							update=":dialogModificarGrupo" />
-					</div>
-				</p:panel>
+				</h:panelGrid>
 
 			</h:form>
 

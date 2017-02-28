@@ -151,6 +151,7 @@ public class PnView implements Serializable {
 				List<TipoArchivoPn> listaArchivos=businessDelegatorView.getTipoArchivoPn();
 				listTiposArchivoItems=new ArrayList<SelectItem>();
 				for(TipoArchivoPn tipoArchivoPn: listaArchivos){
+					log.info(tipoArchivoPn.getNombre());
 					listTiposArchivoItems.add(new SelectItem(tipoArchivoPn.getTipoArchivoPnCodigo(),tipoArchivoPn.getNombre()));
 					
 				}
@@ -167,7 +168,31 @@ public class PnView implements Serializable {
 	public String handleFileUpload(FileUploadEvent event) throws IOException {
 		log.info("Subiendo archivos..");
 		try {
+			String titulo= txtTitulo.getValue().toString().trim();
+			String descripcion= txtDescripcion.getValue().toString().trim();
+			String tipoArchivo= somTipoArchivoPn.getValue().toString().trim();
+			Date fechaCreacion= new Date();
+			Long codigo= Long.parseLong(tipoArchivo);
+			TipoArchivoPn tipoArchivoPn=businessDelegatorView.getTipoArchivoPn(codigo);
 			
+			try {
+				Pn pn = new Pn();
+				pn.setActivo("S");
+				pn.setArchivo(event.getFile().getContents());
+				pn.setDescripcion(descripcion);
+				pn.setFechaCreacion(fechaCreacion);
+				pn.setTipoArchivoPn(tipoArchivoPn);
+				pn.setTitulo(titulo);
+				
+				businessDelegatorView.savePn(pn);
+				FacesContext.getCurrentInstance().addMessage("", new FacesMessage("El PN se guardo con exito"));
+				
+				
+			}catch (Exception e) {
+				FacesUtils.addErrorMessage("Error! No se subió el PN");
+				log.error(e.toString());
+				log.error(e.getLocalizedMessage());
+			}
 		} catch (Exception e) {
 			log.info(e.getMessage());
 			FacesUtils.addInfoMessage(e.getMessage());
@@ -176,6 +201,8 @@ public class PnView implements Serializable {
 	}
 	
 	public String subirPn(){
+		
+		
 		
 		return "";
 	}

@@ -393,7 +393,7 @@ public class UsuarioView implements Serializable {
 			}
 
 		}catch (Exception e) {
-			e.printStackTrace();
+			FacesUtils.addErrorMessage("Error! No se creó el Usuario");
 			log.error(e.toString());
 			log.error(e.getLocalizedMessage());
 		}
