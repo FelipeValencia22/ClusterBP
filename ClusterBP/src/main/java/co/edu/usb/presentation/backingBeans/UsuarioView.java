@@ -471,7 +471,6 @@ public class UsuarioView implements Serializable {
 		log.info("Cambiando estado..");
 		selectedUsuario = (UsuarioDTO) (evt.getComponent().getAttributes().get("selectedUsuario"));	
 
-		Usuario entity=null;
 
 		try {
 			if (entity == null) {
@@ -496,8 +495,6 @@ public class UsuarioView implements Serializable {
 			data = businessDelegatorView.getDataVtUsuario();
 			dataI = businessDelegatorView.getDataVtUsuarioI();
 
-			entity=null;
-			selectedUsuario=null;
 			limpiarUsuarioModificacion();
 		}catch (Exception e) {
 			FacesUtils.addErrorMessage("Error! No se cambió el estado del Usuario");
@@ -540,7 +537,6 @@ public class UsuarioView implements Serializable {
 		txtNombreM.resetValue();
 		txtClaveCM.resetValue();
 		txtClaveRCM.resetValue();
-		btnModificar.setDisabled(true);
 		return "";
 	}
 

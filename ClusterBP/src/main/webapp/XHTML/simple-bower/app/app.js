@@ -25,5 +25,5 @@ xhr.onreadystatechange = function() {
     }
 };
 
-xhr.open('GET', '../resources/pizza-collaboration.bpmn', true);
+xhr.open('GET', 'jdbc:postgresql://127.0.0.1:5432/clusterbp/', true);
 xhr.send(null);
