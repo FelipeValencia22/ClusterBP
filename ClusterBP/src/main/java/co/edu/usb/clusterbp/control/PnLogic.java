@@ -116,10 +116,6 @@ public class PnLogic implements IPnLogic {
                     "fechaCreacion");
             }
 
-            if (entity.getPnCodigo() == null) {
-                throw new ZMessManager().new EmptyFieldException("pnCodigo");
-            }
-
             if (entity.getTitulo() == null) {
                 throw new ZMessManager().new EmptyFieldException("titulo");
             }
@@ -137,10 +133,6 @@ public class PnLogic implements IPnLogic {
             if (entity.getTipoArchivoPn().getTipoArchivoPnCodigo() == null) {
                 throw new ZMessManager().new EmptyFieldException(
                     "tipoArchivoPnCodigo_TipoArchivoPn");
-            }
-
-            if (getPn(entity.getPnCodigo()) != null) {
-                throw new ZMessManager(ZMessManager.ENTITY_WITHSAMEKEY);
             }
 
             pnDAO.save(entity);

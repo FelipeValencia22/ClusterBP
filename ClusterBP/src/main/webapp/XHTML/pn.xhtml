@@ -39,6 +39,7 @@
 		</h:form>
 
 		<p:dialog header="Subir PN" appendTo="@(body)" draggable="true"
+		rendered="true" responsive="true" position="center"	dynamic="true"
 			closable="false" widgetVar="dlg" resizable="false" modal="true"
 			width="550">
 			<h:form id="formDialogCrear">
@@ -66,7 +67,7 @@
 					<h:panelGrid id="pnlPnCrear3" columns="2">
 					<h:outputText id="file" value="Subir PN" />
 					<p:fileUpload id="fileUpload" sequential="true" 
-						fileUploadListener="#{pnView.handleFileUpload}" mode="advanced"
+						fileUploadListener="#{pnView.handleFileUpload}"  mode="advanced"
 						update="frm" label="Seleccionar"
 						cancelLabel="Cancelar" uploadLabel="Subir archivo(s)"
 						dragdropsupport="true" sizeLimit="500000000" />

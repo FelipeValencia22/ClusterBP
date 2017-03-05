@@ -22,6 +22,21 @@ import javax.faces.bean.ManagedProperty;
 import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
 import javax.faces.model.SelectItem;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.DocumentBuilder;
+import org.w3c.dom.Document;
+import org.w3c.dom.NodeList;
+import org.w3c.dom.Node;
+import org.w3c.dom.Element;
+import java.io.File;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.DocumentBuilder;
+import org.w3c.dom.Document;
+import org.w3c.dom.NodeList;
+import org.w3c.dom.Node;
+import org.w3c.dom.Element;
+import java.io.File;
+
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -63,6 +78,8 @@ public class PnView implements Serializable {
 	private PnDTO selectedPn;
 	private Pn entity;
 	private boolean showDialog;
+	
+	File fXmlFile;
 
 	@ManagedProperty(value="#{BusinessDelegatorView}")
 	private IBusinessDelegatorView businessDelegatorView;
@@ -168,21 +185,27 @@ public class PnView implements Serializable {
 	public String handleFileUpload(FileUploadEvent event) throws IOException {
 		log.info("Subiendo archivos..");
 		try {
-			String titulo= txtTitulo.getValue().toString().trim();
-			String descripcion= txtDescripcion.getValue().toString().trim();
-			String tipoArchivo= somTipoArchivoPn.getValue().toString().trim();
+			String titulo= "titulo";
+			System.out.println(titulo);
+			String descripcion= "descripcion";
+			System.out.println(descripcion);
+			//String tipoArchivo= somTipoArchivoPn.getValue().toString().trim();
 			Date fechaCreacion= new Date();
-			Long codigo= Long.parseLong(tipoArchivo);
-			TipoArchivoPn tipoArchivoPn=businessDelegatorView.getTipoArchivoPn(codigo);
-			
+			System.out.println(fechaCreacion);
+			//Long codigo= Long.parseLong(tipoArchivo);
+			TipoArchivoPn tipoArchivoPn=businessDelegatorView.getTipoArchivoPn(1L);
+			System.out.println(tipoArchivoPn);
 			try {
 				Pn pn = new Pn();
 				pn.setActivo("S");
 				pn.setArchivo(event.getFile().getContents());
+				validarTipoArchivo(event);
 				pn.setDescripcion(descripcion);
 				pn.setFechaCreacion(fechaCreacion);
 				pn.setTipoArchivoPn(tipoArchivoPn);
 				pn.setTitulo(titulo);
+				Usuario usuarioCreador=  (Usuario) FacesUtils.getfromSession("usuario");
+				pn.setUsuCreador(usuarioCreador.getUsuarioCodigo());
 				
 				businessDelegatorView.savePn(pn);
 				FacesContext.getCurrentInstance().addMessage("", new FacesMessage("El PN se guardo con exito"));
@@ -195,6 +218,9 @@ public class PnView implements Serializable {
 			}
 		} catch (Exception e) {
 			log.info(e.getMessage());
+			log.error(e.toString());
+			log.error(e.getLocalizedMessage());
+			e.printStackTrace();
 			FacesUtils.addInfoMessage(e.getMessage());
 		}
 		return "";
@@ -208,6 +234,49 @@ public class PnView implements Serializable {
 	}
 	
 	public String limpiarSubirPn(){
+		
+		return "";
+	}
+	
+	public String validarTipoArchivo(FileUploadEvent event){
+		try {
+
+			//File fXmlFile = new File();
+			DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
+			DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
+			Document doc = dBuilder.parse(event.getFile().getInputstream());
+
+			//optional, but recommended
+			//read this - http://stackoverflow.com/questions/13786607/normalization-in-dom-parsing-with-java-how-does-it-work
+			doc.getDocumentElement().normalize();
+
+			System.out.println("Root element :" + doc.getDocumentElement().getNodeName());
+
+			NodeList nList = doc.getElementsByTagName("staff");
+
+			System.out.println("----------------------------");
+
+			for (int temp = 0; temp < nList.getLength(); temp++) {
+
+				Node nNode = nList.item(temp);
+
+				System.out.println("\nCurrent Element :" + nNode.getNodeName());
+
+				if (nNode.getNodeType() == Node.ELEMENT_NODE) {
+		 
+					Element eElement = (Element) nNode;
+
+					System.out.println("Staff id : " + eElement.getAttribute("id"));
+					System.out.println("First Name : " + eElement.getElementsByTagName("firstname").item(0).toString());
+					System.out.println("Last Name : " + eElement.getElementsByTagName("lastname").item(0).toString());
+					System.out.println("Nick Name : " + eElement.getElementsByTagName("nickname").item(0).toString());
+					System.out.println("Salary : " + eElement.getElementsByTagName("salary").item(0).toString());
+
+				}
+			}
+		    } catch (Exception e) {
+			e.printStackTrace();
+		    }
 		
 		return "";
 	}
