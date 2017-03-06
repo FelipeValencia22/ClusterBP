@@ -219,10 +219,10 @@
 						<p:commandButton id="btnSave" icon="fa fa-save"
 							binding="#{repositorioView.btnModificar}" value="Modificar"
 							action="#{repositorioView.guardarModificacion}"
-							update="@([id$=frm]), @([id$=pnlRepositoriosCrear]),@([id$=growl]), @([id$=dataTableRepositoriosActivos])" />
+							update="@([id$=frm]), @([id$=pnlRepositoriosModificar]),@([id$=growl]), @([id$=dataTableRepositoriosActivos])" />
 
 						<p:commandButton id="btnExit" icon="fa fa-close" value="Salir"
-							action="#{repositorioView.action_closeDialog()}"
+							action="#{repositorioView.salirModificarRepositorio}"
 							update=":dialogModificarRepositorio" />
 
 					</h:panelGrid>

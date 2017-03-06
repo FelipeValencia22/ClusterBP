@@ -310,6 +310,8 @@ public interface IBusinessDelegatorView {
     public Long findTotalNumberPn() throws Exception;
 
     public List<PnDTO> getDataPn() throws Exception;
+    
+    public List<PnDTO> getDataPnI() throws Exception;
 
     public List<Repositorio> getRepositorio() throws Exception;
 

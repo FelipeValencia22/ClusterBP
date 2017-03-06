@@ -165,11 +165,10 @@
 			appendTo="@(body)" draggable="true" widgetVar="dlg" resizable="false"
 			modal="true" width="600" closable="false">
 			<h:form id="formDialogCrear">
-				<p:messages id="msg" />
 				<h:panelGrid id="pnlGruposCrear" columns="1" width="400">
 
 					<p:inputText id="txtNombre" placeholder="Nombre grupo"
-						style="width:400px" binding="#{grupoView.txtNombre}"
+						style="width:400px" binding="#{grupoView.txtNombre}" disabled="false"
 						maxlength="50">
 					</p:inputText>
 
@@ -178,7 +177,7 @@
 				<h:panelGrid id="pnlGrupoBtns" columns="3" width="400">
 
 					<p:commandButton id="btnCrear" icon="fa fa-save" title="Crear"
-						value="Crear" binding="#{grupoView.btnCrear}" disabled="true"
+						value="Crear" binding="#{grupoView.btnCrear}" disabled="false"
 						action="#{grupoView.crearGrupo}"
 						update="@([id$=frm]), @([id$=formDialogCrear]), @([id$=panelDataTableGrupo]), @([id$=dataTableGruposActivos]) " />
 

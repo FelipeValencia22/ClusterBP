@@ -73,7 +73,7 @@ public class UsuarioView implements Serializable {
 
 	private List<UsuarioDTO> data;
 	private List<UsuarioDTO> dataI;
-	
+
 
 	private UsuarioDTO selectedUsuario;
 
@@ -432,35 +432,43 @@ public class UsuarioView implements Serializable {
 
 	public String guardarModificacion() throws Exception{
 
-		String claveR=txtClaveRCM.getValue().toString().trim();
-		String clave=txtClaveCM.getValue().toString().trim(); 
+		try {
 
-		if(clave.equals(claveR)){
-			if (entity == null) {
-				Long usuaCodigo = new Long(selectedUsuario.getUsuarioCodigo());
-				entity = businessDelegatorView.getUsuario(usuaCodigo);
-			} 
+			String claveR=txtClaveRCM.getValue().toString().trim();
+			String clave=txtClaveCM.getValue().toString().trim(); 
+
+			if(clave.equals(claveR)){
+				if (entity == null) {
+					Long usuaCodigo = new Long(selectedUsuario.getUsuarioCodigo());
+					entity = businessDelegatorView.getUsuario(usuaCodigo);
+				} 
 
 
-			Date fechaModificacion= new Date();
-			entity.setFechaModificacion(fechaModificacion);
+				Date fechaModificacion= new Date();
+				entity.setFechaModificacion(fechaModificacion);
 
-			Usuario usuarioEnSession =  (Usuario) FacesUtils.getfromSession("usuario");
-			entity.setUsuaModificador(usuarioEnSession.getUsuarioCodigo());
+				Usuario usuarioEnSession =  (Usuario) FacesUtils.getfromSession("usuario");
+				entity.setUsuaModificador(usuarioEnSession.getUsuarioCodigo());
 
-			String correo=txtCorreoM.getValue().toString().trim();
+				String correo=txtCorreoM.getValue().toString().trim();
 
-			entity.setCorreo(correo);
-			entity.setNombre(txtNombreM.getValue().toString().trim());
-			entity.setClave(clave);
+				entity.setCorreo(correo);
+				entity.setNombre(txtNombreM.getValue().toString().trim());
+				entity.setClave(clave);
 
-			businessDelegatorView.updateUsuario(entity);
-			FacesUtils.addInfoMessage("El usuario ha sido modificado con exito");
-			data = businessDelegatorView.getDataVtUsuario();
-			dataI = businessDelegatorView.getDataVtUsuarioI();
+				businessDelegatorView.updateUsuario(entity);
+				FacesUtils.addInfoMessage("El usuario ha sido modificado con exito");
+				data = businessDelegatorView.getDataVtUsuario();
+				dataI = businessDelegatorView.getDataVtUsuarioI();
 
-		}else{
-			FacesContext.getCurrentInstance().addMessage("", new FacesMessage("Las contraseñas no coinciden"));
+			}else{
+				FacesContext.getCurrentInstance().addMessage("", new FacesMessage("Las contraseñas no coinciden"));
+			}
+
+		}catch (Exception e) {
+			FacesUtils.addErrorMessage("Error! No se modificó el Usuario");
+			log.error(e.toString());
+
 		}
 
 		return "";
@@ -471,6 +479,7 @@ public class UsuarioView implements Serializable {
 		log.info("Cambiando estado..");
 		selectedUsuario = (UsuarioDTO) (evt.getComponent().getAttributes().get("selectedUsuario"));	
 
+		Usuario entity=null;
 
 		try {
 			if (entity == null) {
@@ -495,11 +504,14 @@ public class UsuarioView implements Serializable {
 			data = businessDelegatorView.getDataVtUsuario();
 			dataI = businessDelegatorView.getDataVtUsuarioI();
 
+			entity=null;
+			selectedUsuario=null;
+
 			limpiarUsuarioModificacion();
 		}catch (Exception e) {
 			FacesUtils.addErrorMessage("Error! No se cambió el estado del Usuario");
 			log.error(e.toString());
-			
+
 		}
 
 		return "";
@@ -566,7 +578,7 @@ public class UsuarioView implements Serializable {
 		Usuario usuario=null;
 		String correo=txtCorreo.getValue().toString().trim();
 		usuario=businessDelegatorView.consultarUsuarioPorCorreo(correo);
-	
+
 
 		if(usuario==null){
 			txtNombre.resetValue();
@@ -586,108 +598,108 @@ public class UsuarioView implements Serializable {
 			FacesUtils.addInfoMessage("El usuario existe!");
 		}
 	}
-	
+
 	//TODO:RowEdit
-	
+
 	public void rowEventListener(RowEditEvent e) {
-        try {
-            UsuarioDTO usuarioDTO = (UsuarioDTO) e.getObject();
+		try {
+			UsuarioDTO usuarioDTO = (UsuarioDTO) e.getObject();
 
-            if (txtActivo == null) {
-                txtActivo = new InputText();
-            }
+			if (txtActivo == null) {
+				txtActivo = new InputText();
+			}
 
-            txtActivo.setValue(usuarioDTO.getActivo());
+			txtActivo.setValue(usuarioDTO.getActivo());
 
-            if (txtClaveC == null) {
-            	txtClaveC = new Password();
-            }
+			if (txtClaveC == null) {
+				txtClaveC = new Password();
+			}
 
-            txtClaveC.setValue(usuarioDTO.getClave());
+			txtClaveC.setValue(usuarioDTO.getClave());
 
-            if (txtCorreo == null) {
-                txtCorreo = new InputText();
-            }
+			if (txtCorreo == null) {
+				txtCorreo = new InputText();
+			}
 
-            txtCorreo.setValue(usuarioDTO.getCorreo());
+			txtCorreo.setValue(usuarioDTO.getCorreo());
 
-            if (txtNombre == null) {
-                txtNombre = new InputText();
-            }
+			if (txtNombre == null) {
+				txtNombre = new InputText();
+			}
 
-            txtNombre.setValue(usuarioDTO.getNombre());
+			txtNombre.setValue(usuarioDTO.getNombre());
 
-            if (txtUsuCreador == null) {
-                txtUsuCreador = new InputText();
-            }
+			if (txtUsuCreador == null) {
+				txtUsuCreador = new InputText();
+			}
 
-            txtUsuCreador.setValue(usuarioDTO.getUsuCreador());
+			txtUsuCreador.setValue(usuarioDTO.getUsuCreador());
 
-            if (txtUsuaModificador == null) {
-                txtUsuaModificador = new InputText();
-            }
+			if (txtUsuaModificador == null) {
+				txtUsuaModificador = new InputText();
+			}
 
-            txtUsuaModificador.setValue(usuarioDTO.getUsuaModificador());
+			txtUsuaModificador.setValue(usuarioDTO.getUsuaModificador());
 
-            if (txtUsuarioCodigo == null) {
-                txtUsuarioCodigo = new InputText();
-            }
+			if (txtUsuarioCodigo == null) {
+				txtUsuarioCodigo = new InputText();
+			}
 
-            txtUsuarioCodigo.setValue(usuarioDTO.getUsuarioCodigo());
+			txtUsuarioCodigo.setValue(usuarioDTO.getUsuarioCodigo());
 
-            if (txtFechaCreacion == null) {
-                txtFechaCreacion = new Calendar();
-            }
+			if (txtFechaCreacion == null) {
+				txtFechaCreacion = new Calendar();
+			}
 
-            txtFechaCreacion.setValue(usuarioDTO.getFechaCreacion());
+			txtFechaCreacion.setValue(usuarioDTO.getFechaCreacion());
 
-            if (txtFechaModificacion == null) {
-                txtFechaModificacion = new Calendar();
-            }
+			if (txtFechaModificacion == null) {
+				txtFechaModificacion = new Calendar();
+			}
 
-            txtFechaModificacion.setValue(usuarioDTO.getFechaModificacion());
+			txtFechaModificacion.setValue(usuarioDTO.getFechaModificacion());
 
-            Long usuarioCodigo = FacesUtils.checkLong(txtUsuarioCodigo);
-            entity = businessDelegatorView.getUsuario(usuarioCodigo);
+			Long usuarioCodigo = FacesUtils.checkLong(txtUsuarioCodigo);
+			entity = businessDelegatorView.getUsuario(usuarioCodigo);
 
-        } catch (Exception ex) {
-        }
-    }
-	
-	 public String actionDeleteDataTableEditable(ActionEvent evt) {
-	        try {
-	            selectedUsuario = (UsuarioDTO) (evt.getComponent().getAttributes()
-	                                               .get("selectedUsuario"));
+		} catch (Exception ex) {
+		}
+	}
 
-	            Long usuarioCodigo = new Long(selectedUsuario.getUsuarioCodigo());
-	            entity = businessDelegatorView.getUsuario(usuarioCodigo);
-	            businessDelegatorView.deleteUsuario(entity);
-	            data.remove(selectedUsuario);
-	            FacesUtils.addInfoMessage(ZMessManager.ENTITY_SUCCESFULLYDELETED);
-	        } catch (Exception e) {
-	            FacesUtils.addErrorMessage(e.getMessage());
-	        }
+	public String actionDeleteDataTableEditable(ActionEvent evt) {
+		try {
+			selectedUsuario = (UsuarioDTO) (evt.getComponent().getAttributes()
+					.get("selectedUsuario"));
 
-	        return "";
-	    }
-	 
-	 public String salirCrearUsuario(){
-		 txtCorreo.resetValue();
-		 txtNombre.resetValue(); 
-		 txtClaveC.resetValue();
-		 txtClaveRC.resetValue();
-		 esAdmin.setSelected(false);
-		 setShowDialog(false);
-		 
-		 return "";
-	 }
-	 
-	 public String salirModificarUsuario(){
-		 txtCorreoM.resetValue();
-		 txtNombreM.resetValue();
-		 txtClaveCM.resetValue();
-		 txtClaveRCM.resetValue();
-		 setShowDialog(false);
-		 return "";
-	 }
+			Long usuarioCodigo = new Long(selectedUsuario.getUsuarioCodigo());
+			entity = businessDelegatorView.getUsuario(usuarioCodigo);
+			businessDelegatorView.deleteUsuario(entity);
+			data.remove(selectedUsuario);
+			FacesUtils.addInfoMessage(ZMessManager.ENTITY_SUCCESFULLYDELETED);
+		} catch (Exception e) {
+			FacesUtils.addErrorMessage(e.getMessage());
+		}
+
+		return "";
+	}
+
+	public String salirCrearUsuario(){
+		txtCorreo.resetValue();
+		txtNombre.resetValue(); 
+		txtClaveC.resetValue();
+		txtClaveRC.resetValue();
+		esAdmin.setSelected(false);
+		setShowDialog(false);
+
+		return "";
+	}
+
+	public String salirModificarUsuario(){
+		txtCorreoM.resetValue();
+		txtNombreM.resetValue();
+		txtClaveCM.resetValue();
+		txtClaveRCM.resetValue();
+		setShowDialog(false);
+		return "";
+	}
 }

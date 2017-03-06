@@ -26,34 +26,129 @@
 		<h:form id="frm">
 
 			<p:growl id="growl" />
-			<p:panel id="pnlPn"
-				header="Administraci&#243;n de Modelos de Proceso de Negocio">
+			<p:panel id="pnlPn">
 				<br></br>
-				<p:commandButton value="Subir PN" type="button"
-					onclick="PF('dlg').show();" />
+				<h1 align="center">Administraci&#243;n de Modelos de Proceso de
+					Negocio</h1>
+				<h:panelGrid columns="2">
+					<h2>Subir PN</h2>
+					<p:commandButton value="+" type="button"
+						onclick="PF('dlg').show();" />
+				</h:panelGrid>
 				<br></br>
 				<br></br>
+			</p:panel>
+
+			<p:panel id="pnlPn2">
+				<h2>PN</h2>
+				<p:accordionPanel id="panelDataTablePN" header="PN" multiple="true">
+					<p:growl id="men" />
+
+					<p:tab title="PN Activos ">
+
+						<p:dataTable id="dataTablePNActivos"
+							emptyMessage="No hay PN activos en este momento"
+							value="#{pnView.data}" var="pn" paginator="true" rows="10">
+
+							<p:column filterBy="#{pn.pnCodigo}" sortBy="#{pn.pnCodigo}">
+								<f:facet name="header">
+									<h:outputText value="C&#243;digo" />
+								</f:facet>
+								<h:outputText value="#{pn.pnCodigo}" />
+							</p:column>
+
+							<p:column filterBy="#{pn.titulo}" sortBy="#{pn.titulo}">
+								<f:facet name="header">
+									<h:outputText value="C&#243;digo" />
+								</f:facet>
+								<h:outputText value="#{pn.titulo}" />
+							</p:column>
+
+							<p:column filterBy="#{pn.descripcion}" sortBy="#{pn.descripcion}">
+								<f:facet name="header">
+									<h:outputText value="C&#243;digo" />
+								</f:facet>
+								<h:outputText value="#{pn.descripcion}" />
+							</p:column>
+
+							<p:column headerText="Modificar">
+								<div align="center">
+									<p:commandButton id="btnModificar" icon="fa fa-edit"
+										update=":dialogModificarPN"
+										actionListener="#{pnView.modificarPN}">
+										<f:attribute name="selectedPN" value="#{pn}" />
+									</p:commandButton>
+									<p:tooltip id="toolTipFadeMi" for="btnModificar"
+										value="Modificar" />
+								</div>
+							</p:column>
+
+							<p:column headerText="Cambiar estado">
+								<div align="center">
+									<p:commandButton id="btnEstado" icon="fa fa-retweet"
+										update=":frm:panelDataTablePN, :frm:growl"
+										actionListener="#{pnView.cambiarEstado}">
+										<f:attribute name="selectedPN" value="#{pn}" />
+									</p:commandButton>
+									<p:tooltip id="toolTipFadeCi" for="btnEstado"
+										value="Cambiar estado" />
+								</div>
+							</p:column>
+
+						</p:dataTable>
+
+					</p:tab>
+
+					<p:tab title="PN Inactivos ">
+
+						<p:dataTable id="dataTablePNInactivos"
+							emptyMessage="No hay PN activos en este momento"
+							value="#{pnView.dataI}" var="pn" paginator="true" rows="10">
+
+							<p:column filterBy="#{pn.pnCodigo}" sortBy="#{pn.pnCodigo}">
+								<f:facet name="header">
+									<h:outputText value="C&#243;digo" />
+								</f:facet>
+								<h:outputText value="#{pn.pnCodigo}" />
+							</p:column>
+
+							<p:column filterBy="#{pn.titulo}" sortBy="#{pn.titulo}">
+								<f:facet name="header">
+									<h:outputText value="C&#243;digo" />
+								</f:facet>
+								<h:outputText value="#{pn.titulo}" />
+							</p:column>
+
+							<p:column filterBy="#{pn.descripcion}" sortBy="#{pn.descripcion}">
+								<f:facet name="header">
+									<h:outputText value="C&#243;digo" />
+								</f:facet>
+								<h:outputText value="#{pn.descripcion}" />
+							</p:column>
+
+						</p:dataTable>
+					</p:tab>
+				</p:accordionPanel>
 			</p:panel>
 
 
 		</h:form>
 
-		<p:dialog header="Subir PN" appendTo="@(body)" draggable="true"
-		rendered="true" responsive="true" position="center"	dynamic="true"
-			closable="false" widgetVar="dlg" resizable="false" modal="true"
-			width="550">
+		<p:dialog id="dialogCrearPn" header="Subir PN" appendTo="@(body)"
+			draggable="true" rendered="true" responsive="true" position="center"
+			dynamic="true" closable="false" widgetVar="dlg" resizable="false"
+			modal="true" width="500">
 			<h:form id="formDialogCrear">
-
 				<h:panelGrid id="pnlPnCrear" columns="1" width="400">
 
 					<p:inputText id="txtTitulo" placeholder="Nombre"
 						style="width:400px" binding="#{pnView.txtTitulo}" maxlength="50">
 					</p:inputText>
 
-					<p:inputText id="txtDescripcion" placeholder="Descripcion"
-						style="width:400px" binding="#{pnView.txtDescripcion}"
-						maxlength="50">
-					</p:inputText>
+					<p:inputTextarea id="txtDescripcion" placeholder="Descripcion"
+						autoResize="true" cols="64" rows="7"
+						binding="#{pnView.txtDescripcion}" maxlength="1000">
+					</p:inputTextarea>
 
 					<h:panelGrid id="pnlPnCrear2" columns="2">
 						<h:outputText id="somTipoPn" value=" Tipo archivo" />
@@ -63,29 +158,64 @@
 							<f:selectItems value="#{pnView.listTiposArchivoItems}" />
 						</p:selectOneMenu>
 					</h:panelGrid>
-					
-					<h:panelGrid id="pnlPnCrear3" columns="2">
-					<h:outputText id="file" value="Subir PN" />
-					<p:fileUpload id="fileUpload" sequential="true" 
-						fileUploadListener="#{pnView.handleFileUpload}"  mode="advanced"
-						update="frm" label="Seleccionar"
-						cancelLabel="Cancelar" uploadLabel="Subir archivo(s)"
-						dragdropsupport="true" sizeLimit="500000000" />
-						</h:panelGrid>
 
+					<h:panelGrid id="pnlPnCrear3" columns="1" width="450">
+						<p:fileUpload id="fileUpload" sequential="true"
+							binding="#{pnView.fileUpload}"
+							fileUploadListener="#{pnView.handleFileUpload}" mode="advanced"
+							update="frm" label="Seleccionar PN" cancelLabel="Remover PN"
+							uploadLabel="Subir PN" dragdropsupport="true" fileLimit="1"
+							fileLimitMessage="Solo se permite cargar 1 PN"
+							sizeLimit="1300000"
+							invalidSizeMessage="El tamaño máximo permitido es de 10MB" />
+
+						<p:commandButton id="btnExit" icon="fa fa-close" title="Salir"
+							value="Salir" action="#{pnView.salirCrearPN}"
+							update=":dialogCrearPn" />
+					</h:panelGrid>
 
 				</h:panelGrid>
-
-				<p:commandButton id="btnSubir" icon="fa fa-save" title="Crear"
-					binding="#{pnView.btnSubir}" 
-					action="#{pnView.handleFileUpload}"  
-					update="@([id$=frm]), @([id$=formDialogCrear])" />
-
-
-				<p:commandButton id="btnLimpiar" icon="fa fa-eraser" title="Limpiar"
-					action="#{pnView.limpiarSubirPn}" update="@([id$=pnlPnCrear])" />
-
 			</h:form>
+		</p:dialog>
+
+		<p:dialog id="dialogModificarPN" appendTo="@(body)" draggable="true"
+			header="Modificar PN" closable="true" visible="#{pnView.showDialog}"
+			resizable="false" modal="true" width="550">
+
+			<div align="center">
+
+				<h:form id="formDialogEdit">
+
+					<h:panelGrid id="pnlPNModificar" columns="1" width="400">
+
+						<p:inputText id="txtTituloM" placeholder="Nombre"
+							style="width:400px" binding="#{pnView.txtTituloM}" maxlength="50" />
+
+
+						<p:inputTextarea id="txtDescripcionM" placeholder="Descripción"
+							binding="#{pnView.txtDescripcionM}" maxlength="50" cols="64"
+							rows="7" />
+
+					</h:panelGrid>
+					
+					<br></br>
+					
+					<h:panelGrid id="pnlPNBotones" columns="2" width="400">
+						<p:commandButton id="btnSave" icon="fa fa-save"
+							binding="#{pnView.btnModificar}" value="Modificar"
+							action="#{pnView.guardarModificacion}"
+							update="@([id$=frm]), @([id$=pnlPNModificar]),@([id$=growl]), @([id$=dataTablePNActivos])" />
+
+						<p:commandButton id="btnExit" icon="fa fa-close" value="Salir"
+							action="#{pnView.salirModificarPN}"
+							update=":dialogModificarPN" />  
+					</h:panelGrid>
+
+				</h:form>
+
+			</div>
+
+
 		</p:dialog>
 
 	</ui:define>

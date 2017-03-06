@@ -609,6 +609,10 @@ public class BusinessDelegatorView implements IBusinessDelegatorView {
     public List<PnDTO> getDataPn() throws Exception {
         return pnLogic.getDataPn();
     }
+    
+    public List<PnDTO> getDataPnI() throws Exception {
+        return pnLogic.getDataPnI(); 
+    }
 
     public List<Repositorio> getRepositorio() throws Exception {
         return repositorioLogic.getRepositorio();

@@ -10,9 +10,11 @@ import java.io.IOException;
 import java.io.Serializable;
 import java.sql.*;
 import org.primefaces.component.inputtext.InputText;
+import org.primefaces.component.inputtextarea.InputTextarea;
 import org.primefaces.component.selectonemenu.SelectOneMenu;
 import org.primefaces.component.calendar.*;
 import org.primefaces.component.commandbutton.CommandButton;
+import org.primefaces.component.fileupload.FileUpload;
 import org.primefaces.event.FileUploadEvent;
 import org.primefaces.event.RowEditEvent;
 import javax.faces.application.FacesMessage;
@@ -66,19 +68,26 @@ public class PnView implements Serializable {
 	}
 	private InputText txtActivo;
 	private InputText txtArchivo;
-	private InputText txtDescripcion;
+	private InputTextarea txtDescripcion;
 	private InputText txtTitulo;
+
+	private InputTextarea txtDescripcionM;
+	private InputText txtTituloM;
 
 	private SelectOneMenu somTipoArchivoPn;
 	private List<SelectItem> listTiposArchivoItems;
-	
+
 	private CommandButton btnSubir;
+	private CommandButton btnModificar;
+
+	private FileUpload fileUpload;
 
 	private List<PnDTO> data;
+	private List<PnDTO> dataI;
 	private PnDTO selectedPn;
 	private Pn entity;
 	private boolean showDialog;
-	
+
 	File fXmlFile;
 
 	@ManagedProperty(value="#{BusinessDelegatorView}")
@@ -100,10 +109,10 @@ public class PnView implements Serializable {
 	public void setTxtArchivo(InputText txtArchivo) {
 		this.txtArchivo = txtArchivo;
 	}
-	public InputText getTxtDescripcion() {
+	public InputTextarea getTxtDescripcion() {
 		return txtDescripcion;
 	}
-	public void setTxtDescripcion(InputText txtDescripcion) {
+	public void setTxtDescripcion(InputTextarea txtDescripcion) {
 		this.txtDescripcion = txtDescripcion;
 	}
 	public InputText getTxtTitulo() {
@@ -125,6 +134,20 @@ public class PnView implements Serializable {
 	}
 	public void setData(List<PnDTO> pnDTO){
 		this.data=pnDTO;
+	}
+	public List<PnDTO> getDataI() {
+		try{
+			if(dataI==null){
+				dataI = businessDelegatorView.getDataPnI();
+			}	
+
+		}catch(Exception e){
+			e.printStackTrace();
+		}
+		return dataI;
+	}
+	public void setDataI(List<PnDTO> pnDTO){
+		this.dataI=pnDTO;
 	}
 	public PnDTO getSelectedPn(){
 		return selectedPn;
@@ -154,14 +177,14 @@ public class PnView implements Serializable {
 	public void setBtnSubir(CommandButton btnSubir) {
 		this.btnSubir = btnSubir;
 	}
-	
+
 	public SelectOneMenu getSomTipoArchivoPn() {
 		return somTipoArchivoPn;
 	}
 	public void setSomTipoArchivoPn(SelectOneMenu somTipoArchivoPn) {
 		this.somTipoArchivoPn = somTipoArchivoPn;
 	}
-	
+
 	public List<SelectItem> getListTiposArchivoItems() {
 		try {
 			if(listTiposArchivoItems==null){
@@ -170,7 +193,7 @@ public class PnView implements Serializable {
 				for(TipoArchivoPn tipoArchivoPn: listaArchivos){
 					log.info(tipoArchivoPn.getNombre());
 					listTiposArchivoItems.add(new SelectItem(tipoArchivoPn.getTipoArchivoPnCodigo(),tipoArchivoPn.getNombre()));
-					
+
 				}
 			}
 		} catch (Exception e) {
@@ -180,6 +203,30 @@ public class PnView implements Serializable {
 	}
 	public void setListTiposArchivoItems(List<SelectItem> listTiposArchivoItems) {
 		this.listTiposArchivoItems = listTiposArchivoItems;
+	}
+	public FileUpload getFileUpload() {
+		return fileUpload;
+	}
+	public void setFileUpload(FileUpload fileUpload) {
+		this.fileUpload = fileUpload;
+	}
+	public InputTextarea getTxtDescripcionM() {
+		return txtDescripcionM;
+	}
+	public void setTxtDescripcionM(InputTextarea txtDescripcionM) {
+		this.txtDescripcionM = txtDescripcionM;
+	}
+	public InputText getTxtTituloM() {
+		return txtTituloM;
+	}
+	public void setTxtTituloM(InputText txtTituloM) {
+		this.txtTituloM = txtTituloM;
+	}
+	public CommandButton getBtnModificar() {
+		return btnModificar;
+	}
+	public void setBtnModificar(CommandButton btnModificar) {
+		this.btnModificar = btnModificar;
 	}
 	//TODO: Metodos
 	public String handleFileUpload(FileUploadEvent event) throws IOException {
@@ -200,17 +247,18 @@ public class PnView implements Serializable {
 				pn.setActivo("S");
 				pn.setArchivo(event.getFile().getContents());
 				validarTipoArchivo(event);
+				otroMetodo(event);
 				pn.setDescripcion(descripcion);
 				pn.setFechaCreacion(fechaCreacion);
 				pn.setTipoArchivoPn(tipoArchivoPn);
 				pn.setTitulo(titulo);
 				Usuario usuarioCreador=  (Usuario) FacesUtils.getfromSession("usuario");
 				pn.setUsuCreador(usuarioCreador.getUsuarioCodigo());
-				
+
 				businessDelegatorView.savePn(pn);
 				FacesContext.getCurrentInstance().addMessage("", new FacesMessage("El PN se guardo con exito"));
-				
-				
+
+
 			}catch (Exception e) {
 				FacesUtils.addErrorMessage("Error! No se subió el PN");
 				log.error(e.toString());
@@ -225,19 +273,19 @@ public class PnView implements Serializable {
 		}
 		return "";
 	}
-	
+
 	public String subirPn(){
-		
-		
-		
+
+
+
 		return "";
 	}
-	
+
 	public String limpiarSubirPn(){
-		
+
 		return "";
 	}
-	
+
 	public String validarTipoArchivo(FileUploadEvent event){
 		try {
 
@@ -263,21 +311,183 @@ public class PnView implements Serializable {
 				System.out.println("\nCurrent Element :" + nNode.getNodeName());
 
 				if (nNode.getNodeType() == Node.ELEMENT_NODE) {
-		 
+
 					Element eElement = (Element) nNode;
+					
+					String tipoTarea= nNode.getAttributes().getNamedItem("GatewayType").toString();
+					System.out.println("tipoTarea:" +tipoTarea);
 
 					System.out.println("Staff id : " + eElement.getAttribute("id"));
-					System.out.println("First Name : " + eElement.getElementsByTagName("firstname").item(0).toString());
-					System.out.println("Last Name : " + eElement.getElementsByTagName("lastname").item(0).toString());
-					System.out.println("Nick Name : " + eElement.getElementsByTagName("nickname").item(0).toString());
-					System.out.println("Salary : " + eElement.getElementsByTagName("salary").item(0).toString());
+					System.out.println("First Name : " + eElement.getElementsByTagName("firstname").item(0).getFirstChild().getNodeValue());
+					System.out.println("Last Name : " + eElement.getElementsByTagName("lastname").item(0).getFirstChild().getNodeValue());									
+					System.out.println("Nick Name : " + eElement.getElementsByTagName("nickname").item(0).getFirstChild().getNodeValue());
+					System.out.println("Salary : " + eElement.getElementsByTagName("salary").item(0).getFirstChild().getNodeValue());
 
 				}
 			}
-		    } catch (Exception e) {
+		} catch (Exception e) {
 			e.printStackTrace();
-		    }
-		
+		}
+
+		return "";
+	}
+	
+	
+	public String otroMetodo(FileUploadEvent event){
+		try {
+			System.out.println("+++++++++++++++++++++++++");
+			System.out.println("OTRO METODO");
+			System.out.println("+++++++++++++++++++++++++");
+			//File fXmlFile = new File();
+			DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
+			DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
+			Document doc = dBuilder.parse(event.getFile().getInputstream());
+
+			//optional, but recommended
+			//read this - http://stackoverflow.com/questions/13786607/normalization-in-dom-parsing-with-java-how-does-it-work
+			doc.getDocumentElement().normalize();
+
+			System.out.println("Root element :" + doc.getDocumentElement().getNodeName());
+
+			NodeList nList = doc.getElementsByTagName("Activities");
+			
+
+			System.out.println("----------------------------");
+
+			for (int temp = 0; temp < nList.getLength(); temp++) {
+
+				Node nNode = nList.item(temp);
+
+				System.out.println("\nCurrent Element :" + nNode.getNodeName());
+
+				if (nNode.getNodeType() == Node.ELEMENT_NODE) {
+
+					Element eElement = (Element) nNode;
+					
+					String tipoTarea= nNode.getAttributes().getNamedItem("Activity").toString();
+					System.out.println("tipoTarea:" +tipoTarea);
+
+					System.out.println("Staff id : " + eElement.getAttribute("id"));
+					System.out.println("First Name : " + eElement.getElementsByTagName("firstname").item(0).getFirstChild().getNodeValue());
+					System.out.println("Last Name : " + eElement.getElementsByTagName("lastname").item(0).getFirstChild().getNodeValue());									
+					System.out.println("Nick Name : " + eElement.getElementsByTagName("nickname").item(0).getFirstChild().getNodeValue());
+					System.out.println("Salary : " + eElement.getElementsByTagName("salary").item(0).getFirstChild().getNodeValue());
+
+				}
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		return "";
+	}
+
+
+
+	public String salirCrearPN(){
+		txtTitulo.resetValue();
+		txtDescripcion.resetValue();
+		somTipoArchivoPn.resetValue();
+		setShowDialog(false);
+
+		return "";
+	}
+
+	public String modificarPN(ActionEvent evt) {
+
+		selectedPn=(PnDTO) evt.getComponent().getAttributes().get("selectedPN");
+
+		txtTituloM.setValue(selectedPn.getTitulo());
+		txtDescripcionM.setValue(selectedPn.getDescripcion());
+
+		setShowDialog(true);
+
+		return "";
+	}
+
+	public String guardarModificacion()throws Exception{
+		try{
+
+			if (entity == null) {
+				entity=businessDelegatorView.getPn(selectedPn.getPnCodigo());
+			}
+
+			Date fechaModificacion= new Date();
+			entity.setFechaModificacion(fechaModificacion);
+
+			Usuario usuarioEnSession =  (Usuario) FacesUtils.getfromSession("usuario");
+			entity.setUsuModificador(usuarioEnSession.getUsuarioCodigo());
+
+			entity.setTitulo(txtTituloM.getValue().toString().trim());
+			entity.setDescripcion(txtDescripcionM.getValue().toString().trim());
+
+			businessDelegatorView.updatePn(entity);
+			FacesUtils.addInfoMessage("El PN ha sido modificado con exito");
+			data= businessDelegatorView.getDataPn();
+			dataI=businessDelegatorView.getDataPnI();
+
+		}catch(Exception e){
+			FacesUtils.addErrorMessage("Error! No se modificó el PN");
+			log.error(e.toString());
+			e.printStackTrace();			
+		}
+		return "";
+	}
+
+	public String salirModificarPN(){
+		txtTituloM.resetValue();
+		txtDescripcionM.resetValue();
+		setShowDialog(false);
+		return "";
+	}
+
+	public String cambiarEstado(ActionEvent evt){
+		log.info("Cambiando estado..");
+		selectedPn=(PnDTO) evt.getComponent().getAttributes().get("selectedPN");
+
+		Pn entity=null;
+
+		try {
+			if (entity == null) {
+				entity= businessDelegatorView.getPn(selectedPn.getPnCodigo());
+			}
+
+			Date fechaModificacion= new Date();
+			entity.setFechaModificacion(fechaModificacion);
+
+			Usuario usuarioEnSession =  (Usuario) FacesUtils.getfromSession("usuario");
+			entity.setUsuModificador(usuarioEnSession.getUsuarioCodigo());
+
+			String cambio=entity.getActivo().toString().trim();
+			if (cambio.equalsIgnoreCase("S")) {
+				entity.setActivo("N");
+			}else{
+				entity.setActivo("S");
+			}
+
+			businessDelegatorView.updatePn(entity);
+			FacesUtils.addInfoMessage("El PN ha sido modificado con éxito");
+			data= businessDelegatorView.getDataPn();
+			dataI=businessDelegatorView.getDataPnI();
+
+			entity=null;
+			selectedPn=null;		
+
+			limpiarPNModificacion();
+
+		}catch (Exception e) {
+			FacesUtils.addErrorMessage("Error! No se cambió el estado del PN");
+			log.error(e.toString());
+
+		}
+
+		return "";
+	}
+
+	public String limpiarPNModificacion(){
+		log.info("Limpiando campos de texto de PN modificado");
+		txtTituloM.resetValue();
+		txtDescripcionM.resetValue();		
 		return "";
 	}
 

@@ -170,6 +170,7 @@ public class GrupoView implements Serializable {
 	public void setTxtNombreUsuarioGrupo(InputText txtNombreUsuarioGrupo) {
 		this.txtNombreUsuarioGrupo = txtNombreUsuarioGrupo;
 	}
+	
 	public CommandButton getBtnCrear() {
 		return btnCrear;
 	}
@@ -357,8 +358,6 @@ public class GrupoView implements Serializable {
 	public String limpiarCrearGrupo(){
 		log.info("Limpiando campos de texto de Grupo nuevo");
 		txtNombre.resetValue();
-		txtCorreoUsuarioGrupo.resetValue();
-		txtNombreUsuarioGrupo.resetValue();
 		btnCrear.setDisabled(true);
 		return "";
 	}
@@ -366,8 +365,6 @@ public class GrupoView implements Serializable {
 	public String limpiarModificarGrupo(){
 		log.info("Limpiando campos de texto de Grupo nuevo");
 		txtNombre.resetValue();
-		txtCorreoUsuarioGrupo.resetValue();
-		txtNombreUsuarioGrupo.resetValue();
 		btnCrear.setDisabled(true);
 		return "";
 	}
