@@ -246,8 +246,10 @@ public class PnView implements Serializable {
 				Pn pn = new Pn();
 				pn.setActivo("S");
 				pn.setArchivo(event.getFile().getContents());
-				validarTipoArchivo(event);
-				otroMetodo(event);
+				//validarTipoArchivo(event);
+				//otroMetodo(event);
+				//analisisTextual(event);
+				analisisTextualMejorado(event);
 				pn.setDescripcion(descripcion);
 				pn.setFechaCreacion(fechaCreacion);
 				pn.setTipoArchivoPn(tipoArchivoPn);
@@ -313,9 +315,7 @@ public class PnView implements Serializable {
 				if (nNode.getNodeType() == Node.ELEMENT_NODE) {
 
 					Element eElement = (Element) nNode;
-					
-					String tipoTarea= nNode.getAttributes().getNamedItem("GatewayType").toString();
-					System.out.println("tipoTarea:" +tipoTarea);
+
 
 					System.out.println("Staff id : " + eElement.getAttribute("id"));
 					System.out.println("First Name : " + eElement.getElementsByTagName("firstname").item(0).getFirstChild().getNodeValue());
@@ -331,8 +331,8 @@ public class PnView implements Serializable {
 
 		return "";
 	}
-	
-	
+
+
 	public String otroMetodo(FileUploadEvent event){
 		try {
 			System.out.println("+++++++++++++++++++++++++");
@@ -349,29 +349,28 @@ public class PnView implements Serializable {
 
 			System.out.println("Root element :" + doc.getDocumentElement().getNodeName());
 
-			NodeList nList = doc.getElementsByTagName("Activities");
-			
+			NodeList nList = doc.getElementsByTagName("Activity");
+			NodeList nSubListEvent = doc.getElementsByTagName("Event");
+			NodeList nSubListImplementation = doc.getElementsByTagName("Implementation");
+
 
 			System.out.println("----------------------------");
 
 			for (int temp = 0; temp < nList.getLength(); temp++) {
 
 				Node nNode = nList.item(temp);
+				Node nSubNodeEvent= nSubListEvent.item(temp);
+				Node nSubNodeImplementation= nSubListImplementation.item(temp);
 
 				System.out.println("\nCurrent Element :" + nNode.getNodeName());
 
 				if (nNode.getNodeType() == Node.ELEMENT_NODE) {
 
 					Element eElement = (Element) nNode;
-					
-					String tipoTarea= nNode.getAttributes().getNamedItem("Activity").toString();
-					System.out.println("tipoTarea:" +tipoTarea);
 
-					System.out.println("Staff id : " + eElement.getAttribute("id"));
-					System.out.println("First Name : " + eElement.getElementsByTagName("firstname").item(0).getFirstChild().getNodeValue());
-					System.out.println("Last Name : " + eElement.getElementsByTagName("lastname").item(0).getFirstChild().getNodeValue());									
-					System.out.println("Nick Name : " + eElement.getElementsByTagName("nickname").item(0).getFirstChild().getNodeValue());
-					System.out.println("Salary : " + eElement.getElementsByTagName("salary").item(0).getFirstChild().getNodeValue());
+					System.out.println("ID Actividad: " + eElement.getAttribute("Id"));
+					System.out.println("Nombre Actividad: " + eElement.getAttribute("Name"));
+
 
 				}
 			}
@@ -380,6 +379,196 @@ public class PnView implements Serializable {
 		}
 
 		return "";
+	}
+
+	public String analisisTextual(FileUploadEvent event){
+		try {
+			DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
+			DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
+			Document doc = dBuilder.parse(event.getFile().getInputstream());
+
+			//optional, but recommended
+			//read this - http://stackoverflow.com/questions/13786607/normalization-in-dom-parsing-with-java-how-does-it-work
+			doc.getDocumentElement().normalize();
+
+			System.out.println("Root element :" + doc.getDocumentElement().getNodeName());
+
+			NodeList nList = doc.getElementsByTagName("Activity");
+			NodeList nListEvent = doc.getElementsByTagName("Event");
+
+			System.out.println("----------------------------");
+			for (int temp = 0; temp < nList.getLength(); temp++) {
+
+				Node nNode = nList.item(temp);
+				Node nNodeEvent = nListEvent.item(temp);
+
+				System.out.println("\nCurrent Element :" + nNode.getNodeName());
+
+				if (nNode.getNodeType() == Node.ELEMENT_NODE) {
+
+					Element eElement = (Element) nNode;
+					Element eElementEvent = (Element) nNodeEvent;
+
+					System.out.println("ID: " + eElement.getAttribute("Id"));
+					if(eElement.getAttribute("Name").length()>0){
+						System.out.println("Nombre: " + eElement.getAttribute("Name"));
+					}					
+					if(eElement.getElementsByTagName("Descripcion").getLength()>0){
+						System.out.println("Descripcion: " + eElement.getElementsByTagName("Description").item(0).getFirstChild().getNodeValue());
+					}
+					if(eElement.getElementsByTagName("Event").getLength()>0){
+						System.out.println("Event");
+						System.out.println("FirstChild: "+eElement.getElementsByTagName("Event").item(0).getFirstChild().getFirstChild());
+						System.out.println("LocalName: "+eElement.getElementsByTagName("Event").item(0).getLocalName());
+						System.out.println("NamespaceURI: "+eElement.getElementsByTagName("Event").item(0).getNamespaceURI());
+						System.out.println("NodeName: "+eElement.getElementsByTagName("Event").item(0).getNodeName());
+						System.out.println("NodeValue: "+eElement.getElementsByTagName("Event").item(0).getNodeValue());
+						System.out.println("Prefix: "+eElement.getElementsByTagName("Event").item(0).getPrefix());
+					}
+					if(eElement.getElementsByTagName("Implementation").getLength()>0){
+						System.out.println("Implementation");
+					}
+					if(eElement.getElementsByTagName("Route").getLength()>0){
+						System.out.println("Route");
+					}
+					if(eElement.getElementsByTagName("BlockActivity").getLength()>0){
+						System.out.println("BlockActivity");
+					}
+
+				}
+			}
+
+
+		}catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		return "";
+	}
+
+	public String analisisTextualMejorado(FileUploadEvent event){
+		try {
+			DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
+			DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
+			Document doc = dBuilder.parse(event.getFile().getInputstream());
+
+			doc.getDocumentElement().normalize();
+
+			NodeList nodeListActiviti= doc.getElementsByTagName("Activity");
+			for (int i = 0; i < nodeListActiviti.getLength(); ++i){
+
+				Element elementActiviti = (Element) nodeListActiviti.item(i);
+				String elementActivitiId= elementActiviti.getAttribute("Id");
+				String elementActivitiName= elementActiviti.getAttribute("Name");
+				System.out.println("ID: "+elementActivitiId);
+				System.out.println("Name: "+elementActivitiName);
+
+				///////////////// EVENT //////////////////////////////////////////////
+				NodeList nodeListEvent = elementActiviti.getElementsByTagName("Event");
+				for (int j = 0; j < nodeListEvent.getLength(); ++j){
+
+					Element elementEvent = (Element) nodeListEvent.item(j);
+					NodeList nodeListStarEvent = elementEvent.getElementsByTagName("StartEvent");
+					NodeList nodeListIntermediateEvent = elementEvent.getElementsByTagName("IntermediateEvent");
+					NodeList nodeListEndEvent = elementEvent.getElementsByTagName("EndEvent");
+
+					for (int k = 0; k < nodeListStarEvent.getLength(); k++) {
+						Element elementStarEvent = (Element) nodeListStarEvent.item(k);
+						String valor=elementStarEvent.getAttribute("Trigger");
+						System.out.println("Event - Star Event - Trigger: "+valor);
+						System.out.println();
+					}					
+					for (int k = 0; k < nodeListIntermediateEvent.getLength(); k++) {
+						Element elementIntermediateEvent= (Element) nodeListIntermediateEvent.item(k);
+						String valor=elementIntermediateEvent.getAttribute("Trigger");
+						System.out.println("Event - Intermediate Event - Trigger: "+valor);
+						System.out.println();
+					}					
+					for (int k = 0; k < nodeListEndEvent.getLength(); k++) {
+						Element elementEndEvent = (Element) nodeListEndEvent.item(k);
+						String valor=elementEndEvent.getAttribute("Result");
+						System.out.println("Event - End Event - Result: "+valor);
+						System.out.println();
+					}
+				}
+
+				/////////////// IMPLEMENTATION /////////////////////////////////////////////////////////
+				NodeList nodeListImplementation = elementActiviti.getElementsByTagName("Implementation");
+				for (int j = 0; j < nodeListImplementation.getLength(); ++j){
+
+					Element elementEvent = (Element) nodeListImplementation.item(j);					
+					NodeList nodeListTask = elementEvent.getElementsByTagName("Task");
+					NodeList nodeListSubFlow = elementEvent.getElementsByTagName("SubFlow");
+
+					for (int k = 0; k < nodeListSubFlow.getLength(); k++) {
+						System.out.println("Implementation - SubFlow");
+					}
+
+					for (int k = 0; k < nodeListTask.getLength(); k++) {
+						System.out.println("Implementation - Task");
+						Element elementTask= (Element)nodeListTask.item(k);
+
+						NodeList nodeListTaskSend = elementTask.getElementsByTagName("TaskSend");
+						NodeList nodeListTaskManual = elementTask.getElementsByTagName("TaskManual");
+						NodeList nodeListTaskScript = elementTask.getElementsByTagName("TaskScript");
+						NodeList nodeListTaskBusinessRule = elementTask.getElementsByTagName("TaskBusinessRule");
+						NodeList nodeListTaskUser = elementTask.getElementsByTagName("TaskUser");
+						NodeList nodeListTaskService = elementTask.getElementsByTagName("TaskService");
+						NodeList nodeListTaskReceive = elementTask.getElementsByTagName("TaskReceive");
+
+						for (int l = 0; l < nodeListTaskSend.getLength(); l++) {
+							System.out.println("Task: TaskSend");
+							System.out.println();
+						}						
+						for (int l = 0; l < nodeListTaskManual.getLength(); l++) {
+							System.out.println("Task: TaskManual");
+							System.out.println();
+						}						
+						for (int l = 0; l < nodeListTaskScript.getLength(); l++) {
+							System.out.println("Task: TaskScript");
+							System.out.println();
+						}
+						for (int l = 0; l < nodeListTaskBusinessRule.getLength(); l++) {
+							System.out.println("Task: TaskBusinessRule");
+							System.out.println();
+						}
+						for (int l = 0; l < nodeListTaskUser.getLength(); l++) {
+							System.out.println("Task: TaskUser");
+							System.out.println();
+						}
+						for (int l = 0; l < nodeListTaskService.getLength(); l++) {
+							System.out.println("Task: TaskService");
+							System.out.println();
+						}
+						for (int l = 0; l < nodeListTaskReceive.getLength(); l++) {
+							System.out.println("Task: TaskReceive");
+							System.out.println();
+						}						
+					}
+				}
+
+				/////////////// BlockActivity /////////////////////////////////////////////////////////
+				NodeList nodeListBlockActivity = elementActiviti.getElementsByTagName("BlockActivity");
+				for (int j = 0; j < nodeListBlockActivity.getLength(); ++j){
+					System.out.println("Implementation: BlocActivity");
+					System.out.println();
+				}
+
+			}
+			System.out.println("Root element :" + doc.getDocumentElement().getNodeName());
+		}catch (Exception e) {
+			e.printStackTrace();
+		}
+		return "";
+	}
+
+
+	public String partirDescripcion(String cadena){
+		String descripcion="";
+		String[] cadenaTemporal;
+		String inicio;
+
+		return descripcion;
 	}
 
 
