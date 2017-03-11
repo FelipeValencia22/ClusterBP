@@ -307,7 +307,7 @@ public class PnLogic implements IPnLogic {
 		log.debug("getting Pn instance");
 
 		Pn entity = null;
-
+ 
 		try {
 			entity = pnDAO.findById(pnCodigo);
 		} catch (Exception e) {
@@ -514,5 +514,10 @@ public class PnLogic implements IPnLogic {
 		}
 
 		return list;
+	}
+
+	@Transactional(readOnly = true)
+	public Pn consultarPNPorNombre(String nombre) {
+		return pnDAO.consultarPNporNombre(nombre);
 	}
 }

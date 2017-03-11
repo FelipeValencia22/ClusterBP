@@ -91,6 +91,10 @@ public class PnView implements Serializable {
 	private Pn entity;
 	private boolean showDialog;
 
+	Long codigoPn;
+
+	String titulo;
+
 	File fXmlFile;
 
 	@ManagedProperty(value="#{BusinessDelegatorView}")
@@ -235,24 +239,18 @@ public class PnView implements Serializable {
 	public String handleFileUpload(FileUploadEvent event) throws IOException {
 		log.info("Subiendo archivos..");
 
-
-
 		try {
-			String titulo= "titulo";
-			System.out.println(titulo);
-			String descripcion= "descripcion";
-			System.out.println(descripcion);
-			//String tipoArchivo= somTipoArchivoPn.getValue().toString().trim();
-			Date fechaCreacion= new Date();
-			System.out.println(fechaCreacion);
-			//Long codigo= Long.parseLong(tipoArchivo);
-			TipoArchivoPn tipoArchivoPn=businessDelegatorView.getTipoArchivoPn(1L);
-			System.out.println(tipoArchivoPn);
+			titulo= event.getFile().getFileName();
+			Pn pnExiste=businessDelegatorView.consultarPNPorNombre(titulo);
 
-			dbFactory = DocumentBuilderFactory.newInstance();
-			dBuilder = dbFactory.newDocumentBuilder();
+			if(pnExiste==null){
+				String descripcion= "prueba";
+				Date fechaCreacion= new Date();
+				TipoArchivoPn tipoArchivoPn=businessDelegatorView.getTipoArchivoPn(1L);
 
-			try {
+				dbFactory = DocumentBuilderFactory.newInstance();
+				dBuilder = dbFactory.newDocumentBuilder();
+
 				Pn pn = new Pn();
 				pn.setActivo("S");
 				pn.setArchivo(event.getFile().getContents());
@@ -266,29 +264,26 @@ public class PnView implements Serializable {
 				pn.setUsuCreador(usuarioCreador.getUsuarioCodigo());
 
 				businessDelegatorView.savePn(pn);
+
 				FacesContext.getCurrentInstance().addMessage("", new FacesMessage("El PN se guardo con exito"));
 
-
-			}catch (Exception e) {
-				FacesUtils.addErrorMessage("Error! No se subió el PN");
-				log.error(e.toString());
-				log.error(e.getLocalizedMessage());
+			}else{
+				FacesUtils.addErrorMessage("El Pn ya existe");
 			}
-		} catch (Exception e) {
-			log.info(e.getMessage());
+		}catch (Exception e) {
+			FacesUtils.addErrorMessage("Error! No se subió el PN");
 			log.error(e.toString());
-			log.error(e.getLocalizedMessage());
 			e.printStackTrace();
-			FacesUtils.addInfoMessage(e.getMessage());
+			log.error(e.getLocalizedMessage());
 		}
+
 		return "";
 	}
 
-	public String analisisTextual(FileUploadEvent event){//TODO:aT
+	public String analisisTextual(FileUploadEvent event){
 		try {
 			Document doc = dBuilder.parse(event.getFile().getInputstream());
 			String tipoActividad;
-			String descripcionActividad;
 			String StartEvent;
 			String IntermediateEvent;
 			String EndEvent;
@@ -442,9 +437,22 @@ public class PnView implements Serializable {
 				listaTextual.get(i).add(tipoActividad);
 				listaTextual.get(i).add(elementActivitiName);
 
+				System.out.println("titulo:"+titulo);
+				Pn pn=businessDelegatorView.consultarPNPorNombre(titulo);
+				Textual textual = new Textual();
+				textual.setActividad(tipoActividad);
+				textual.setId(elementActivitiId);
+				textual.setNombre(elementActivitiName);
+				textual.setPn(pn);
+
+				businessDelegatorView.saveTextual(textual);
+
+				//textual.setTextualPncodigo(pn.getPnCodigo());
+
 			}
 
 			/// Imprimir valores
+			/*
 			for (int j = 0; j < listaTextual.size(); j++) {
 				for (int k = 0; k < listaTextual.get(j).size(); k++) {
 					System.out.println(listaTextual.get(j).get(k));
@@ -452,7 +460,8 @@ public class PnView implements Serializable {
 				System.out.println();
 
 			}
-			 
+			 */
+
 			analisisEstructural(listaTextual, event);
 
 		}catch (Exception e) {

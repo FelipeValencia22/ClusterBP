@@ -76,6 +76,7 @@ public class MenuView {
 		usuarios.setIcon("icon-home-outline");
 		usuarios.setId("sm_usuario");
 		usuarios.setContainerStyleClass("layout-menubar-active");
+		model.addElement(usuarios);
 		
 		DefaultMenuItem repositorios= new DefaultMenuItem("Repositorio");
 		repositorios.setOutcome("/XHTML/repositorio.xhtml");

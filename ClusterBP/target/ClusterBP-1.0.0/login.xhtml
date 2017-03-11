@@ -6,28 +6,59 @@
 	xmlns:p="http://primefaces.org/ui"
 	xmlns:f="http://java.sun.com/jsf/core"
 	xmlns:ui="http://java.sun.com/jsf/facelets">
-	<h:head>
-		<title>Signin Zathuracode</title>
-		<meta name="content-type" content="text/html; charset=UTF-8"/>
-		<link REL="SHORTCUT ICON" href="#{facesContext.externalContext.request.scheme}://#{facesContext.externalContext.request.serverName}:#{facesContext.externalContext.request.serverPort}#{facesContext.externalContext.request.contextPath}/images/icon.png"/>
-		<link rel="stylesheet" type="text/css" href="#{facesContext.externalContext.request.scheme}://#{facesContext.externalContext.request.serverName}:#{facesContext.externalContext.request.serverPort}#{facesContext.externalContext.request.contextPath}/css/bootstrap.min.css" />
-		<link rel="stylesheet" type="text/css" href="#{facesContext.externalContext.request.scheme}://#{facesContext.externalContext.request.serverName}:#{facesContext.externalContext.request.serverPort}#{facesContext.externalContext.request.contextPath}/css/stylelogin.css" />
-    </h:head>
-	<h:body>
-		<div class="container">
-		
-		   <h:form styleClass="form-signin">
-   				<p:growl id="msgGrowl" autoUpdate="true" showDetail="false"/>
-   				 <h2 class="form-signin-heading">Please sign in</h2>
-				
-                <p:inputText id="usernameField" name="j_username" value="#{loginView.userId}" placeholder="Correo" styleClass="form-control"/>
-            
-                <p:password id="passwordField" name="j_password" value="#{loginView.password}" placeholder="Contraseña" feedback="false" styleClass="form-control"/>
-               
-                <p:commandButton styleClass="btn btn-lg btn-primary btn-block" value="Sign in"  action="#{loginView.login}" update="msgGrowl"/>
-	     
-	     	</h:form>
-	      
-    	</div>
-	</h:body>
+<h:head>
+	<f:view contentType="text/html">
+
+		<meta charset="utf-8" />
+		<meta name="viewport"
+			content="width=device-width, initial-scale=1, user-scalable=no" />
+		<link rel="stylesheet" href="assets/css/main.css" />
+	</f:view>
+
+</h:head>
+<h:body>
+	<div class="container" align="center">
+		<h:form >
+			<h:panelGrid columns="1" width="700">
+				<p:growl id="msgGrowl" autoUpdate="true" showDetail="false" />
+				<h2 class="form-signin-heading">ClusterBP</h2>
+				<h3 class="form-signin-heading">Panel de administración</h3>
+
+				<p:inputText id="usernameField" name="j_username"
+					value="#{loginView.userId}" placeholder="Correo"
+					/>
+
+				<p:password id="passwordField" name="j_password"
+					value="#{loginView.password}" placeholder="Contraseña"
+					feedback="false"  />
+				<br></br>
+
+				<p:commandButton 
+					value="inicioSesion" action="#{loginView.login}" update="msgGrowl" />
+			</h:panelGrid>
+		</h:form>
+	</div>
+
+	<f:view contentType="text/html">
+
+		<!-- Footer -->
+		<footer id="footer">
+			<ul class="icons">
+				<li><a href="#" class="icon fa-twitter"><span class="label">Twitter</span></a></li>
+				<li><a href="#" class="icon fa-instagram"><span
+						class="label">Instagram</span></a></li>
+				<li><a href="#" class="icon fa-github"><span class="label">GitHub</span></a></li>
+				<li><a href="#" class="icon fa-envelope-o"><span
+						class="label">Email</span></a></li>
+			</ul>
+
+		</footer>
+
+		<!-- Scripts -->
+		<!--[if lte IE 8]><script src="assets/js/ie/respond.min.js"></script><![endif]-->
+		<script src="assets/js/main.js"></script>
+
+	</f:view>
+
+</h:body>
 </html>

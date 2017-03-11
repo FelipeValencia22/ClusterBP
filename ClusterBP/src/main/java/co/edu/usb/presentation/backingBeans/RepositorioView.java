@@ -59,7 +59,7 @@ public class RepositorioView implements Serializable {
 
 	private Calendar txtFechaCreacion;
 	private Calendar txtFechaModificacion;
-	
+
 	private CommandButton btnSave;
 	private CommandButton btnCrear;
 	private CommandButton btnModify;
@@ -73,7 +73,7 @@ public class RepositorioView implements Serializable {
 	private boolean showDialog;
 	@ManagedProperty(value = "#{BusinessDelegatorView}")
 	private IBusinessDelegatorView businessDelegatorView;
-	
+
 	public IBusinessDelegatorView getBusinessDelegatorView() {
 		return businessDelegatorView;
 	}
@@ -272,7 +272,7 @@ public class RepositorioView implements Serializable {
 			Usuario usuarioCreador=  (Usuario) FacesUtils.getfromSession("usuario");
 			String nombre=txtNombre.getValue().toString().trim();
 			String descripcion=txtDescripcion.getValue().toString().trim();
-			
+
 			if(validarCampos(nombre, descripcion)){
 				if(nombreDisponible(nombre)){
 					repositorio.setActivo("S");
@@ -280,8 +280,8 @@ public class RepositorioView implements Serializable {
 					repositorio.setFechaCreacion(fechaCreacion);
 					repositorio.setNombre(nombre);
 					repositorio.setUsuCreador(usuarioCreador.getUsuarioCodigo());
-					
 					businessDelegatorView.saveRepositorio(repositorio);
+					 
 					FacesUtils.addInfoMessage("El Repositorio ha sido creado con exito");
 					data=businessDelegatorView.getDataRepositorio();
 					dataI=businessDelegatorView.getDataRepositorioI();
@@ -289,11 +289,11 @@ public class RepositorioView implements Serializable {
 				}else{
 					FacesUtils.addErrorMessage("El Nombre del Repositorio ya está en uso");
 				}
-				
+
 			}else{
 				FacesUtils.addErrorMessage("Todos los campos son obligatorios");
 			}
-			
+
 		}catch (Exception e) {
 			FacesUtils.addErrorMessage("Error! No se creó el repositorio");
 			log.error(e.toString());
@@ -301,7 +301,7 @@ public class RepositorioView implements Serializable {
 		}
 		return "";
 	}
-	
+
 	public String modificarRepositorio(ActionEvent evt){
 		selectedRepositorio= (RepositorioDTO) evt.getComponent().getAttributes().get("selectedRepositorio");
 		txtNombreM.setValue(selectedRepositorio.getNombre());
@@ -374,7 +374,7 @@ public class RepositorioView implements Serializable {
 
 		return "";
 	}
-	
+
 	public String cambiarEstado(ActionEvent evt){
 		selectedRepositorio= (RepositorioDTO) (evt.getComponent().getAttributes().get("selectedRepositorio"));	
 		try {
@@ -412,12 +412,12 @@ public class RepositorioView implements Serializable {
 
 		return "";
 	}
-	
+
 	public void txtCrearListener(){
 		log.info("Se ejecuto el listener crear Repositorio");
-		
+
 		String nombre=txtNombre.getValue().toString().trim();
-		
+
 		if(nombreDisponible(nombre)){
 			btnCrear.setDisabled(false);
 		}else{
@@ -435,7 +435,7 @@ public class RepositorioView implements Serializable {
 
 		return resultado;
 	}
-	
+
 	public String limpiarCamposModificar(){
 		txtNombreM.resetValue();
 		txtDescripcionM.resetValue();
@@ -455,14 +455,14 @@ public class RepositorioView implements Serializable {
 
 		return resultado;
 	}	
-	
+
 	public String limpiarCamposCrear(){
 		txtNombre.resetValue();
 		txtDescripcion.resetValue();
 		btnCrear.setDisabled(true);
 		return "";
 	}
-	
+
 	public String salirCrearRepositorio(){
 		txtNombre.resetValue();
 		txtDescripcion.resetValue();
@@ -470,12 +470,12 @@ public class RepositorioView implements Serializable {
 		setShowDialog(false);		
 		return "";
 	}
-	
+
 	public String salirModificarRepositorio(){
 		txtNombreM.resetValue();
 		txtDescripcionM.resetValue();
 		setShowDialog(false);
-		
+
 		return "";
 	}
 }

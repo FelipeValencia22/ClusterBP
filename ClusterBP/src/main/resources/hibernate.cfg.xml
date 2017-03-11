@@ -15,7 +15,10 @@
 		<mapping resource="co/edu/usb/clusterbp/TipoArchivoPn.hbm.xml" />
 		<mapping resource="co/edu/usb/clusterbp/RepositorioPn.hbm.xml" />
 		<mapping resource="co/edu/usb/clusterbp/Usuario.hbm.xml" />
-		<mapping resource="co/edu/usb/clusterbp/UsuarioRol.hbm.xml" />
+		<mapping resource="co/edu/usb/clusterbp/UsuarioRol.hbm.xml" />		
+        <mapping resource="co/edu/usb/clusterbp/TipoActividad.hbm.xml" />
+        <mapping resource="co/edu/usb/clusterbp/Textual.hbm.xml" />
+        <mapping resource="co/edu/usb/clusterbp/Estructural.hbm.xml" />
 		<mapping resource="co/edu/usb/clusterbp/Consultas.hbm.xml" />
 	</session-factory>
 </hibernate-configuration>

@@ -1,0 +1,30 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated 11/03/2017 12:29:01 AM by Hibernate Tools 5.1.0.Final -->
+<hibernate-mapping>
+    <class name="co.edu.usb.clusterbp.Estructural" table="estructural" schema="public" optimistic-lock="version">
+        <id name="estructuralCodigo" type="java.lang.Long">
+            <column name="estructural_codigo" />
+            <generator class="identity" />
+        </id>
+        <many-to-one name="pn" class="co.edu.usb.clusterbp.Pn" fetch="select">
+            <column name="estructural_pncodigo" not-null="true" />
+        </many-to-one>
+        <property name="id" type="java.lang.String">
+            <column name="id" not-null="true" />
+        </property>
+        <property name="fromId" type="java.lang.String">
+            <column name="from_id" />
+        </property>
+        <property name="toId" type="java.lang.String">
+            <column name="to_id" />
+        </property>
+        <property name="fromActividad" type="java.lang.String">
+            <column name="from_actividad" not-null="true" />
+        </property>
+        <property name="toActividad" type="java.lang.String">
+            <column name="to_actividad" not-null="true" />
+        </property>
+    </class>
+</hibernate-mapping>

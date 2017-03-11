@@ -20,6 +20,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import org.springframework.orm.hibernate3.SessionFactoryUtils;
 
+import co.edu.usb.clusterbp.Pn;
 import co.edu.usb.clusterbp.Rol;
 import co.edu.usb.clusterbp.Usuario;
 
@@ -678,5 +679,13 @@ public class HibernateDaoImpl<T, PK extends Serializable> implements Dao<T, PK> 
 		query.setParameter("usuarioCodigo", usuarioCodigo);
 		Usuario usuario= (Usuario) query.uniqueResult();
 		return usuario;
+	}
+	
+	@Override
+	public Pn consultarPNporNombre(String nombre) {
+		Query query= getSession().getNamedQuery("consultarPNporNombre");
+		query.setParameter("nombre", nombre);
+		Pn pn= (Pn) query.uniqueResult();
+		return pn;
 	}
 }

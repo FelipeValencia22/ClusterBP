@@ -54,4 +54,7 @@ public interface IPnLogic {
     public List<PnDTO> getDataPn() throws Exception;
     
     public List<PnDTO> getDataPnI() throws Exception;
+    
+  //TODO: Consultas
+  	public Pn consultarPNPorNombre (String nombre);
 }

@@ -4,6 +4,7 @@ import java.io.Serializable;
 
 import java.util.List;
 
+import co.edu.usb.clusterbp.Pn;
 import co.edu.usb.clusterbp.Rol;
 import co.edu.usb.clusterbp.Usuario;
 
@@ -313,4 +314,7 @@ public interface Dao<T, PK extends Serializable> {
     public String consultarRepositorioPorNombre (String nombre);
     
     public Usuario consultarUsuarioPorID(Long usuarioCodigo);
+    
+    public Pn consultarPNporNombre (String nombre);
+    
 }

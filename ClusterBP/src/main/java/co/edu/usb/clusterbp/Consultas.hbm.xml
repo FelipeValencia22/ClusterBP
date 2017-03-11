@@ -35,9 +35,21 @@
    ]]>
 	</query>
 	
+	<query name="consultarPNporNombre">
+  <![CDATA[
+  Select pn From Pn pn where pn.titulo=:nombre
+   ]]>
+	</query>
+	
 	<query name="consultarUsuarioPorID">
   <![CDATA[
   Select usu From Usuario usu where usu.usuarioCodigo=:usuarioCodigo
+   ]]>
+	</query>
+	
+	<query name="consultarTipoActividadPorNombre">
+  <![CDATA[
+  Select ta From TipoActividad ta where ta.nombre=:nombre
    ]]>
 	</query>
 	

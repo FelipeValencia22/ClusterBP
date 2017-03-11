@@ -1,0 +1,33 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated 11/03/2017 12:29:01 AM by Hibernate Tools 5.1.0.Final -->
+<hibernate-mapping>
+    <class name="co.edu.usb.clusterbp.TipoActividad" table="tipo_actividad" schema="public" optimistic-lock="version">
+        <id name="tipoActividadCodigo" type="java.lang.Long">
+            <column name="tipo_actividad_codigo" />
+            <generator class="identity" />
+        </id>
+        <property name="nombre" type="java.lang.String">
+            <column name="nombre" not-null="true" />
+        </property>
+        <property name="usuCreador" type="java.lang.Long">
+            <column name="usu_creador" />
+        </property>
+        <property name="fechaCreacion" type="java.util.Date">
+            <column name="fecha_creacion" length="29" not-null="true" />
+        </property>
+        <property name="usuModificador" type="java.lang.Long">
+            <column name="usu_modificador" />
+        </property>
+        <property name="fechaModificacion" type="java.util.Date">
+            <column name="fecha_modificacion" length="29" />
+        </property>
+        <property name="activo" type="java.lang.String">
+            <column name="activo" length="1" not-null="true" />
+        </property>
+        <property name="imagen" type="binary">
+            <column name="imagen" />
+        </property>
+    </class>
+</hibernate-mapping>

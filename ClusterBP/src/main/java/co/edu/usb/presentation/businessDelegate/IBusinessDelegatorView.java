@@ -1,10 +1,13 @@
 package co.edu.usb.presentation.businessDelegate;
 
 
+import co.edu.usb.clusterbp.Estructural;
 import co.edu.usb.clusterbp.Pn;
 import co.edu.usb.clusterbp.Repositorio;
 import co.edu.usb.clusterbp.RepositorioPn;
 import co.edu.usb.clusterbp.Rol;
+import co.edu.usb.clusterbp.Textual;
+import co.edu.usb.clusterbp.TipoActividad;
 import co.edu.usb.clusterbp.TipoArchivoPn;
 import co.edu.usb.clusterbp.Usuario;
 import co.edu.usb.clusterbp.UsuarioRol;
@@ -22,10 +25,13 @@ import co.edu.usb.clusterbp.control.RolLogic;
 import co.edu.usb.clusterbp.control.TipoArchivoPnLogic;
 import co.edu.usb.clusterbp.control.UsuarioLogic;
 import co.edu.usb.clusterbp.control.UsuarioRolLogic;
+import co.edu.usb.clusterbp.dto.EstructuralDTO;
 import co.edu.usb.clusterbp.dto.PnDTO;
 import co.edu.usb.clusterbp.dto.RepositorioDTO;
 import co.edu.usb.clusterbp.dto.RepositorioPnDTO;
 import co.edu.usb.clusterbp.dto.RolDTO;
+import co.edu.usb.clusterbp.dto.TextualDTO;
+import co.edu.usb.clusterbp.dto.TipoActividadDTO;
 import co.edu.usb.clusterbp.dto.TipoArchivoPnDTO;
 import co.edu.usb.clusterbp.dto.UsuarioDTO;
 import co.edu.usb.clusterbp.dto.UsuarioRolDTO;
@@ -217,6 +223,80 @@ public interface IBusinessDelegatorView {
     public Long findTotalNumberUsuarioRol() throws Exception;
 
     public List<UsuarioRolDTO> getDataUsuarioRol() throws Exception;
+    
+    public List<Estructural> getEstructural() throws Exception;
+
+    public void saveEstructural(Estructural entity) throws Exception;
+
+    public void deleteEstructural(Estructural entity) throws Exception;
+
+    public void updateEstructural(Estructural entity) throws Exception;
+
+    public Estructural getEstructural(Long estructuralCodigo)
+        throws Exception;
+
+    public List<Estructural> findByCriteriaInEstructural(Object[] variables,
+        Object[] variablesBetween, Object[] variablesBetweenDates)
+        throws Exception;
+
+    public List<Estructural> findPageEstructural(String sortColumnName,
+        boolean sortAscending, int startRow, int maxResults)
+        throws Exception;
+
+    public Long findTotalNumberEstructural() throws Exception;
+
+    public List<EstructuralDTO> getDataEstructural() throws Exception;
+
+    
+    public List<Textual> getTextual() throws Exception;
+
+    public void saveTextual(Textual entity) throws Exception;
+
+    public void deleteTextual(Textual entity) throws Exception;
+
+    public void updateTextual(Textual entity) throws Exception;
+
+    public Textual getTextual(Long textualCodigo) throws Exception;
+
+    public List<Textual> findByCriteriaInTextual(Object[] variables,
+        Object[] variablesBetween, Object[] variablesBetweenDates)
+        throws Exception;
+
+    public List<Textual> findPageTextual(String sortColumnName,
+        boolean sortAscending, int startRow, int maxResults)
+        throws Exception;
+
+    public Long findTotalNumberTextual() throws Exception;
+
+    public List<TextualDTO> getDataTextual() throws Exception;
+
+    public List<TipoActividad> getTipoActividad() throws Exception;
+
+    public void saveTipoActividad(TipoActividad entity)
+        throws Exception;
+
+    public void deleteTipoActividad(TipoActividad entity)
+        throws Exception;
+
+    public void updateTipoActividad(TipoActividad entity)
+        throws Exception;
+
+    public TipoActividad getTipoActividad(Long tipoActividadCodigo)
+        throws Exception;
+
+    public List<TipoActividad> findByCriteriaInTipoActividad(
+        Object[] variables, Object[] variablesBetween,
+        Object[] variablesBetweenDates) throws Exception;
+
+    public List<TipoActividad> findPageTipoActividad(String sortColumnName,
+        boolean sortAscending, int startRow, int maxResults)
+        throws Exception;
+
+    public Long findTotalNumberTipoActividad() throws Exception;
+
+    public List<TipoActividadDTO> getDataTipoActividad()
+        throws Exception;
+
 
     //TODO: Metodos
     public Usuario autenticarUsuario(String correo, String clave) throws Exception;
@@ -237,4 +317,6 @@ public interface IBusinessDelegatorView {
     public String consultarRepositorioPorNombre (String nombre);
     
     public Usuario consultarUsuarioPorID(Long usuarioCodigo);
+    
+    public Pn consultarPNPorNombre(String nombre);
 }
