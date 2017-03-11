@@ -43,12 +43,6 @@ public class PnLogic implements IPnLogic {
 	@Autowired
 	private IPnDAO pnDAO;
 
-	/**
-	 * DAO injected by Spring that manages Historial entities
-	 *
-	 */
-	@Autowired
-	private IHistorialDAO historialDAO;
 
 	/**
 	 * DAO injected by Spring that manages RepositorioPn entities
@@ -157,32 +151,8 @@ public class PnLogic implements IPnLogic {
 			throw new ZMessManager().new EmptyFieldException("pnCodigo");
 		}
 
-		List<Historial> historials = null;
+		
 		List<RepositorioPn> repositorioPns = null;
-
-		try {
-			historials = historialDAO.findByProperty("pn.pnCodigo",
-					entity.getPnCodigo());
-
-			if (Utilities.validationsList(historials) == true) {
-				throw new ZMessManager().new DeletingException("historials");
-			}
-
-			repositorioPns = repositorioPnDAO.findByProperty("pn.pnCodigo",
-					entity.getPnCodigo());
-
-			if (Utilities.validationsList(repositorioPns) == true) {
-				throw new ZMessManager().new DeletingException("repositorioPns");
-			}
-
-			pnDAO.delete(entity);
-
-			log.debug("delete Pn successful");
-		} catch (Exception e) {
-			log.error("delete Pn failed", e);
-			throw e;
-		} finally {
-		}
 	}
 
 	@Transactional(readOnly = false, propagation = Propagation.REQUIRED)

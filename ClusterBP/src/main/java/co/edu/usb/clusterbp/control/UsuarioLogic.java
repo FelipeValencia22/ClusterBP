@@ -44,13 +44,6 @@ public class UsuarioLogic implements IUsuarioLogic {
 	private IUsuarioDAO usuarioDAO;
 
 	/**
-	 * DAO injected by Spring that manages GrupoUsuario entities
-	 *
-	 */
-	@Autowired
-	private IGrupoUsuarioDAO grupoUsuarioDAO;
-
-	/**
 	 * DAO injected by Spring that manages UsuarioRol entities
 	 *
 	 */
@@ -151,17 +144,9 @@ public class UsuarioLogic implements IUsuarioLogic {
 			throw new ZMessManager().new EmptyFieldException("usuarioCodigo");
 		}
 
-		List<GrupoUsuario> grupoUsuarios = null;
 		List<UsuarioRol> usuarioRols = null;
 
 		try {
-			grupoUsuarios = grupoUsuarioDAO.findByProperty("usuario.usuarioCodigo",
-					entity.getUsuarioCodigo());
-
-			if (Utilities.validationsList(grupoUsuarios) == true) {
-				throw new ZMessManager().new DeletingException("grupoUsuarios");
-			}
-
 			usuarioRols = usuarioRolDAO.findByProperty("usuario.usuarioCodigo",
 					entity.getUsuarioCodigo());
 

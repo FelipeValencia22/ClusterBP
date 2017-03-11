@@ -37,13 +37,6 @@
 		<property name="archivo" type="binary">
 			<column name="archivo" not-null="true" />
 		</property>
-		<set name="historials" table="historial" inverse="true" lazy="true"
-			fetch="select">
-			<key>
-				<column name="pncodigo" not-null="true" />
-			</key>
-			<one-to-many class="co.edu.usb.clusterbp.Historial" />
-		</set>
 		<set name="repositorioPns" table="repositorio_pn" inverse="true"
 			lazy="true" fetch="select">
 			<key>

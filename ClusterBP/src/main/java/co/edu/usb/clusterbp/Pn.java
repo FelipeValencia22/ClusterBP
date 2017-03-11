@@ -22,7 +22,6 @@ public class Pn  implements java.io.Serializable {
      private Date fechaModificacion;
      private String activo;
      private byte[] archivo;
-     private Set<Historial> historials = new HashSet<Historial>(0);
      private Set<RepositorioPn> repositorioPns = new HashSet<RepositorioPn>(0);
 
     public Pn() {
@@ -38,7 +37,7 @@ public class Pn  implements java.io.Serializable {
         this.activo = activo;
         this.archivo = archivo;
     }
-    public Pn(Long pnCodigo, TipoArchivoPn tipoArchivoPn, String titulo, String descripcion, Long usuCreador, Date fechaCreacion, Long usuModificador, Date fechaModificacion, String activo, byte[] archivo, Set<Historial> historials, Set<RepositorioPn> repositorioPns) {
+    public Pn(Long pnCodigo, TipoArchivoPn tipoArchivoPn, String titulo, String descripcion, Long usuCreador, Date fechaCreacion, Long usuModificador, Date fechaModificacion, String activo, byte[] archivo, Set<RepositorioPn> repositorioPns) {
        this.pnCodigo = pnCodigo;
        this.tipoArchivoPn = tipoArchivoPn;
        this.titulo = titulo;
@@ -49,7 +48,6 @@ public class Pn  implements java.io.Serializable {
        this.fechaModificacion = fechaModificacion;
        this.activo = activo;
        this.archivo = archivo;
-       this.historials = historials;
        this.repositorioPns = repositorioPns;
     }
    
@@ -122,13 +120,6 @@ public class Pn  implements java.io.Serializable {
     
     public void setArchivo(byte[] archivo) {
         this.archivo = archivo;
-    }
-    public Set<Historial> getHistorials() {
-        return this.historials;
-    }
-    
-    public void setHistorials(Set<Historial> historials) {
-        this.historials = historials;
     }
     public Set<RepositorioPn> getRepositorioPns() {
         return this.repositorioPns;

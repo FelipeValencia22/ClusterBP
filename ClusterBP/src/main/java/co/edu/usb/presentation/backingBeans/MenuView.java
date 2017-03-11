@@ -76,14 +76,6 @@ public class MenuView {
 		usuarios.setIcon("icon-home-outline");
 		usuarios.setId("sm_usuario");
 		usuarios.setContainerStyleClass("layout-menubar-active");
-		model.addElement(usuarios);
-			
-		DefaultMenuItem grupos= new DefaultMenuItem("Grupo");
-		grupos.setOutcome("/XHTML/grupo.xhtml");
-		grupos.setIcon("icon-home-outline");
-		grupos.setId("sm_grupos");
-		grupos.setContainerStyleClass("layout-menubar-active");
-		model.addElement(grupos);
 		
 		DefaultMenuItem repositorios= new DefaultMenuItem("Repositorio");
 		repositorios.setOutcome("/XHTML/repositorio.xhtml");
@@ -92,26 +84,12 @@ public class MenuView {
 		repositorios.setContainerStyleClass("layout-menubar-active");
 		model.addElement(repositorios);
 		
-		DefaultMenuItem pn= new DefaultMenuItem("ProcesoNegocio");
+		DefaultMenuItem pn= new DefaultMenuItem("Proceso de negocio");
 		pn.setOutcome("/XHTML/pn.xhtml");
 		pn.setIcon("icon-home-outline");
 		pn.setId("sm_pns");
 		pn.setContainerStyleClass("layout-menubar-active");
 		model.addElement(pn);
-		
-		DefaultMenuItem plugins= new DefaultMenuItem("PlugIn");
-		plugins.setOutcome("/XHTML/plugin.xhtml");
-		plugins.setIcon("icon-home-outline");
-		plugins.setId("sm_plugins");
-		plugins.setContainerStyleClass("layout-menubar-active");
-		model.addElement(plugins);
-		
-		DefaultMenuItem modbusqueda= new DefaultMenuItem("ModeloBusqueda");
-		modbusqueda.setOutcome("/XHTML/modbusqueda.xhtml");
-		modbusqueda.setIcon("icon-home-outline");
-		modbusqueda.setId("sm_modbusq");
-		modbusqueda.setContainerStyleClass("layout-menubar-active");
-		model.addElement(modbusqueda);
 	}
 	
 	

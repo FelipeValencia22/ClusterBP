@@ -44,39 +44,11 @@ public class RepositorioLogic implements IRepositorioLogic {
 	private IRepositorioDAO repositorioDAO;
 
 	/**
-	 * DAO injected by Spring that manages GrupoRepositorio entities
-	 *
-	 */
-	@Autowired
-	private IGrupoRepositorioDAO grupoRepositorioDAO;
-
-	/**
-	 * DAO injected by Spring that manages LogBusqueda entities
-	 *
-	 */
-	@Autowired
-	private ILogBusquedaDAO logBusquedaDAO;
-
-	/**
-	 * DAO injected by Spring that manages RepositorioPlugin entities
-	 *
-	 */
-	@Autowired
-	private IRepositorioPluginDAO repositorioPluginDAO;
-
-	/**
 	 * DAO injected by Spring that manages RepositorioPn entities
 	 *
 	 */
 	@Autowired
 	private IRepositorioPnDAO repositorioPnDAO;
-
-	/**
-	 * DAO injected by Spring that manages VersionRep entities
-	 *
-	 */
-	@Autowired
-	private IVersionRepDAO versionRepDAO;
 
 	@Transactional(readOnly = true)
 	public List<Repositorio> getRepositorio() throws Exception {
@@ -165,48 +137,15 @@ public class RepositorioLogic implements IRepositorioLogic {
 					"repositorioCodigo");
 		}
 
-		List<GrupoRepositorio> grupoRepositorios = null;
-		List<LogBusqueda> logBusquedas = null;
-		List<RepositorioPlugin> repositorioPlugins = null;
 		List<RepositorioPn> repositorioPns = null;
-		List<VersionRep> versionReps = null;
 
 		try {
-			grupoRepositorios = grupoRepositorioDAO.findByProperty("repositorio.repositorioCodigo",
-					entity.getRepositorioCodigo());
-
-			if (Utilities.validationsList(grupoRepositorios) == true) {
-				throw new ZMessManager().new DeletingException(
-						"grupoRepositorios");
-			}
-
-			logBusquedas = logBusquedaDAO.findByProperty("repositorio.repositorioCodigo",
-					entity.getRepositorioCodigo());
-
-			if (Utilities.validationsList(logBusquedas) == true) {
-				throw new ZMessManager().new DeletingException("logBusquedas");
-			}
-
-			repositorioPlugins = repositorioPluginDAO.findByProperty("repositorio.repositorioCodigo",
-					entity.getRepositorioCodigo());
-
-			if (Utilities.validationsList(repositorioPlugins) == true) {
-				throw new ZMessManager().new DeletingException(
-						"repositorioPlugins");
-			}
 
 			repositorioPns = repositorioPnDAO.findByProperty("repositorio.repositorioCodigo",
 					entity.getRepositorioCodigo());
 
 			if (Utilities.validationsList(repositorioPns) == true) {
 				throw new ZMessManager().new DeletingException("repositorioPns");
-			}
-
-			versionReps = versionRepDAO.findByProperty("repositorio.repositorioCodigo",
-					entity.getRepositorioCodigo());
-
-			if (Utilities.validationsList(versionReps) == true) {
-				throw new ZMessManager().new DeletingException("versionReps");
 			}
 
 			repositorioDAO.delete(entity);

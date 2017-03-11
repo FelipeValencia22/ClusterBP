@@ -20,11 +20,7 @@ public class Repositorio  implements java.io.Serializable {
      private Long usuModificador;
      private Date fechaModificacion;
      private String activo;
-     private Set<VersionRep> versionReps = new HashSet<VersionRep>(0);
      private Set<RepositorioPn> repositorioPns = new HashSet<RepositorioPn>(0);
-     private Set<GrupoRepositorio> grupoRepositorios = new HashSet<GrupoRepositorio>(0);
-     private Set<LogBusqueda> logBusquedas = new HashSet<LogBusqueda>(0);
-     private Set<RepositorioPlugin> repositorioPlugins = new HashSet<RepositorioPlugin>(0);
 
     public Repositorio() {
     }
@@ -38,7 +34,7 @@ public class Repositorio  implements java.io.Serializable {
         this.fechaCreacion = fechaCreacion;
         this.activo = activo;
     }
-    public Repositorio(Long repositorioCodigo, String nombre, String descripcion, Long usuCreador, Date fechaCreacion, Long usuModificador, Date fechaModificacion, String activo, Set<VersionRep> versionReps, Set<RepositorioPn> repositorioPns, Set<GrupoRepositorio> grupoRepositorios, Set<LogBusqueda> logBusquedas, Set<RepositorioPlugin> repositorioPlugins) {
+    public Repositorio(Long repositorioCodigo, String nombre, String descripcion, Long usuCreador, Date fechaCreacion, Long usuModificador, Date fechaModificacion, String activo, Set<RepositorioPn> repositorioPns) {
        this.repositorioCodigo = repositorioCodigo;
        this.nombre = nombre;
        this.descripcion = descripcion;
@@ -47,11 +43,7 @@ public class Repositorio  implements java.io.Serializable {
        this.usuModificador = usuModificador;
        this.fechaModificacion = fechaModificacion;
        this.activo = activo;
-       this.versionReps = versionReps;
        this.repositorioPns = repositorioPns;
-       this.grupoRepositorios = grupoRepositorios;
-       this.logBusquedas = logBusquedas;
-       this.repositorioPlugins = repositorioPlugins;
     }
    
     public Long getRepositorioCodigo() {
@@ -110,13 +102,6 @@ public class Repositorio  implements java.io.Serializable {
     public void setActivo(String activo) {
         this.activo = activo;
     }
-    public Set<VersionRep> getVersionReps() {
-        return this.versionReps;
-    }
-    
-    public void setVersionReps(Set<VersionRep> versionReps) {
-        this.versionReps = versionReps;
-    }
     public Set<RepositorioPn> getRepositorioPns() {
         return this.repositorioPns;
     }
@@ -124,31 +109,6 @@ public class Repositorio  implements java.io.Serializable {
     public void setRepositorioPns(Set<RepositorioPn> repositorioPns) {
         this.repositorioPns = repositorioPns;
     }
-    public Set<GrupoRepositorio> getGrupoRepositorios() {
-        return this.grupoRepositorios;
-    }
-    
-    public void setGrupoRepositorios(Set<GrupoRepositorio> grupoRepositorios) {
-        this.grupoRepositorios = grupoRepositorios;
-    }
-    public Set<LogBusqueda> getLogBusquedas() {
-        return this.logBusquedas;
-    }
-    
-    public void setLogBusquedas(Set<LogBusqueda> logBusquedas) {
-        this.logBusquedas = logBusquedas;
-    }
-    public Set<RepositorioPlugin> getRepositorioPlugins() {
-        return this.repositorioPlugins;
-    }
-    
-    public void setRepositorioPlugins(Set<RepositorioPlugin> repositorioPlugins) {
-        this.repositorioPlugins = repositorioPlugins;
-    }
-
-
-
-
 }
 
 

@@ -21,7 +21,6 @@ public class Usuario  implements java.io.Serializable {
      private Long usuaModificador;
      private Date fechaModificacion;
      private String activo;
-     private Set<GrupoUsuario> grupoUsuarios = new HashSet<GrupoUsuario>(0);
      private Set<UsuarioRol> usuarioRols = new HashSet<UsuarioRol>(0);
 
     public Usuario() {
@@ -37,7 +36,7 @@ public class Usuario  implements java.io.Serializable {
         this.fechaCreacion = fechaCreacion;
         this.activo = activo;
     }
-    public Usuario(Long usuarioCodigo, String correo, String clave, String nombre, Long usuCreador, Date fechaCreacion, Long usuaModificador, Date fechaModificacion, String activo, Set<GrupoUsuario> grupoUsuarios, Set<UsuarioRol> usuarioRols) {
+    public Usuario(Long usuarioCodigo, String correo, String clave, String nombre, Long usuCreador, Date fechaCreacion, Long usuaModificador, Date fechaModificacion, String activo, Set<UsuarioRol> usuarioRols) {
        this.usuarioCodigo = usuarioCodigo;
        this.correo = correo;
        this.clave = clave;
@@ -47,7 +46,6 @@ public class Usuario  implements java.io.Serializable {
        this.usuaModificador = usuaModificador;
        this.fechaModificacion = fechaModificacion;
        this.activo = activo;
-       this.grupoUsuarios = grupoUsuarios;
        this.usuarioRols = usuarioRols;
     }
    
@@ -114,13 +112,7 @@ public class Usuario  implements java.io.Serializable {
     public void setActivo(String activo) {
         this.activo = activo;
     }
-    public Set<GrupoUsuario> getGrupoUsuarios() {
-        return this.grupoUsuarios;
-    }
-    
-    public void setGrupoUsuarios(Set<GrupoUsuario> grupoUsuarios) {
-        this.grupoUsuarios = grupoUsuarios;
-    }
+
     public Set<UsuarioRol> getUsuarioRols() {
         return this.usuarioRols;
     }

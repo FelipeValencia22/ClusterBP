@@ -29,12 +29,6 @@
    ]]>
 	</query>
 	
-	<query name="consultarGrupoPorNombre">
-  <![CDATA[
-  Select grp.nombre From Grupo grp where grp.nombre=:nombre
-   ]]>
-	</query>
-	
 	<query name="consultarRepositorioPorNombre">
   <![CDATA[
   Select rep.nombre From Repositorio rep where rep.nombre=:nombre
