@@ -82,14 +82,14 @@ public class PnView implements Serializable {
 
 	private FileUpload fileUpload;
 
+	DocumentBuilderFactory dbFactory; 
+	DocumentBuilder dBuilder;
+
 	private List<PnDTO> data;
 	private List<PnDTO> dataI;
 	private PnDTO selectedPn;
 	private Pn entity;
 	private boolean showDialog;
-
-	ArrayList <ArrayList<String>> listaTextual;
-	ArrayList <ArrayList<String>> listaEstructural;
 
 	File fXmlFile;
 
@@ -234,6 +234,9 @@ public class PnView implements Serializable {
 	//TODO: Metodos
 	public String handleFileUpload(FileUploadEvent event) throws IOException {
 		log.info("Subiendo archivos..");
+
+
+
 		try {
 			String titulo= "titulo";
 			System.out.println(titulo);
@@ -245,11 +248,16 @@ public class PnView implements Serializable {
 			//Long codigo= Long.parseLong(tipoArchivo);
 			TipoArchivoPn tipoArchivoPn=businessDelegatorView.getTipoArchivoPn(1L);
 			System.out.println(tipoArchivoPn);
+
+			dbFactory = DocumentBuilderFactory.newInstance();
+			dBuilder = dbFactory.newDocumentBuilder();
+
 			try {
 				Pn pn = new Pn();
 				pn.setActivo("S");
 				pn.setArchivo(event.getFile().getContents());
 				analisisTextual(event);
+
 				pn.setDescripcion(descripcion);
 				pn.setFechaCreacion(fechaCreacion);
 				pn.setTipoArchivoPn(tipoArchivoPn);
@@ -276,19 +284,21 @@ public class PnView implements Serializable {
 		return "";
 	}
 
-	public String analisisTextual(FileUploadEvent event){
+	public String analisisTextual(FileUploadEvent event){//TODO:aT
 		try {
-			DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
-			DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
 			Document doc = dBuilder.parse(event.getFile().getInputstream());
 			String tipoActividad;
+			String descripcionActividad;
+			String StartEvent;
+			String IntermediateEvent;
+			String EndEvent;
 
-			listaTextual = new ArrayList<ArrayList<String>>();
+			ArrayList <ArrayList<String>> listaTextual = new ArrayList<ArrayList<String>>();
 
 			doc.getDocumentElement().normalize();
 
 			NodeList nodeListActiviti= doc.getElementsByTagName("Activity");
-			for (int i = 0; i < nodeListActiviti.getLength(); ++i){
+			for (int i = 0; i < nodeListActiviti.getLength(); i++){
 
 				Element elementActiviti = (Element) nodeListActiviti.item(i);
 				String elementActivitiId= elementActiviti.getAttribute("Id");
@@ -300,6 +310,10 @@ public class PnView implements Serializable {
 				NodeList nodeListEvent = elementActiviti.getElementsByTagName("Event");
 				for (int j = 0; j < nodeListEvent.getLength(); ++j){
 
+					StartEvent="";
+					IntermediateEvent="";
+					EndEvent="";
+
 					Element elementEvent = (Element) nodeListEvent.item(j);
 					NodeList nodeListStarEvent = elementEvent.getElementsByTagName("StartEvent");
 					NodeList nodeListIntermediateEvent = elementEvent.getElementsByTagName("IntermediateEvent");
@@ -307,15 +321,31 @@ public class PnView implements Serializable {
 
 					for (int k = 0; k < nodeListStarEvent.getLength(); k++) {
 						Element elementStarEvent = (Element) nodeListStarEvent.item(k);
-						tipoActividad="StartEvent "+elementStarEvent.getAttribute("Trigger");
+						StartEvent=elementStarEvent.getAttribute("Trigger");
+						if(!StartEvent.equals("None")){
+							tipoActividad="StartEvent"+StartEvent;
+						}else{
+							tipoActividad="StartEvent";
+						}
+
 					}					
 					for (int k = 0; k < nodeListIntermediateEvent.getLength(); k++) {
 						Element elementIntermediateEvent= (Element) nodeListIntermediateEvent.item(k);
-						tipoActividad="IntermediateEvent "+elementIntermediateEvent.getAttribute("Trigger");
+						IntermediateEvent=elementIntermediateEvent.getAttribute("Trigger");
+						if(!IntermediateEvent.equals("None")){
+							tipoActividad="IntermediateEvent"+IntermediateEvent;
+						}else{
+							tipoActividad="IntermediateEvent";
+						}
 					}					
 					for (int k = 0; k < nodeListEndEvent.getLength(); k++) {
 						Element elementEndEvent = (Element) nodeListEndEvent.item(k);
-						tipoActividad ="EndEvent "+elementEndEvent.getAttribute("Result");
+						EndEvent=elementEndEvent.getAttribute("Result");
+						if(!IntermediateEvent.equals("EndEvent")){
+							tipoActividad ="EndEvent"+EndEvent;
+						}else{
+							tipoActividad="EndEvent";
+						}
 					}
 				}
 
@@ -328,7 +358,7 @@ public class PnView implements Serializable {
 					NodeList nodeListSubFlow = elementEvent.getElementsByTagName("SubFlow");
 
 					for (int k = 0; k < nodeListSubFlow.getLength(); k++) {
-						tipoActividad="Task SubFlow";
+						tipoActividad="TaskSubFlow";
 					}
 
 					for (int k = 0; k < nodeListTask.getLength(); k++) {
@@ -372,6 +402,12 @@ public class PnView implements Serializable {
 					}
 				}
 
+				/////////////// BlockActivity /////////////////////////////////////////////////////////
+				NodeList nodeListBlockActivity = elementActiviti.getElementsByTagName("BlockActivity");
+				for (int j = 0; j < nodeListBlockActivity.getLength(); ++j){
+					tipoActividad="TaskBlocActivity";
+				}
+
 				//////////////// Route ////////////////////////////////////////////////////////////////
 				NodeList nodeListRoute = elementActiviti.getElementsByTagName("Route");
 				for (int j = 0; j < nodeListRoute.getLength(); j++) {
@@ -382,28 +418,24 @@ public class PnView implements Serializable {
 					String valor4 =elementRoute.getAttribute("ParallelEventBased");
 
 					if (!valor1.isEmpty()) {
-						tipoActividad="Route GatewayType "+valor1;
+						tipoActividad="RouteGatewayType"+valor1;
 					}
 					if (!valor2.isEmpty()) {
-						tipoActividad="Route ExclusiveType "+valor2;
+						tipoActividad="RouteExclusiveType"+valor2;
 					}
 					if (!valor3.isEmpty() && valor4.isEmpty()) {
-						tipoActividad="Route ExclusiveType based on Event";
+						tipoActividad="RouteExclusiveTypeBasedEvent";
 					}
 					if (!valor3.isEmpty() && !valor4.isEmpty()) {
-						tipoActividad="Route GatewayType based on Event";
+						tipoActividad="RouteGatewayTypeBasedEvent";
 					}
 
 					if(valor1.isEmpty() && valor2.isEmpty()){
 						tipoActividad="Route";
 					}
 				}
-				/////////////// BlockActivity /////////////////////////////////////////////////////////
-				NodeList nodeListBlockActivity = elementActiviti.getElementsByTagName("BlockActivity");
-				for (int j = 0; j < nodeListBlockActivity.getLength(); ++j){
-					tipoActividad="Task BlocActivity";
-				}
-				
+
+
 				///// Asignar los valores a una lista de listas
 				listaTextual.add(new ArrayList<String>());
 				listaTextual.get(i).add(elementActivitiId);
@@ -411,16 +443,16 @@ public class PnView implements Serializable {
 				listaTextual.get(i).add(elementActivitiName);
 
 			}
-			
+
 			/// Imprimir valores
-//			for (int j = 0; j < listaTextual.size(); j++) {
-//				for (int k = 0; k < listaTextual.get(j).size(); k++) {
-//					System.out.println(listaTextual.get(j).get(k));
-//					System.out.println();
-//				}
-//
-//			}
-			
+			for (int j = 0; j < listaTextual.size(); j++) {
+				for (int k = 0; k < listaTextual.get(j).size(); k++) {
+					System.out.println(listaTextual.get(j).get(k));
+				}
+				System.out.println();
+
+			}
+			 
 			analisisEstructural(listaTextual, event);
 
 		}catch (Exception e) {
@@ -430,56 +462,56 @@ public class PnView implements Serializable {
 	}
 
 
-	public String analisisEstructural(ArrayList<ArrayList<String>> listaTextual, FileUploadEvent event){
+	public String analisisEstructural(ArrayList<ArrayList<String>> listaTextual, FileUploadEvent event){//TODO:AE
 		try {
-			System.out.println("++++++++++++++++++++++ Estructural");
-			DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
-			DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
-			Document doc = dBuilder.parse(event.getFile().getInputstream());
+			Document docTransiciones = dBuilder.parse(event.getFile().getInputstream());
+
 			String fromId;
 			String toId;
 			String id;
 			String fromString="";
 			String toString="";
-			
-			listaEstructural = new ArrayList<ArrayList<String>>();
 
-			doc.getDocumentElement().normalize();
+			ArrayList <ArrayList<String>> listaEstructural = new ArrayList<ArrayList<String>>();
 
-			NodeList nodeListTransition= doc.getElementsByTagName("Transition");
+
+			NodeList nodeListTransition= docTransiciones.getElementsByTagName("Transition");
 			System.out.println("+++++++++++ Transition");
+			System.out.println(nodeListTransition.getLength());
 			for (int i = 0; i < nodeListTransition.getLength(); ++i){
 				Element elementTransition= (Element)nodeListTransition.item(i);
 				id= elementTransition.getAttribute("Id");
 				fromId= elementTransition.getAttribute("From");
 				toId= elementTransition.getAttribute("To");
-				System.out.println("ID: "+id);
-				System.out.println("fromId: "+fromId);
-				System.out.println("toId: "+toId);
-				
+
 				/// Asignar los valores a la Lista
 				listaEstructural.add(new ArrayList<String>());
-				
+
 				for (int j = 0; j < listaTextual.size(); j++) {
 					if(listaTextual.get(j).get(0).equals(fromId)){
 						fromString=listaTextual.get(j).get(1);
 					}
+				}
+
+				for (int j = 0; j < listaTextual.size(); j++) {
 					if(listaTextual.get(j).get(0).equals(toId)){
 						toString=listaTextual.get(j).get(1);
 					}
 				}
-				
-				listaEstructural.get(i).add(id);
-				listaEstructural.get(i).add(fromString+"_"+toString+(i+1));
-				
-				/// Imprimir valores
-				for (int j = 0; j < listaEstructural.size(); j++) {
-					for (int k = 0; k < listaEstructural.get(j).size(); k++) {
-						System.out.println(listaEstructural.get(j).get(k));
-						System.out.println();
-					}
 
+				listaEstructural.get(i).add(fromString+"_"+toString+(i+1));	
+				fromString="";
+				toString="";
+
+			}
+
+			/// Imprimir valores
+			for (int j = 0; j < listaEstructural.size(); j++) {
+				for (int k = 0; k < listaEstructural.get(j).size(); k++) {
+					System.out.println(listaEstructural.get(j).get(k));
+					System.out.println();
 				}
+
 			}
 
 		}catch (Exception e) {
