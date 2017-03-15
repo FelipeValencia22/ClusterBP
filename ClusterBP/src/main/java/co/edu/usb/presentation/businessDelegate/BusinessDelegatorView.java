@@ -40,6 +40,7 @@ import co.edu.usb.clusterbp.dto.UsuarioDTO;
 import co.edu.usb.clusterbp.dto.UsuarioRolDTO;
 import co.edu.usb.presentation.businessDelegate.IBusinessDelegatorView;
 
+import org.primefaces.event.FileUploadEvent;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -608,6 +609,13 @@ public class BusinessDelegatorView implements IBusinessDelegatorView {
         return tipoActividadLogic.getDataTipoActividad();
     }
     
+    //TODO: Metodos
+    
+    @Override
+	public String parserXPDL(FileUploadEvent event) {
+		return pnLogic.analisisTextual(event);
+	}
+    
     //TODO: Consultas
     @Override
 	public Usuario consultarUsuarioPorCorreo(String correo) {
@@ -658,6 +666,8 @@ public class BusinessDelegatorView implements IBusinessDelegatorView {
 	public Pn consultarPNPorNombre(String nombre) {
 		return pnLogic.consultarPNPorNombre(nombre);
 	}
+
+	
 
     
 }

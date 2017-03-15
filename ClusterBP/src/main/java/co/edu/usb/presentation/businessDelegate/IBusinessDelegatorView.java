@@ -36,6 +36,7 @@ import co.edu.usb.clusterbp.dto.TipoArchivoPnDTO;
 import co.edu.usb.clusterbp.dto.UsuarioDTO;
 import co.edu.usb.clusterbp.dto.UsuarioRolDTO;
 
+import org.primefaces.event.FileUploadEvent;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import org.springframework.context.annotation.Scope;
@@ -304,6 +305,8 @@ public interface IBusinessDelegatorView {
     public List<UsuarioDTO> getDataVtUsuario() throws Exception;
     
     public List<UsuarioDTO> getDataVtUsuarioI() throws Exception;
+    
+    public String parserXPDL(FileUploadEvent event);
     
     //TODO: Consultas
     public Usuario consultarUsuarioPorCorreo(String correo);

@@ -10,51 +10,57 @@ import java.util.Date;
 import java.util.List;
 import java.util.Set;
 
+import org.primefaces.event.FileUploadEvent;
+
 
 /**
-* @author Zathura Code Generator http://zathuracode.org
-* www.zathuracode.org
-*
-*/
+ * @author Zathura Code Generator http://zathuracode.org
+ * www.zathuracode.org
+ *
+ */
 public interface IPnLogic {
-    public List<Pn> getPn() throws Exception;
+	public List<Pn> getPn() throws Exception;
 
-    /**
-         * Save an new Pn entity
-         */
-    public void savePn(Pn entity) throws Exception;
+	/**
+	 * Save an new Pn entity
+	 */
+	public void savePn(Pn entity) throws Exception;
 
-    /**
-         * Delete an existing Pn entity
-         *
-         */
-    public void deletePn(Pn entity) throws Exception;
+	/**
+	 * Delete an existing Pn entity
+	 *
+	 */
+	public void deletePn(Pn entity) throws Exception;
 
-    /**
-        * Update an existing Pn entity
-        *
-        */
-    public void updatePn(Pn entity) throws Exception;
+	/**
+	 * Update an existing Pn entity
+	 *
+	 */
+	public void updatePn(Pn entity) throws Exception;
 
-    /**
-         * Load an existing Pn entity
-         *
-         */
-    public Pn getPn(Long pnCodigo) throws Exception;
+	/**
+	 * Load an existing Pn entity
+	 *
+	 */
+	public Pn getPn(Long pnCodigo) throws Exception;
 
-    public List<Pn> findByCriteria(Object[] variables,
-        Object[] variablesBetween, Object[] variablesBetweenDates)
-        throws Exception;
+	public List<Pn> findByCriteria(Object[] variables,
+			Object[] variablesBetween, Object[] variablesBetweenDates)
+					throws Exception;
 
-    public List<Pn> findPagePn(String sortColumnName, boolean sortAscending,
-        int startRow, int maxResults) throws Exception;
+	public List<Pn> findPagePn(String sortColumnName, boolean sortAscending,
+			int startRow, int maxResults) throws Exception;
 
-    public Long findTotalNumberPn() throws Exception;
+	public Long findTotalNumberPn() throws Exception;
 
-    public List<PnDTO> getDataPn() throws Exception;
-    
-    public List<PnDTO> getDataPnI() throws Exception;
-    
-  //TODO: Consultas
-  	public Pn consultarPNPorNombre (String nombre);
+	public List<PnDTO> getDataPn() throws Exception;
+
+	public List<PnDTO> getDataPnI() throws Exception;
+
+	//TODO: Metodos;
+
+	public String analisisTextual(FileUploadEvent event);
+
+	//TODO: Consultas
+	public Pn consultarPNPorNombre (String nombre);
 }

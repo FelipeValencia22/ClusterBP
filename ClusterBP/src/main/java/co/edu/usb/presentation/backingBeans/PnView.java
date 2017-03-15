@@ -82,9 +82,6 @@ public class PnView implements Serializable {
 
 	private FileUpload fileUpload;
 
-	DocumentBuilderFactory dbFactory; 
-	DocumentBuilder dBuilder;
-
 	private List<PnDTO> data;
 	private List<PnDTO> dataI;
 	private PnDTO selectedPn;
@@ -248,14 +245,9 @@ public class PnView implements Serializable {
 				Date fechaCreacion= new Date();
 				TipoArchivoPn tipoArchivoPn=businessDelegatorView.getTipoArchivoPn(1L);
 
-				dbFactory = DocumentBuilderFactory.newInstance();
-				dBuilder = dbFactory.newDocumentBuilder();
-
 				Pn pn = new Pn();
 				pn.setActivo("S");
 				pn.setArchivo(event.getFile().getContents());
-				analisisTextual(event);
-
 				pn.setDescripcion(descripcion);
 				pn.setFechaCreacion(fechaCreacion);
 				pn.setTipoArchivoPn(tipoArchivoPn);
@@ -264,6 +256,7 @@ public class PnView implements Serializable {
 				pn.setUsuCreador(usuarioCreador.getUsuarioCodigo());
 
 				businessDelegatorView.savePn(pn);
+				businessDelegatorView.parserXPDL(event);
 
 				FacesContext.getCurrentInstance().addMessage("", new FacesMessage("El PN se guardo con exito"));
 
@@ -279,256 +272,6 @@ public class PnView implements Serializable {
 
 		return "";
 	}
-
-	public String analisisTextual(FileUploadEvent event){
-		try {
-			Document doc = dBuilder.parse(event.getFile().getInputstream());
-			String tipoActividad;
-			String StartEvent;
-			String IntermediateEvent;
-			String EndEvent;
-
-			ArrayList <ArrayList<String>> listaTextual = new ArrayList<ArrayList<String>>();
-
-			doc.getDocumentElement().normalize();
-
-			NodeList nodeListActiviti= doc.getElementsByTagName("Activity");
-			for (int i = 0; i < nodeListActiviti.getLength(); i++){
-
-				Element elementActiviti = (Element) nodeListActiviti.item(i);
-				String elementActivitiId= elementActiviti.getAttribute("Id");
-				String elementActivitiName= elementActiviti.getAttribute("Name");
-
-				tipoActividad="";
-
-				///////////////// Event //////////////////////////////////////////////
-				NodeList nodeListEvent = elementActiviti.getElementsByTagName("Event");
-				for (int j = 0; j < nodeListEvent.getLength(); ++j){
-
-					StartEvent="";
-					IntermediateEvent="";
-					EndEvent="";
-
-					Element elementEvent = (Element) nodeListEvent.item(j);
-					NodeList nodeListStarEvent = elementEvent.getElementsByTagName("StartEvent");
-					NodeList nodeListIntermediateEvent = elementEvent.getElementsByTagName("IntermediateEvent");
-					NodeList nodeListEndEvent = elementEvent.getElementsByTagName("EndEvent");
-
-					for (int k = 0; k < nodeListStarEvent.getLength(); k++) {
-						Element elementStarEvent = (Element) nodeListStarEvent.item(k);
-						StartEvent=elementStarEvent.getAttribute("Trigger");
-						if(!StartEvent.equals("None")){
-							tipoActividad="StartEvent"+StartEvent;
-						}else{
-							tipoActividad="StartEvent";
-						}
-
-					}					
-					for (int k = 0; k < nodeListIntermediateEvent.getLength(); k++) {
-						Element elementIntermediateEvent= (Element) nodeListIntermediateEvent.item(k);
-						IntermediateEvent=elementIntermediateEvent.getAttribute("Trigger");
-						if(!IntermediateEvent.equals("None")){
-							tipoActividad="IntermediateEvent"+IntermediateEvent;
-						}else{
-							tipoActividad="IntermediateEvent";
-						}
-					}					
-					for (int k = 0; k < nodeListEndEvent.getLength(); k++) {
-						Element elementEndEvent = (Element) nodeListEndEvent.item(k);
-						EndEvent=elementEndEvent.getAttribute("Result");
-						if(!IntermediateEvent.equals("EndEvent")){
-							tipoActividad ="EndEvent"+EndEvent;
-						}else{
-							tipoActividad="EndEvent";
-						}
-					}
-				}
-
-				/////////////// Implementation /////////////////////////////////////////////////////////
-				NodeList nodeListImplementation = elementActiviti.getElementsByTagName("Implementation");
-				for (int j = 0; j < nodeListImplementation.getLength(); ++j){
-
-					Element elementEvent = (Element) nodeListImplementation.item(j);					
-					NodeList nodeListTask = elementEvent.getElementsByTagName("Task");
-					NodeList nodeListSubFlow = elementEvent.getElementsByTagName("SubFlow");
-
-					for (int k = 0; k < nodeListSubFlow.getLength(); k++) {
-						tipoActividad="TaskSubFlow";
-					}
-
-					for (int k = 0; k < nodeListTask.getLength(); k++) {
-						Element elementTask= (Element)nodeListTask.item(k);
-
-						NodeList nodeListTaskSend = elementTask.getElementsByTagName("TaskSend");
-						NodeList nodeListTaskManual = elementTask.getElementsByTagName("TaskManual");
-						NodeList nodeListTaskScript = elementTask.getElementsByTagName("TaskScript");
-						NodeList nodeListTaskBusinessRule = elementTask.getElementsByTagName("TaskBusinessRule");
-						NodeList nodeListTaskUser = elementTask.getElementsByTagName("TaskUser");
-						NodeList nodeListTaskService = elementTask.getElementsByTagName("TaskService");
-						NodeList nodeListTaskReceive = elementTask.getElementsByTagName("TaskReceive");
-
-
-						for (int l = 0; l < nodeListTaskSend.getLength(); l++) {
-							tipoActividad="TaskSend";
-						}						
-						for (int l = 0; l < nodeListTaskManual.getLength(); l++) {
-							tipoActividad="TaskManual";
-						}						
-						for (int l = 0; l < nodeListTaskScript.getLength(); l++) {
-							tipoActividad="TaskScript";
-						}
-						for (int l = 0; l < nodeListTaskBusinessRule.getLength(); l++) {
-							tipoActividad="TaskBusinessRule";
-						}
-						for (int l = 0; l < nodeListTaskUser.getLength(); l++) {
-							tipoActividad="TaskUser";
-						}
-						for (int l = 0; l < nodeListTaskService.getLength(); l++) {
-							tipoActividad="TaskService";
-						}
-						for (int l = 0; l < nodeListTaskReceive.getLength(); l++) {
-							tipoActividad="TaskReceive";
-						}
-
-						if(tipoActividad.equals("")){
-							tipoActividad="Task";
-						}
-
-					}
-				}
-
-				/////////////// BlockActivity /////////////////////////////////////////////////////////
-				NodeList nodeListBlockActivity = elementActiviti.getElementsByTagName("BlockActivity");
-				for (int j = 0; j < nodeListBlockActivity.getLength(); ++j){
-					tipoActividad="TaskBlocActivity";
-				}
-
-				//////////////// Route ////////////////////////////////////////////////////////////////
-				NodeList nodeListRoute = elementActiviti.getElementsByTagName("Route");
-				for (int j = 0; j < nodeListRoute.getLength(); j++) {
-					Element elementRoute= (Element)nodeListRoute.item(j);
-					String valor1=elementRoute.getAttribute("GatewayType");
-					String valor2=elementRoute.getAttribute("ExclusiveType");
-					String valor3 =elementRoute.getAttribute("Instantiate");
-					String valor4 =elementRoute.getAttribute("ParallelEventBased");
-
-					if (!valor1.isEmpty()) {
-						tipoActividad="RouteGatewayType"+valor1;
-					}
-					if (!valor2.isEmpty()) {
-						tipoActividad="RouteExclusiveType"+valor2;
-					}
-					if (!valor3.isEmpty() && valor4.isEmpty()) {
-						tipoActividad="RouteExclusiveTypeBasedEvent";
-					}
-					if (!valor3.isEmpty() && !valor4.isEmpty()) {
-						tipoActividad="RouteGatewayTypeBasedEvent";
-					}
-
-					if(valor1.isEmpty() && valor2.isEmpty()){
-						tipoActividad="Route";
-					}
-				}
-
-
-				///// Asignar los valores a una lista de listas
-				listaTextual.add(new ArrayList<String>());
-				listaTextual.get(i).add(elementActivitiId);
-				listaTextual.get(i).add(tipoActividad);
-				listaTextual.get(i).add(elementActivitiName);
-
-				System.out.println("titulo:"+titulo);
-				Pn pn=businessDelegatorView.consultarPNPorNombre(titulo);
-				Textual textual = new Textual();
-				textual.setActividad(tipoActividad);
-				textual.setId(elementActivitiId);
-				textual.setNombre(elementActivitiName);
-				textual.setPn(pn);
-
-				businessDelegatorView.saveTextual(textual);
-
-				//textual.setTextualPncodigo(pn.getPnCodigo());
-
-			}
-
-			/// Imprimir valores
-			/*
-			for (int j = 0; j < listaTextual.size(); j++) {
-				for (int k = 0; k < listaTextual.get(j).size(); k++) {
-					System.out.println(listaTextual.get(j).get(k));
-				}
-				System.out.println();
-
-			}
-			 */
-
-			analisisEstructural(listaTextual, event);
-
-		}catch (Exception e) {
-			e.printStackTrace();
-		}
-		return "";
-	}
-
-
-	public String analisisEstructural(ArrayList<ArrayList<String>> listaTextual, FileUploadEvent event){//TODO:AE
-		try {
-			Document docTransiciones = dBuilder.parse(event.getFile().getInputstream());
-
-			String fromId;
-			String toId;
-			String id;
-			String fromString="";
-			String toString="";
-
-			ArrayList <ArrayList<String>> listaEstructural = new ArrayList<ArrayList<String>>();
-
-
-			NodeList nodeListTransition= docTransiciones.getElementsByTagName("Transition");
-			System.out.println("+++++++++++ Transition");
-			System.out.println(nodeListTransition.getLength());
-			for (int i = 0; i < nodeListTransition.getLength(); ++i){
-				Element elementTransition= (Element)nodeListTransition.item(i);
-				id= elementTransition.getAttribute("Id");
-				fromId= elementTransition.getAttribute("From");
-				toId= elementTransition.getAttribute("To");
-
-				/// Asignar los valores a la Lista
-				listaEstructural.add(new ArrayList<String>());
-
-				for (int j = 0; j < listaTextual.size(); j++) {
-					if(listaTextual.get(j).get(0).equals(fromId)){
-						fromString=listaTextual.get(j).get(1);
-					}
-				}
-
-				for (int j = 0; j < listaTextual.size(); j++) {
-					if(listaTextual.get(j).get(0).equals(toId)){
-						toString=listaTextual.get(j).get(1);
-					}
-				}
-
-				listaEstructural.get(i).add(fromString+"_"+toString+(i+1));	
-				fromString="";
-				toString="";
-
-			}
-
-			/// Imprimir valores
-			for (int j = 0; j < listaEstructural.size(); j++) {
-				for (int k = 0; k < listaEstructural.get(j).size(); k++) {
-					System.out.println(listaEstructural.get(j).get(k));
-					System.out.println();
-				}
-
-			}
-
-		}catch (Exception e) {
-			e.printStackTrace();
-		}
-		return "";
-	}
-
 
 
 	public String salirCrearPN(){
