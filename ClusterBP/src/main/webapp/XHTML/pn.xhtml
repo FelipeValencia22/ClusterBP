@@ -31,20 +31,17 @@
 				<h1 align="center">Administraci&#243;n de Modelos de Proceso de
 					Negocio</h1>
 				<h:panelGrid columns="2">
-					<h2>Subir PN</h2>
-					<p:commandButton value="+" type="button"
+					<p:commandButton value="Cargar" type="button"
 						onclick="PF('dlg').show();" />
 				</h:panelGrid>
-				<br></br>
-				<br></br>
-			</p:panel>
-
-			<p:panel id="pnlPn2">
-				<h2>PN</h2>
-				<p:accordionPanel id="panelDataTablePN" header="PN" multiple="true">
+				
+				<p:separator/>
+				
+				<h2>Modelos</h2>
+				<p:accordionPanel id="panelDataTablePN" multiple="true">
 					<p:growl id="men" />
 
-					<p:tab title="PN Activos ">
+					<p:tab title="Activos ">
 
 						<p:dataTable id="dataTablePNActivos"
 							emptyMessage="No hay PN activos en este momento"
@@ -59,14 +56,14 @@
 
 							<p:column filterBy="#{pn.titulo}" sortBy="#{pn.titulo}">
 								<f:facet name="header">
-									<h:outputText value="C&#243;digo" />
+									<h:outputText value="Nombre" />
 								</f:facet>
 								<h:outputText value="#{pn.titulo}" />
 							</p:column>
 
 							<p:column filterBy="#{pn.descripcion}" sortBy="#{pn.descripcion}">
 								<f:facet name="header">
-									<h:outputText value="C&#243;digo" />
+									<h:outputText value="Descripci&#243;n" />
 								</f:facet>
 								<h:outputText value="#{pn.descripcion}" />
 							</p:column>
@@ -99,7 +96,7 @@
 
 					</p:tab>
 
-					<p:tab title="PN Inactivos ">
+					<p:tab title="Inactivos ">
 
 						<p:dataTable id="dataTablePNInactivos"
 							emptyMessage="No hay PN activos en este momento"
@@ -141,40 +138,28 @@
 			<h:form id="formDialogCrear">
 				<h:panelGrid id="pnlPnCrear" columns="1" width="400">
 
-					<p:inputText id="txtTitulo" placeholder="Nombre"
-						style="width:400px" binding="#{pnView.txtTitulo}" maxlength="50">
-					</p:inputText>
+					<h:panelGrid id="pnlPnCrear3" columns="1" width="450">
+						<p:fileUpload id="fileUpload" sequential="true"
+							fileUploadListener="#{pnView.handleFileUpload}" mode="advanced"
+							update="frm" label="Seleccionar" cancelLabel="Remover"
+							uploadLabel="Subir" dragdropsupport="true" fileLimit="1"
+							fileLimitMessage="Solo se permite cargar 1 PN"
+							sizeLimit="1300000"
+							invalidSizeMessage="El tamaño máximo permitido es de 10MB" />
+					</h:panelGrid>
 
 					<p:inputTextarea id="txtDescripcion" placeholder="Descripcion"
 						autoResize="true" cols="64" rows="7"
 						binding="#{pnView.txtDescripcion}" maxlength="1000">
 					</p:inputTextarea>
+					<br />
 
-					<h:panelGrid id="pnlPnCrear2" columns="2">
-						<h:outputText id="somTipoPn" value=" Tipo archivo" />
-						<p:selectOneMenu id="somTipoArchivoPn"
-							binding="#{pnView.somTipoArchivoPn}">
-							<f:selectItem itemValue="-1" itemLabel="Seleccionar tipo archivo" />
-							<f:selectItems value="#{pnView.listTiposArchivoItems}" />
-						</p:selectOneMenu>
-					</h:panelGrid>
-
-					<h:panelGrid id="pnlPnCrear3" columns="1" width="450">
-						<p:fileUpload id="fileUpload" sequential="true"
-							binding="#{pnView.fileUpload}"
-							fileUploadListener="#{pnView.handleFileUpload}" mode="advanced"
-							update="frm" label="Seleccionar PN" cancelLabel="Remover PN"
-							uploadLabel="Subir PN" dragdropsupport="true" fileLimit="1"
-							fileLimitMessage="Solo se permite cargar 1 PN"
-							sizeLimit="1300000"
-							invalidSizeMessage="El tamaño máximo permitido es de 10MB" />
-
-						<p:commandButton id="btnExit" icon="fa fa-close" title="Salir"
-							value="Salir" action="#{pnView.salirCrearPN}"
-							update=":dialogCrearPn" />
-					</h:panelGrid>
+					<p:commandButton id="btnExit" icon="fa fa-close" title="Salir"
+						value="Salir" action="#{pnView.salirCrearPN}"
+						update=":dialogCrearPn" />
 
 				</h:panelGrid>
+
 			</h:form>
 		</p:dialog>
 
@@ -197,9 +182,9 @@
 							rows="7" />
 
 					</h:panelGrid>
-					
+
 					<br></br>
-					
+
 					<h:panelGrid id="pnlPNBotones" columns="2" width="400">
 						<p:commandButton id="btnSave" icon="fa fa-save"
 							binding="#{pnView.btnModificar}" value="Modificar"
@@ -207,8 +192,7 @@
 							update="@([id$=frm]), @([id$=pnlPNModificar]),@([id$=growl]), @([id$=dataTablePNActivos])" />
 
 						<p:commandButton id="btnExit" icon="fa fa-close" value="Salir"
-							action="#{pnView.salirModificarPN}"
-							update=":dialogModificarPN" />  
+							action="#{pnView.salirModificarPN}" update=":dialogModificarPN" />
 					</h:panelGrid>
 
 				</h:form>

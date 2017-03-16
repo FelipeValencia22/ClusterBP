@@ -6,6 +6,7 @@ import co.edu.usb.dataaccess.dao.*;
 import co.edu.usb.exceptions.*;
 import co.edu.usb.utilities.Utilities;
 
+import org.apache.commons.io.FilenameUtils;
 import org.primefaces.event.FileUploadEvent;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -22,6 +23,8 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 
+import java.io.BufferedWriter;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.math.BigDecimal;
@@ -559,24 +562,19 @@ public class PnLogic implements IPnLogic {
 			String StartEvent;
 			String IntermediateEvent;
 			String EndEvent;
-
 			ArrayList <ArrayList<String>> listaTextual = new ArrayList<ArrayList<String>>();
-
 			doc.getDocumentElement().normalize();
 
 			NodeList nodeListActiviti= doc.getElementsByTagName("Activity");
 			for (int i = 0; i < nodeListActiviti.getLength(); i++){
-
 				Element elementActiviti = (Element) nodeListActiviti.item(i);
 				String elementActivitiId= elementActiviti.getAttribute("Id");
 				String elementActivitiName= elementActiviti.getAttribute("Name");
-
 				tipoActividad="";
-
+				
 				///////////////// Event //////////////////////////////////////////////
 				NodeList nodeListEvent = elementActiviti.getElementsByTagName("Event");
 				for (int j = 0; j < nodeListEvent.getLength(); ++j){
-
 					StartEvent="";
 					IntermediateEvent="";
 					EndEvent="";
@@ -594,7 +592,6 @@ public class PnLogic implements IPnLogic {
 						}else{
 							tipoActividad="StartEvent";
 						}
-
 					}					
 					for (int k = 0; k < nodeListIntermediateEvent.getLength(); k++) {
 						Element elementIntermediateEvent= (Element) nodeListIntermediateEvent.item(k);
@@ -619,18 +616,14 @@ public class PnLogic implements IPnLogic {
 				/////////////// Implementation /////////////////////////////////////////////////////////
 				NodeList nodeListImplementation = elementActiviti.getElementsByTagName("Implementation");
 				for (int j = 0; j < nodeListImplementation.getLength(); ++j){
-
 					Element elementEvent = (Element) nodeListImplementation.item(j);					
 					NodeList nodeListTask = elementEvent.getElementsByTagName("Task");
 					NodeList nodeListSubFlow = elementEvent.getElementsByTagName("SubFlow");
-
 					for (int k = 0; k < nodeListSubFlow.getLength(); k++) {
 						tipoActividad="TaskSubFlow";
 					}
-
 					for (int k = 0; k < nodeListTask.getLength(); k++) {
 						Element elementTask= (Element)nodeListTask.item(k);
-
 						NodeList nodeListTaskSend = elementTask.getElementsByTagName("TaskSend");
 						NodeList nodeListTaskManual = elementTask.getElementsByTagName("TaskManual");
 						NodeList nodeListTaskScript = elementTask.getElementsByTagName("TaskScript");
@@ -638,8 +631,6 @@ public class PnLogic implements IPnLogic {
 						NodeList nodeListTaskUser = elementTask.getElementsByTagName("TaskUser");
 						NodeList nodeListTaskService = elementTask.getElementsByTagName("TaskService");
 						NodeList nodeListTaskReceive = elementTask.getElementsByTagName("TaskReceive");
-
-
 						for (int l = 0; l < nodeListTaskSend.getLength(); l++) {
 							tipoActividad="TaskSend";
 						}						
@@ -661,20 +652,16 @@ public class PnLogic implements IPnLogic {
 						for (int l = 0; l < nodeListTaskReceive.getLength(); l++) {
 							tipoActividad="TaskReceive";
 						}
-
 						if(tipoActividad.equals("")){
 							tipoActividad="Task";
 						}
-
 					}
 				}
-
 				/////////////// BlockActivity /////////////////////////////////////////////////////////
 				NodeList nodeListBlockActivity = elementActiviti.getElementsByTagName("BlockActivity");
 				for (int j = 0; j < nodeListBlockActivity.getLength(); ++j){
 					tipoActividad="TaskBlocActivity";
 				}
-
 				//////////////// Route ////////////////////////////////////////////////////////////////
 				NodeList nodeListRoute = elementActiviti.getElementsByTagName("Route");
 				for (int j = 0; j < nodeListRoute.getLength(); j++) {
@@ -701,8 +688,6 @@ public class PnLogic implements IPnLogic {
 						tipoActividad="Route";
 					}
 				}
-
-
 				///// Asignar los valores a una lista de listas
 				listaTextual.add(new ArrayList<String>());
 				listaTextual.get(i).add(elementActivitiId);
@@ -711,29 +696,24 @@ public class PnLogic implements IPnLogic {
 			}
 
 			/// Imprimir valores
-			
+			/*
 			for (int j = 0; j < listaTextual.size(); j++) {
 				for (int k = 0; k < listaTextual.get(j).size(); k++) {
 					System.out.println(listaTextual.get(j).get(k));
 				}
 				System.out.println();
-
 			}
-			 
-
+			 */
 			analisisEstructural(listaTextual, event);
-
 		}catch (Exception e) {
 			e.printStackTrace();
 		}
 		return "";
 	}
 
-
 	public String analisisEstructural(ArrayList<ArrayList<String>> listaTextual, FileUploadEvent event){
 		
 		ArrayList <ArrayList<String>> listaEstructural = new ArrayList<ArrayList<String>>();
-		
 		try {
 			Document docTransiciones = dBuilder.parse(event.getFile().getInputstream());
 
@@ -744,8 +724,6 @@ public class PnLogic implements IPnLogic {
 			String toString="";
 
 			NodeList nodeListTransition= docTransiciones.getElementsByTagName("Transition");
-			System.out.println("+++++++++++ Transition");
-			System.out.println(nodeListTransition.getLength());
 			for (int i = 0; i < nodeListTransition.getLength(); ++i){
 				Element elementTransition= (Element)nodeListTransition.item(i);
 				id= elementTransition.getAttribute("Id");
@@ -767,13 +745,14 @@ public class PnLogic implements IPnLogic {
 					}
 				}
 
-				listaEstructural.get(i).add(fromString+"_"+toString+(i+1));	
+				listaEstructural.get(i).add(fromString+"__"+toString);	
 				fromString="";
 				toString="";
 
 			}
 
 			/// Imprimir valores
+			/*
 			for (int j = 0; j < listaEstructural.size(); j++) {
 				for (int k = 0; k < listaEstructural.get(j).size(); k++) {
 					System.out.println(listaEstructural.get(j).get(k));
@@ -781,21 +760,23 @@ public class PnLogic implements IPnLogic {
 				}
 
 			}
+			*/
 
 		}catch (Exception e) {
 			e.printStackTrace();
 		}
 		String nombreArchivo=event.getFile().getFileName();
+		nombreArchivo=FilenameUtils.removeExtension(nombreArchivo);
 		crearTxt(listaTextual,listaEstructural,nombreArchivo);
 		return "";
 	}
 	
-	public void crearTxt(ArrayList<ArrayList<String>> listaTextual, ArrayList<ArrayList<String>> listaEstructural, String nombreArchivo){
-		String ruta="/Data/";
+	public void crearTxt(ArrayList<ArrayList<String>> listaTextual, ArrayList<ArrayList<String>> listaEstructural, String nombreArchivo){       
+		String ruta="C:/Users/Felipe/Desktop/"+nombreArchivo+".txt";
 		try{
-		    PrintWriter writer = new PrintWriter(ruta+nombreArchivo+".txt", "UTF-8");
-		    writer.println(listaTextual);
-		    writer.println(listaEstructural);
+			BufferedWriter writer = new BufferedWriter(new FileWriter(ruta));
+		    writer.write(listaTextual.toString());
+		    writer.write(listaEstructural.toString());
 		    writer.close();
 		} catch (IOException e) {
 		  e.printStackTrace();

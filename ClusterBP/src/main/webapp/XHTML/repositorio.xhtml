@@ -26,16 +26,17 @@
 		<h:form id="frm">
 
 			<p:growl id="growl" />
-
-
-			<p:panel id="pnlRepositorios"
-				header="Administraci&#243;n de Repositorios">
+			<p:panel id="pnlPn">
 				<br></br>
-				<p:commandButton value="Crear repositorio" type="button"
-					onclick="PF('dlg').show();" />
-				<br></br>
-				<br></br>
-
+				<h1 align="center">Administraci&#243;n de Repositorios</h1>
+				<h:panelGrid columns="2">
+					<p:commandButton value="Crear" type="button"
+						onclick="PF('dlg').show();" />
+				</h:panelGrid>
+				
+				<p:separator/>
+					
+				<h2>Repositorios</h2>
 				<p:accordionPanel id="panelDataTableRepositorio"
 					header="repositorios" multiple="true">
 					<p:growl id="men" />

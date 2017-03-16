@@ -91,6 +91,7 @@ public class MenuView {
 		pn.setId("sm_pns");
 		pn.setContainerStyleClass("layout-menubar-active");
 		model.addElement(pn);
+		
 	}
 	
 	

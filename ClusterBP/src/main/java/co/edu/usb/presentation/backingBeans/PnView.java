@@ -12,6 +12,7 @@ import java.sql.*;
 import org.primefaces.component.inputtext.InputText;
 import org.primefaces.component.inputtextarea.InputTextarea;
 import org.primefaces.component.selectonemenu.SelectOneMenu;
+import org.apache.commons.io.FilenameUtils;
 import org.primefaces.component.calendar.*;
 import org.primefaces.component.commandbutton.CommandButton;
 import org.primefaces.component.fileupload.FileUpload;
@@ -79,8 +80,7 @@ public class PnView implements Serializable {
 
 	private CommandButton btnSubir;
 	private CommandButton btnModificar;
-
-	private FileUpload fileUpload;
+	private CommandButton btnCrear;
 
 	private List<PnDTO> data;
 	private List<PnDTO> dataI;
@@ -91,6 +91,7 @@ public class PnView implements Serializable {
 	Long codigoPn;
 
 	String titulo;
+	String nombreArchivo;
 
 	File fXmlFile;
 
@@ -208,12 +209,7 @@ public class PnView implements Serializable {
 	public void setListTiposArchivoItems(List<SelectItem> listTiposArchivoItems) {
 		this.listTiposArchivoItems = listTiposArchivoItems;
 	}
-	public FileUpload getFileUpload() {
-		return fileUpload;
-	}
-	public void setFileUpload(FileUpload fileUpload) {
-		this.fileUpload = fileUpload;
-	}
+
 	public InputTextarea getTxtDescripcionM() {
 		return txtDescripcionM;
 	}
@@ -232,36 +228,52 @@ public class PnView implements Serializable {
 	public void setBtnModificar(CommandButton btnModificar) {
 		this.btnModificar = btnModificar;
 	}
+	public CommandButton getBtnCrear() {
+		return btnCrear;
+	}
+	public void setBtnCrear(CommandButton btnCrear) {
+		this.btnCrear = btnCrear;
+	}
 	//TODO: Metodos
+
+
 	public String handleFileUpload(FileUploadEvent event) throws IOException {
 		log.info("Subiendo archivos..");
 
 		try {
 			titulo= event.getFile().getFileName();
-			Pn pnExiste=businessDelegatorView.consultarPNPorNombre(titulo);
+			String ext = FilenameUtils.getExtension(titulo); 
+			if(ext.equals("xpdl")){
+				nombreArchivo=FilenameUtils.removeExtension(titulo);
+				System.out.println(nombreArchivo);
+				
+				Pn pnExiste=businessDelegatorView.consultarPNPorNombre(titulo);
 
-			if(pnExiste==null){
-				String descripcion= "prueba";
-				Date fechaCreacion= new Date();
-				TipoArchivoPn tipoArchivoPn=businessDelegatorView.getTipoArchivoPn(1L);
+				if(pnExiste==null){
+					String descripcion= "prueba";
+					Date fechaCreacion= new Date();
+					TipoArchivoPn tipoArchivoPn=businessDelegatorView.getTipoArchivoPn(1L);
 
-				Pn pn = new Pn();
-				pn.setActivo("S");
-				pn.setArchivo(event.getFile().getContents());
-				pn.setDescripcion(descripcion);
-				pn.setFechaCreacion(fechaCreacion);
-				pn.setTipoArchivoPn(tipoArchivoPn);
-				pn.setTitulo(titulo);
-				Usuario usuarioCreador=  (Usuario) FacesUtils.getfromSession("usuario");
-				pn.setUsuCreador(usuarioCreador.getUsuarioCodigo());
+					Pn pn = new Pn();
+					pn.setActivo("S");
+					pn.setArchivo(event.getFile().getContents());
+					pn.setDescripcion(descripcion);
+					pn.setFechaCreacion(fechaCreacion);
+					pn.setTipoArchivoPn(tipoArchivoPn);
+					pn.setTitulo(titulo);
+					Usuario usuarioCreador=  (Usuario) FacesUtils.getfromSession("usuario");
+					pn.setUsuCreador(usuarioCreador.getUsuarioCodigo());
 
-				businessDelegatorView.savePn(pn);
-				businessDelegatorView.parserXPDL(event);
+					businessDelegatorView.savePn(pn);
+					businessDelegatorView.parserXPDL(event);
 
-				FacesContext.getCurrentInstance().addMessage("", new FacesMessage("El PN se guardo con exito"));
+					FacesContext.getCurrentInstance().addMessage("", new FacesMessage("El PN se guardo con exito"));
 
+				}else{
+					FacesUtils.addErrorMessage("El Pn ya existe");
+				}
 			}else{
-				FacesUtils.addErrorMessage("El Pn ya existe");
+				FacesUtils.addErrorMessage("El formato del archivo es incorrecto");
 			}
 		}catch (Exception e) {
 			FacesUtils.addErrorMessage("Error! No se subió el PN");
@@ -275,9 +287,7 @@ public class PnView implements Serializable {
 
 
 	public String salirCrearPN(){
-		txtTitulo.resetValue();
 		txtDescripcion.resetValue();
-		somTipoArchivoPn.resetValue();
 		setShowDialog(false);
 
 		return "";

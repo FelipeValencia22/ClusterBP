@@ -26,14 +26,17 @@
 		<h:form id="frm">
 
 			<p:growl id="growl" />
+			<p:panel id="pnlPn">
+				<br></br>
+				<h1 align="center">Administraci&#243;n de Usuarios</h1>
+				<h:panelGrid columns="2">
+					<p:commandButton value="Crear" type="button"
+						onclick="PF('dlg').show();" />
+				</h:panelGrid>
+				
+				<p:separator/>
 
-			<p:panel id="pnlUsuarios" header="Administraci&#243;n de usuarios">
-				<br></br>
-				<p:commandButton value="Crear Usuario" type="button"
-					onclick="PF('dlg').show();" />
-				<br></br>
-				<br></br>
-
+				<h2>Usuarios</h2>
 				<p:accordionPanel id="panelDataTableUsuario" header="Usuarios"
 					multiple="true">
 					<p:growl id="men" />
