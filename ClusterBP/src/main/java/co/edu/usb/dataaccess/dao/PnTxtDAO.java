@@ -1,6 +1,6 @@
 package co.edu.usb.dataaccess.dao;
 
-import co.edu.usb.clusterbp.Textual;
+import co.edu.usb.clusterbp.PnTxt;
 import co.edu.usb.dataaccess.api.HibernateDaoImpl;
 
 import org.hibernate.Query;
@@ -31,23 +31,22 @@ import javax.annotation.Resource;
 
 /**
  * A data access object (DAO) providing persistence and search support for
- * Textual entities. Transaction control of the save(), update() and
+ * PnTxt entities. Transaction control of the save(), update() and
  * delete() operations can directly support Spring container-managed
  * transactions or they can be augmented to handle user-managed Spring
  * transactions. Each of these methods provides additional information for how
  * to configure it for the desired type of transaction control.
  *
- * @see lidis.Textual
+ * @see lidis.PnTxt
  */
 @Scope("singleton")
-@Repository("TextualDAO")
-public class TextualDAO extends HibernateDaoImpl<Textual, Long>
-    implements ITextualDAO {
-    private static final Logger log = LoggerFactory.getLogger(TextualDAO.class);
+@Repository("PnTxtDAO")
+public class PnTxtDAO extends HibernateDaoImpl<PnTxt, Long> implements IPnTxtDAO {
+    private static final Logger log = LoggerFactory.getLogger(PnTxtDAO.class);
     @Resource
     private SessionFactory sessionFactory;
 
-    public static ITextualDAO getFromApplicationContext(ApplicationContext ctx) {
-        return (ITextualDAO) ctx.getBean("TextualDAO");
+    public static IPnTxtDAO getFromApplicationContext(ApplicationContext ctx) {
+        return (IPnTxtDAO) ctx.getBean("PnTxtDAO");
     }
 }

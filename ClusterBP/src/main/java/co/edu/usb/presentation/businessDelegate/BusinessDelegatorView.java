@@ -1,22 +1,20 @@
 package co.edu.usb.presentation.businessDelegate;
 
-import co.edu.usb.clusterbp.Estructural;
 import co.edu.usb.clusterbp.Pn;
+import co.edu.usb.clusterbp.PnTxt;
 import co.edu.usb.clusterbp.Repositorio;
 import co.edu.usb.clusterbp.RepositorioPn;
 import co.edu.usb.clusterbp.Rol;
-import co.edu.usb.clusterbp.Textual;
 import co.edu.usb.clusterbp.TipoActividad;
 import co.edu.usb.clusterbp.TipoArchivoPn;
 import co.edu.usb.clusterbp.Usuario;
 import co.edu.usb.clusterbp.UsuarioRol;
-import co.edu.usb.clusterbp.control.IEstructuralLogic;
 import co.edu.usb.clusterbp.control.IPnLogic;
+import co.edu.usb.clusterbp.control.IPnTxtLogic;
 import co.edu.usb.clusterbp.control.IRepositorioLogic;
 import co.edu.usb.clusterbp.control.IRepositorioPnLogic;
 import co.edu.usb.clusterbp.control.IRolLogic;
 import co.edu.usb.clusterbp.control.ISeguridadLogica;
-import co.edu.usb.clusterbp.control.ITextualLogic;
 import co.edu.usb.clusterbp.control.ITipoActividadLogic;
 import co.edu.usb.clusterbp.control.ITipoArchivoPnLogic;
 import co.edu.usb.clusterbp.control.IUsuarioLogic;
@@ -28,12 +26,11 @@ import co.edu.usb.clusterbp.control.RolLogic;
 import co.edu.usb.clusterbp.control.TipoArchivoPnLogic;
 import co.edu.usb.clusterbp.control.UsuarioLogic;
 import co.edu.usb.clusterbp.control.UsuarioRolLogic;
-import co.edu.usb.clusterbp.dto.EstructuralDTO;
 import co.edu.usb.clusterbp.dto.PnDTO;
+import co.edu.usb.clusterbp.dto.PnTxtDTO;
 import co.edu.usb.clusterbp.dto.RepositorioDTO;
 import co.edu.usb.clusterbp.dto.RepositorioPnDTO;
 import co.edu.usb.clusterbp.dto.RolDTO;
-import co.edu.usb.clusterbp.dto.TextualDTO;
 import co.edu.usb.clusterbp.dto.TipoActividadDTO;
 import co.edu.usb.clusterbp.dto.TipoArchivoPnDTO;
 import co.edu.usb.clusterbp.dto.UsuarioDTO;
@@ -58,6 +55,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Set;
 
+@SuppressWarnings("unused")
 @Scope("singleton")
 @Service("BusinessDelegatorView")
 public class BusinessDelegatorView implements IBusinessDelegatorView {
@@ -79,11 +77,9 @@ public class BusinessDelegatorView implements IBusinessDelegatorView {
     @Autowired
     private ISeguridadLogica seguridadLogica;
     @Autowired
-    private IEstructuralLogic estructuralLogic;
-    @Autowired
-    private ITextualLogic textualLogic;
-    @Autowired
     private ITipoActividadLogic tipoActividadLogic;
+    @Autowired
+    private IPnTxtLogic pnTxtLogic;
 
     public List<Pn> getPn() throws Exception {
         return pnLogic.getPn();
@@ -452,108 +448,7 @@ public class BusinessDelegatorView implements IBusinessDelegatorView {
     public List<UsuarioRolDTO> getDataUsuarioRol() throws Exception {
         return usuarioRolLogic.getDataUsuarioRol();
     }
-    public List<Estructural> getEstructural() throws Exception {
-        return estructuralLogic.getEstructural();
-    }
-
-    public void saveEstructural(Estructural entity) throws Exception {
-        estructuralLogic.saveEstructural(entity);
-    }
-
-    public void deleteEstructural(Estructural entity) throws Exception {
-        estructuralLogic.deleteEstructural(entity);
-    }
-
-    public void updateEstructural(Estructural entity) throws Exception {
-        estructuralLogic.updateEstructural(entity);
-    }
-
-    public Estructural getEstructural(Long estructuralCodigo)
-        throws Exception {
-        Estructural estructural = null;
-
-        try {
-            estructural = estructuralLogic.getEstructural(estructuralCodigo);
-        } catch (Exception e) {
-            throw e;
-        }
-
-        return estructural;
-    }
-
-    public List<Estructural> findByCriteriaInEstructural(Object[] variables,
-        Object[] variablesBetween, Object[] variablesBetweenDates)
-        throws Exception {
-        return estructuralLogic.findByCriteria(variables, variablesBetween,
-            variablesBetweenDates);
-    }
-
-    public List<Estructural> findPageEstructural(String sortColumnName,
-        boolean sortAscending, int startRow, int maxResults)
-        throws Exception {
-        return estructuralLogic.findPageEstructural(sortColumnName,
-            sortAscending, startRow, maxResults);
-    }
-
-    public Long findTotalNumberEstructural() throws Exception {
-        return estructuralLogic.findTotalNumberEstructural();
-    }
-
-    public List<EstructuralDTO> getDataEstructural() throws Exception {
-        return estructuralLogic.getDataEstructural();
-    }
-
     
-    public List<Textual> getTextual() throws Exception {
-        return textualLogic.getTextual();
-    }
-
-    public void saveTextual(Textual entity) throws Exception {
-        textualLogic.saveTextual(entity);
-    }
-
-    public void deleteTextual(Textual entity) throws Exception {
-        textualLogic.deleteTextual(entity);
-    }
-
-    public void updateTextual(Textual entity) throws Exception {
-        textualLogic.updateTextual(entity);
-    }
-
-    public Textual getTextual(Long textualCodigo) throws Exception {
-        Textual textual = null;
-
-        try {
-            textual = textualLogic.getTextual(textualCodigo);
-        } catch (Exception e) {
-            throw e;
-        }
-
-        return textual;
-    }
-
-    public List<Textual> findByCriteriaInTextual(Object[] variables,
-        Object[] variablesBetween, Object[] variablesBetweenDates)
-        throws Exception {
-        return textualLogic.findByCriteria(variables, variablesBetween,
-            variablesBetweenDates);
-    }
-
-    public List<Textual> findPageTextual(String sortColumnName,
-        boolean sortAscending, int startRow, int maxResults)
-        throws Exception {
-        return textualLogic.findPageTextual(sortColumnName, sortAscending,
-            startRow, maxResults);
-    }
-
-    public Long findTotalNumberTextual() throws Exception {
-        return textualLogic.findTotalNumberTextual();
-    }
-
-    public List<TextualDTO> getDataTextual() throws Exception {
-        return textualLogic.getDataTextual();
-    }
-
     public List<TipoActividad> getTipoActividad() throws Exception {
         return tipoActividadLogic.getTipoActividad();
     }
@@ -607,6 +502,57 @@ public class BusinessDelegatorView implements IBusinessDelegatorView {
     public List<TipoActividadDTO> getDataTipoActividad()
         throws Exception {
         return tipoActividadLogic.getDataTipoActividad();
+    }
+    
+
+    public List<PnTxt> getPnTxt() throws Exception {
+        return pnTxtLogic.getPnTxt();
+    }
+
+    public void savePnTxt(PnTxt entity) throws Exception {
+        pnTxtLogic.savePnTxt(entity);
+    }
+
+    public void deletePnTxt(PnTxt entity) throws Exception {
+        pnTxtLogic.deletePnTxt(entity);
+    }
+
+    public void updatePnTxt(PnTxt entity) throws Exception {
+        pnTxtLogic.updatePnTxt(entity);
+    }
+
+    public PnTxt getPnTxt(Long pnTxtCodigo) throws Exception {
+        PnTxt pnTxt = null;
+
+        try {
+            pnTxt = pnTxtLogic.getPnTxt(pnTxtCodigo);
+        } catch (Exception e) {
+            throw e;
+        }
+
+        return pnTxt;
+    }
+
+    public List<PnTxt> findByCriteriaInPnTxt(Object[] variables,
+        Object[] variablesBetween, Object[] variablesBetweenDates)
+        throws Exception {
+        return pnTxtLogic.findByCriteria(variables, variablesBetween,
+            variablesBetweenDates);
+    }
+
+    public List<PnTxt> findPagePnTxt(String sortColumnName,
+        boolean sortAscending, int startRow, int maxResults)
+        throws Exception {
+        return pnTxtLogic.findPagePnTxt(sortColumnName, sortAscending,
+            startRow, maxResults);
+    }
+
+    public Long findTotalNumberPnTxt() throws Exception {
+        return pnTxtLogic.findTotalNumberPnTxt();
+    }
+
+    public List<PnTxtDTO> getDataPnTxt() throws Exception {
+        return pnTxtLogic.getDataPnTxt();
     }
     
     //TODO: Metodos

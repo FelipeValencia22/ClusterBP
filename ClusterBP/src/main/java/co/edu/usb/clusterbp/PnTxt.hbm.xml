@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated 16/03/2017 09:42:07 PM by Hibernate Tools 5.1.0.Final -->
+<hibernate-mapping>
+    <class name="co.edu.usb.clusterbp.PnTxt" table="pn_txt" schema="public" optimistic-lock="version">
+        <id name="pnTxtCodigo" type="java.lang.Long">
+            <column name="pn_txt_codigo" />
+            <generator class="assigned" />
+        </id>
+        <many-to-one name="pn" class="co.edu.usb.clusterbp.Pn" fetch="select">
+            <column name="pntxt" not-null="true" />
+        </many-to-one>
+        <property name="texto" type="java.lang.String">
+            <column name="texto" />
+        </property>
+    </class>
+</hibernate-mapping>

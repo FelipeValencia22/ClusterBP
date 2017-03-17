@@ -1,7 +1,7 @@
 package co.edu.usb.clusterbp.control;
 
 import co.edu.usb.clusterbp.*;
-import co.edu.usb.clusterbp.dto.TextualDTO;
+import co.edu.usb.clusterbp.dto.PnTxtDTO;
 import co.edu.usb.dataaccess.dao.*;
 import co.edu.usb.exceptions.*;
 import co.edu.usb.utilities.Utilities;
@@ -32,16 +32,16 @@ import java.util.Set;
 *
 */
 @Scope("singleton")
-@Service("TextualLogic")
-public class TextualLogic implements ITextualLogic {
-    private static final Logger log = LoggerFactory.getLogger(TextualLogic.class);
+@Service("PnTxtLogic")
+public class PnTxtLogic implements IPnTxtLogic {
+    private static final Logger log = LoggerFactory.getLogger(PnTxtLogic.class);
 
     /**
-     * DAO injected by Spring that manages Textual entities
+     * DAO injected by Spring that manages PnTxt entities
      *
      */
     @Autowired
-    private ITextualDAO textualDAO;
+    private IPnTxtDAO pnTxtDAO;
 
     /**
     * Logic injected by Spring that manages Pn entities
@@ -51,17 +51,17 @@ public class TextualLogic implements ITextualLogic {
     IPnLogic logicPn1;
 
     @Transactional(readOnly = true)
-    public List<Textual> getTextual() throws Exception {
-        log.debug("finding all Textual instances");
+    public List<PnTxt> getPnTxt() throws Exception {
+        log.debug("finding all PnTxt instances");
 
-        List<Textual> list = new ArrayList<Textual>();
+        List<PnTxt> list = new ArrayList<PnTxt>();
 
         try {
-            list = textualDAO.findAll();
+            list = pnTxtDAO.findAll();
         } catch (Exception e) {
-            log.error("finding all Textual failed", e);
+            log.error("finding all PnTxt failed", e);
             throw new ZMessManager().new GettingException(ZMessManager.ALL +
-                "Textual");
+                "PnTxt");
         } finally {
         }
 
@@ -69,176 +69,137 @@ public class TextualLogic implements ITextualLogic {
     }
 
     @Transactional(readOnly = false, propagation = Propagation.REQUIRED)
-    public void saveTextual(Textual entity) throws Exception {
-        log.debug("saving Textual instance");
+    public void savePnTxt(PnTxt entity) throws Exception {
+        log.debug("saving PnTxt instance");
 
         try {
-
-            if (entity.getActividad() == null) {
-                throw new ZMessManager().new EmptyFieldException("actividad");
-            }
-
-            if ((entity.getActividad() != null) &&
-                    (Utilities.checkWordAndCheckWithlength(
-                        entity.getActividad(), 255) == false)) {
-                throw new ZMessManager().new NotValidFormatException(
-                    "actividad");
-            }
-
-            if (entity.getId() == null) {
-                throw new ZMessManager().new EmptyFieldException("id");
-            }
-
-            if ((entity.getId() != null) &&
-                    (Utilities.checkWordAndCheckWithlength(entity.getId(), 255) == false)) {
-                throw new ZMessManager().new NotValidFormatException("id");
-            }
-
-            if ((entity.getNombre() != null) &&
-                    (Utilities.checkWordAndCheckWithlength(entity.getNombre(),
-                        255) == false)) {
-                throw new ZMessManager().new NotValidFormatException("nombre");
-            }
-
-            textualDAO.save(entity);
-
-            log.debug("save Textual successful");
-        } catch (Exception e) {
-            log.error("save Textual failed", e);
-            throw e;
-        } finally {
-        }
-    }
-
-    @Transactional(readOnly = false, propagation = Propagation.REQUIRED)
-    public void deleteTextual(Textual entity) throws Exception {
-        log.debug("deleting Textual instance");
-
-        if (entity == null) {
-            throw new ZMessManager().new NullEntityExcepcion("Textual");
-        }
-
-        if (entity.getTextualCodigo() == null) {
-            throw new ZMessManager().new EmptyFieldException("textualCodigo");
-        }
-
-        try {
-            textualDAO.delete(entity);
-
-            log.debug("delete Textual successful");
-        } catch (Exception e) {
-            log.error("delete Textual failed", e);
-            throw e;
-        } finally {
-        }
-    }
-
-    @Transactional(readOnly = false, propagation = Propagation.REQUIRED)
-    public void updateTextual(Textual entity) throws Exception {
-        log.debug("updating Textual instance");
-
-        try {
-            if (entity == null) {
-                throw new ZMessManager().new NullEntityExcepcion("Textual");
-            }
-
             if (entity.getPn() == null) {
                 throw new ZMessManager().new ForeignException("pn");
             }
 
-            if (entity.getActividad() == null) {
-                throw new ZMessManager().new EmptyFieldException("actividad");
+            if (entity.getPnTxtCodigo() == null) {
+                throw new ZMessManager().new EmptyFieldException("pnTxtCodigo");
             }
 
-            if ((entity.getActividad() != null) &&
-                    (Utilities.checkWordAndCheckWithlength(
-                        entity.getActividad(), 255) == false)) {
-                throw new ZMessManager().new NotValidFormatException(
-                    "actividad");
-            }
-
-            if ((entity.getDescripcion() != null) &&
-                    (Utilities.checkWordAndCheckWithlength(
-                        entity.getDescripcion(), 255) == false)) {
-                throw new ZMessManager().new NotValidFormatException(
-                    "descripcion");
-            }
-
-            if (entity.getId() == null) {
-                throw new ZMessManager().new EmptyFieldException("id");
-            }
-
-            if ((entity.getId() != null) &&
-                    (Utilities.checkWordAndCheckWithlength(entity.getId(), 255) == false)) {
-                throw new ZMessManager().new NotValidFormatException("id");
-            }
-
-            if ((entity.getNombre() != null) &&
-                    (Utilities.checkWordAndCheckWithlength(entity.getNombre(),
+            if ((entity.getTexto() != null) &&
+                    (Utilities.checkWordAndCheckWithlength(entity.getTexto(),
                         255) == false)) {
-                throw new ZMessManager().new NotValidFormatException("nombre");
-            }
-
-            if (entity.getTextualCodigo() == null) {
-                throw new ZMessManager().new EmptyFieldException(
-                    "textualCodigo");
+                throw new ZMessManager().new NotValidFormatException("texto");
             }
 
             if (entity.getPn().getPnCodigo() == null) {
                 throw new ZMessManager().new EmptyFieldException("pnCodigo_Pn");
             }
 
-            textualDAO.update(entity);
-
-            log.debug("update Textual successful");
-        } catch (Exception e) {
-            log.error("update Textual failed", e);
-            throw e;
-        } finally {
-        }
-    }
-
-    @Transactional(readOnly = true)
-    public List<TextualDTO> getDataTextual() throws Exception {
-        try {
-            List<Textual> textual = textualDAO.findAll();
-
-            List<TextualDTO> textualDTO = new ArrayList<TextualDTO>();
-
-            for (Textual textualTmp : textual) {
-                TextualDTO textualDTO2 = new TextualDTO();
-
-                textualDTO2.setTextualCodigo(textualTmp.getTextualCodigo());
-                textualDTO2.setActividad((textualTmp.getActividad() != null)
-                    ? textualTmp.getActividad() : null);
-                textualDTO2.setDescripcion((textualTmp.getDescripcion() != null)
-                    ? textualTmp.getDescripcion() : null);
-                textualDTO2.setId((textualTmp.getId() != null)
-                    ? textualTmp.getId() : null);
-                textualDTO2.setNombre((textualTmp.getNombre() != null)
-                    ? textualTmp.getNombre() : null);
-                textualDTO2.setPnCodigo_Pn((textualTmp.getPn().getPnCodigo() != null)
-                    ? textualTmp.getPn().getPnCodigo() : null);
-                textualDTO.add(textualDTO2);
+            if (getPnTxt(entity.getPnTxtCodigo()) != null) {
+                throw new ZMessManager(ZMessManager.ENTITY_WITHSAMEKEY);
             }
 
-            return textualDTO;
+            pnTxtDAO.save(entity);
+
+            log.debug("save PnTxt successful");
+        } catch (Exception e) {
+            log.error("save PnTxt failed", e);
+            throw e;
+        } finally {
+        }
+    }
+
+    @Transactional(readOnly = false, propagation = Propagation.REQUIRED)
+    public void deletePnTxt(PnTxt entity) throws Exception {
+        log.debug("deleting PnTxt instance");
+
+        if (entity == null) {
+            throw new ZMessManager().new NullEntityExcepcion("PnTxt");
+        }
+
+        if (entity.getPnTxtCodigo() == null) {
+            throw new ZMessManager().new EmptyFieldException("pnTxtCodigo");
+        }
+
+        try {
+            pnTxtDAO.delete(entity);
+
+            log.debug("delete PnTxt successful");
+        } catch (Exception e) {
+            log.error("delete PnTxt failed", e);
+            throw e;
+        } finally {
+        }
+    }
+
+    @Transactional(readOnly = false, propagation = Propagation.REQUIRED)
+    public void updatePnTxt(PnTxt entity) throws Exception {
+        log.debug("updating PnTxt instance");
+
+        try {
+            if (entity == null) {
+                throw new ZMessManager().new NullEntityExcepcion("PnTxt");
+            }
+
+            if (entity.getPn() == null) {
+                throw new ZMessManager().new ForeignException("pn");
+            }
+
+            if (entity.getPnTxtCodigo() == null) {
+                throw new ZMessManager().new EmptyFieldException("pnTxtCodigo");
+            }
+
+            if ((entity.getTexto() != null) &&
+                    (Utilities.checkWordAndCheckWithlength(entity.getTexto(),
+                        255) == false)) {
+                throw new ZMessManager().new NotValidFormatException("texto");
+            }
+
+            if (entity.getPn().getPnCodigo() == null) {
+                throw new ZMessManager().new EmptyFieldException("pnCodigo_Pn");
+            }
+
+            pnTxtDAO.update(entity);
+
+            log.debug("update PnTxt successful");
+        } catch (Exception e) {
+            log.error("update PnTxt failed", e);
+            throw e;
+        } finally {
+        }
+    }
+
+    @Transactional(readOnly = true)
+    public List<PnTxtDTO> getDataPnTxt() throws Exception {
+        try {
+            List<PnTxt> pnTxt = pnTxtDAO.findAll();
+
+            List<PnTxtDTO> pnTxtDTO = new ArrayList<PnTxtDTO>();
+
+            for (PnTxt pnTxtTmp : pnTxt) {
+                PnTxtDTO pnTxtDTO2 = new PnTxtDTO();
+
+                pnTxtDTO2.setPnTxtCodigo(pnTxtTmp.getPnTxtCodigo());
+                pnTxtDTO2.setTexto((pnTxtTmp.getTexto() != null)
+                    ? pnTxtTmp.getTexto() : null);
+                pnTxtDTO2.setPnCodigo_Pn((pnTxtTmp.getPn().getPnCodigo() != null)
+                    ? pnTxtTmp.getPn().getPnCodigo() : null);
+                pnTxtDTO.add(pnTxtDTO2);
+            }
+
+            return pnTxtDTO;
         } catch (Exception e) {
             throw e;
         }
     }
 
     @Transactional(readOnly = true)
-    public Textual getTextual(Long textualCodigo) throws Exception {
-        log.debug("getting Textual instance");
+    public PnTxt getPnTxt(Long pnTxtCodigo) throws Exception {
+        log.debug("getting PnTxt instance");
 
-        Textual entity = null;
+        PnTxt entity = null;
 
         try {
-            entity = textualDAO.findById(textualCodigo);
+            entity = pnTxtDAO.findById(pnTxtCodigo);
         } catch (Exception e) {
-            log.error("get Textual failed", e);
-            throw new ZMessManager().new FindingException("Textual");
+            log.error("get PnTxt failed", e);
+            throw new ZMessManager().new FindingException("PnTxt");
         } finally {
         }
 
@@ -246,16 +207,16 @@ public class TextualLogic implements ITextualLogic {
     }
 
     @Transactional(readOnly = true)
-    public List<Textual> findPageTextual(String sortColumnName,
+    public List<PnTxt> findPagePnTxt(String sortColumnName,
         boolean sortAscending, int startRow, int maxResults)
         throws Exception {
-        List<Textual> entity = null;
+        List<PnTxt> entity = null;
 
         try {
-            entity = textualDAO.findPage(sortColumnName, sortAscending,
-                    startRow, maxResults);
+            entity = pnTxtDAO.findPage(sortColumnName, sortAscending, startRow,
+                    maxResults);
         } catch (Exception e) {
-            throw new ZMessManager().new FindingException("Textual Count");
+            throw new ZMessManager().new FindingException("PnTxt Count");
         } finally {
         }
 
@@ -263,13 +224,13 @@ public class TextualLogic implements ITextualLogic {
     }
 
     @Transactional(readOnly = true)
-    public Long findTotalNumberTextual() throws Exception {
+    public Long findTotalNumberPnTxt() throws Exception {
         Long entity = null;
 
         try {
-            entity = textualDAO.count();
+            entity = pnTxtDAO.count();
         } catch (Exception e) {
-            throw new ZMessManager().new FindingException("Textual Count");
+            throw new ZMessManager().new FindingException("PnTxt Count");
         } finally {
         }
 
@@ -334,10 +295,10 @@ public class TextualLogic implements ITextualLogic {
                             * @throws Exception
                             */
     @Transactional(readOnly = true)
-    public List<Textual> findByCriteria(Object[] variables,
+    public List<PnTxt> findByCriteria(Object[] variables,
         Object[] variablesBetween, Object[] variablesBetweenDates)
         throws Exception {
-        List<Textual> list = new ArrayList<Textual>();
+        List<PnTxt> list = new ArrayList<PnTxt>();
         String where = new String();
         String tempWhere = new String();
 
@@ -434,7 +395,7 @@ public class TextualLogic implements ITextualLogic {
         }
 
         try {
-            list = textualDAO.findByCriteria(where);
+            list = pnTxtDAO.findByCriteria(where);
         } catch (Exception e) {
             throw new Exception(e.getMessage());
         } finally {
