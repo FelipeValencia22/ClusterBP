@@ -10,6 +10,7 @@ import javax.faces.bean.ViewScoped;
 import org.primefaces.model.menu.DefaultMenuItem;
 import org.primefaces.model.menu.DefaultMenuModel;
 import org.primefaces.model.menu.MenuModel;
+import org.primefaces.push.annotation.Singleton;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -38,6 +39,8 @@ public class MenuView {
 
 	private MenuModel model;
 	private final Usuario usuarioEnSesion= (Usuario) FacesUtils.getfromSession("usuario");
+	
+	private boolean index;
 
 	public MenuModel getModel() {
 		return model;
@@ -46,7 +49,7 @@ public class MenuView {
 	public void setModel(MenuModel model) {
 		this.model = model;
 	}
-
+	
 	@PostConstruct
 	public void init() {
 		model = new DefaultMenuModel();
@@ -67,8 +70,6 @@ public class MenuView {
 			log.error(e.getMessage());
 		}
 	}
-
-	
 
 	public void crearMenuAdmin(){
 		DefaultMenuItem usuarios = new DefaultMenuItem("Usuario");
@@ -92,14 +93,13 @@ public class MenuView {
 		pn.setContainerStyleClass("layout-menubar-active");
 		model.addElement(pn);
 		
-		DefaultMenuItem textual= new DefaultMenuItem("Búsqueda textual");
-		textual.setOutcome("/XHTML/textual.xhtml");
-		textual.setIcon("icon-home-outline");
-		textual.setId("sm_textual");
-		textual.setContainerStyleClass("layout-menubar-active");
-		model.addElement(textual);
+		DefaultMenuItem multimodal= new DefaultMenuItem("Búsqueda Multimodal");
+		multimodal.setOutcome("/XHTML/multimodal.xhtml");
+		multimodal.setIcon("icon-home-outline");
+		multimodal.setId("sm_multimodal");
+		multimodal.setContainerStyleClass("layout-menubar-active");
+		model.addElement(multimodal);
 	}
-
 
 	public void crearMenuSinRol(){
 		DefaultMenuItem sinRol = new DefaultMenuItem("");

@@ -55,7 +55,9 @@ public interface IPnTxtLogic {
 
     public List<PnTxtDTO> getDataPnTxt() throws Exception;
     
-    //TODO: Metodos
     public String crearTxt(String texto, Pn pn) throws Exception;
+    
+    public String search(String value);
+    
     public String createDirectory();
 }

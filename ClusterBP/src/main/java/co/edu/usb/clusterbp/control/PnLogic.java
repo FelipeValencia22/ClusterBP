@@ -8,6 +8,19 @@ import co.edu.usb.exceptions.*;
 import co.edu.usb.utilities.Utilities;
 
 import org.apache.commons.io.FilenameUtils;
+import org.apache.lucene.analysis.standard.StandardAnalyzer;
+import org.apache.lucene.document.Field;
+import org.apache.lucene.index.CorruptIndexException;
+import org.apache.lucene.index.IndexWriter;
+import org.apache.lucene.queryParser.ParseException;
+import org.apache.lucene.queryParser.QueryParser;
+import org.apache.lucene.search.IndexSearcher;
+import org.apache.lucene.search.Query;
+import org.apache.lucene.search.ScoreDoc;
+import org.apache.lucene.search.Searcher;
+import org.apache.lucene.search.TopScoreDocCollector;
+import org.apache.lucene.store.RAMDirectory;
+import org.apache.lucene.util.Version;
 import org.primefaces.event.FileUploadEvent;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -57,25 +70,17 @@ public class PnLogic implements IPnLogic {
 	private IPnDAO pnDAO;
 	@Autowired
 	private IPnTxtDAO pnTxtDAO;
-
-
-	/**
-	 * DAO injected by Spring that manages RepositorioPn entities
-	 *
-	 */
 	@Autowired
 	private IRepositorioPnDAO repositorioPnDAO;
+	@Autowired
+	private IPnTxtLogic pnTxtLogic;
 
-	/**
-	 * Logic injected by Spring that manages TipoArchivoPn entities
-	 *
-	 */
 	@Autowired
 	ITipoArchivoPnLogic logicTipoArchivoPn1;
 
 	DocumentBuilderFactory dbFactory; 
 	DocumentBuilder dBuilder;
-
+	
 	@Transactional(readOnly = true)
 	public List<Pn> getPn() throws Exception {
 		log.debug("finding all Pn instances");
@@ -709,5 +714,6 @@ public class PnLogic implements IPnLogic {
 		}
 		return listaValores;
 	}
-
+	
+	
 }

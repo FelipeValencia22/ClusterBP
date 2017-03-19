@@ -66,6 +66,13 @@ public class PnTxtLogic implements IPnTxtLogic {
 	@Autowired
 	IPnLogic logicPn1;
 
+	IndexWriter writer; 
+	static RAMDirectory idx;
+
+	public PnTxtLogic() {
+		super();
+	}
+
 	@Transactional(readOnly = true)
 	public List<PnTxt> getPnTxt() throws Exception {
 		log.debug("finding all PnTxt instances");
@@ -353,163 +360,116 @@ public class PnTxtLogic implements IPnTxtLogic {
 	}
 
 	//TODO: Metodos
-
-	@Transactional(readOnly = true)
-	public String crearTxt(String texto, Pn pn) throws Exception{       
-		try {
-			PnTxt pnTxt = new PnTxt();
+	@Transactional(readOnly = false, propagation = Propagation.REQUIRED)
+	public String crearTxt(String texto, Pn pn) throws Exception{
+		try{
+			PnTxt pnTxt= new PnTxt();
 			pnTxt.setPn(pn);
 			pnTxt.setTexto(texto);
 			savePnTxt(pnTxt);
-		} catch (DaoException e) {
+			addNewDocument(pnTxt);
+		}catch(DaoException e){
 			log.error(e.toString());
 		}
-		/*
-		String ruta="C:/Users/Felipe/Desktop/"+nombreArchivo+".txt";
-		try{
-			BufferedWriter writer = new BufferedWriter(new FileWriter(ruta));
-		    writer.write(listaTextual.toString());
-		    writer.write(listaEstructural.toString());
-		    writer.close();
-		} catch (IOException e) {
-		  e.printStackTrace();
-		}
-		 */
 		return "";
 	}
-	
+
+
+	//TODO: LUCENE INDEX
+
 	@Transactional(readOnly = true)
 	public String createDirectory(){
-		// Construct a RAMDirectory to hold the in-memory representation
-		// of the index.
-		RAMDirectory idx = new RAMDirectory();
-
+		idx = new RAMDirectory();
 		try {
-			// Make an writer to create the index
-			IndexWriter writer =
-					new IndexWriter(idx, 
-							new StandardAnalyzer(Version.LUCENE_30), 
-							IndexWriter.MaxFieldLength.LIMITED);
-
-			addDocument(writer);
-
-			// Optimize and close the writer to finish building the index
+			writer =new IndexWriter(idx,new StandardAnalyzer(Version.LUCENE_30),IndexWriter.MaxFieldLength.LIMITED); 
+			List <PnTxt> pnTxtList= getPnTxt();
+			if(!pnTxtList.isEmpty()){
+				for(PnTxt pnTxt: pnTxtList){
+					writer.addDocument(createDocument( pnTxt.getPn().getTitulo(),pnTxt.getTexto()));
+				}
+			}
 			writer.optimize();
 			writer.close();
-
-			// Build an IndexSearcher using the in-memory index
-			Searcher searcher = new IndexSearcher(idx);
-
-			// Run some queries
-			search(searcher, "Pizza");
-
-			searcher.close();
 		}
 		catch (IOException ioe) {
-			// In this example we aren't really doing an I/O, so this
-			// exception should never actually be thrown.
-			ioe.printStackTrace();
+			log.error("IOException:"+ioe.toString());;
+		} catch (Exception e) {
+			log.error("Exception:"+e.toString());;
 		}
-		catch (ParseException pe) {
-			pe.printStackTrace();
-		}
+		log.info("Directorio:"+idx.toString());
 		return "";
 	}
-	
+
 	@Transactional(readOnly = true)
-	public String addDocument(IndexWriter writer){
-
-		long TInicio, TFin, tiempo; //Variables para determinar el tiempo de ejecución
-		TInicio = System.currentTimeMillis(); //Tomamos la hora en que inicio el algoritmo y la almacenamos en la variable inicio
-
+	public String search(String value){
 		try {
-			List <PnTxt> pnTxtList= getPnTxt();
-			for(PnTxt pnTxt: pnTxtList){
-				writer.addDocument(createDocument( pnTxt.getPn().getTitulo(),pnTxt.getTexto()));
-			}
-
-			// Add some Document objects containing quotes
+			Searcher searcher;
+			searcher = new IndexSearcher(idx);
+			search(searcher, value);
+			searcher.close();
 		} catch (CorruptIndexException e) {
 			e.printStackTrace();
 		} catch (IOException e) {
 			e.printStackTrace();
-		} catch (Exception e) {
+		} catch (ParseException e) {
 			e.printStackTrace();
 		}
-
-		TFin = System.currentTimeMillis(); //Tomamos la hora en que finalizó el algoritmo y la almacenamos en la variable T
-		tiempo = TFin - TInicio; //Calculamos los milisegundos de diferencia
-		System.out.println("Tiempo de ejecución en milisegundos: " + tiempo); //Mostramos en pantalla el tiempo de ejecución en milisegundos
-
 		return "";
 	}
-	
+
+	@Transactional(readOnly = true)
+	public String addNewDocument(PnTxt pnTxt){
+		try {
+			System.out.println(idx);
+			writer.addDocument(createDocument( pnTxt.getPn().getTitulo(),pnTxt.getTexto()));
+			writer.optimize();
+		} catch (CorruptIndexException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return "";
+	}
+
 	@Transactional(readOnly = true)
 	private static Document createDocument(String title, String content) {
 		Document doc = new Document();
-
-		// Add the title as an unindexed field...
-
 		doc.add(new Field("title", title, Field.Store.YES, Field.Index.NO));
-
-
-		// ...and the content as an indexed field. Note that indexed
-		// Text fields are constructed using a Reader. Lucene can read
-		// and index very large chunks of text, without storing the
-		// entire content verbatim in the index. In this example we
-		// can just wrap the content string in a StringReader.
 		doc.add(new Field("content", content, Field.Store.YES, Field.Index.ANALYZED));
-
 		return doc;
 	}
-	
+
 	@Transactional (readOnly = false, propagation = Propagation.REQUIRED)
-	private static void search(Searcher searcher, String queryString)
+	private static String search(Searcher searcher, String queryString)
 			throws ParseException, IOException {
-
-		// Build a Query object
-		QueryParser parser = new QueryParser(Version.LUCENE_30, 
-				"content", 
-				new StandardAnalyzer(Version.LUCENE_30));
+		String resultado="Sin resultado";
+		System.out.println(idx);
+		QueryParser parser = new QueryParser(Version.LUCENE_30,"content",new StandardAnalyzer(Version.LUCENE_30));
 		Query query = parser.parse(queryString);
-
-
 		int hitsPerPage = 10;
-		// Search for the query
 		TopScoreDocCollector collector = TopScoreDocCollector.create(5 * hitsPerPage, false);
 		searcher.search(query, collector);
-
 		ScoreDoc[] hits = collector.topDocs().scoreDocs;
-
 		int hitCount = collector.getTotalHits();
 		System.out.println(hitCount + " total matching documents");
-
-		// Examine the Hits object to see if there were any matches
-
 		if (hitCount == 0) {
 			System.out.println(
 					"No matches were found for \"" + queryString + "\"");
 		} else {
 			System.out.println("Hits for \"" +
 					queryString + "\" were found in quotes by:");
-
-			// Iterate over the Documents in the Hits object
 			for (int i = 0; i<hitCount; i++) {
 				ScoreDoc scoreDoc = hits[i];
 				int docId = scoreDoc.doc;
 				float docScore = scoreDoc.score;
-				System.out.println("docId: " + docId + "\t" + "docScore: " + docScore);
-
+//				System.out.println("docId: " + docId + "\t" + "docScore: " + docScore);
 				Document doc = searcher.doc(docId);
-
-				// Print the value that we stored in the "title" field. Note
-				// that this Field was not indexed, but (unlike the
-				// "contents" field) was stored verbatim and can be
-				// retrieved.
-				System.out.println("  " + (i + 1) + ". " + doc.get("title"));
-				System.out.println("Content: " + doc.get("content"));            
+//				System.out.println("  " + (i + 1) + ". " + doc.get("title"));   
+				resultado="docId: " + docId + "\t" + "docScore: " + docScore+ "\n " + (i + 1) + ". " + doc.get("title");
 			}
 		}
-		System.out.println();
+		
+		return resultado;
 	}
+
 }

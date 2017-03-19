@@ -27,14 +27,27 @@
 			<p:growl id="growl" />
 			<p:panel id="pnlPn">
 				<br></br>
-				<h1 align="center">Búsqueda textual</h1>
+				<h1 align="center">Búsqueda Multimodal</h1>
 				<p:separator />
-				<h:panelGrid columns="1">
+				<h:panelGrid columns="2">
+
+					<p:inputText id="txtBusqueda" placeholder="Texto"
+						style="width:450px" binding="#{multimodalView.txtBusqueda}"
+						maxlength="50">
+					</p:inputText>
+
 					<p:commandButton id="btnCreateIndex" icon="fa fa-edit"
-						update="@([id$=growl])"
-						actionListener="#{textualView.createIndex}">
+						update="@([id$=frm]), @([id$=outputPnl])" actionListener="#{multimodalView.search}">
 					</p:commandButton>
+
+					<p:outputPanel id="outputPnl" deferred="true">
+						<h:outputText binding="" value="#{multimodalView.resultado}" />
+					</p:outputPanel>
+
+					
 				</h:panelGrid>
+
+
 			</p:panel>
 		</h:form>
 

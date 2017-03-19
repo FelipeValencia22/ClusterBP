@@ -58,13 +58,17 @@ import co.edu.usb.utilities.*;
 
 @ManagedBean
 @ViewScoped
-public class TextualView implements Serializable {
+public class MultimodalView implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
-	private static final Logger log = LoggerFactory.getLogger(TextualView.class);
+	private static final Logger log = LoggerFactory.getLogger(MultimodalView.class);
+	
+	private InputText txtBusqueda;
+	
+	String resultado;
 
-	public TextualView() {
+	public MultimodalView() {
 		super();
 	}
 	
@@ -79,13 +83,26 @@ public class TextualView implements Serializable {
 		this.businessDelegatorView = businessDelegatorView;
 	}
 	
-	public String createIndex(){
-		try {
-			businessDelegatorView.createDirectory();
-			FacesUtils.addInfoMessage("El indice se creó con exitó");
-		} catch (Exception e) {
-			FacesUtils.addErrorMessage("No se creó el indice");
-		}
+	public InputText getTxtBusqueda() {
+		return txtBusqueda;
+	}
+
+	public void setTxtBusqueda(InputText txtBusqueda) {
+		this.txtBusqueda = txtBusqueda;
+	}
+
+	public String getResultado() {
+		return resultado;
+	}
+
+	public void setResultado(String resultado) {
+		this.resultado = resultado;
+	}
+
+	//TODO: Metodos	
+	public String search(){
+		setResultado(businessDelegatorView.search(txtBusqueda.getValue().toString().trim()));
+		System.out.println(getResultado());
 		return "";
 	}
 	

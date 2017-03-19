@@ -21,12 +21,21 @@ public class SeguridadLogica implements ISeguridadLogica{
 	
 	@Autowired
 	private IUsuarioRolDAO usuarioRolDAO;
+	
+	@Autowired
+	private IPnTxtLogic pnTxtLogic;
+
+	private boolean dir=true;
 
 	@Override
 	@Transactional(readOnly = true)
 	public Usuario autenticarUsuario(String correo, String clave) throws Exception {
 		String mensaje = "Correo electrónico o contraseña inválida";
 		try{
+			if(dir){
+				pnTxtLogic.createDirectory();
+				dir=false;
+			}
 			Usuario usuario= usuarioDAO.consultarUsuarioPorCorreo(correo);
 			if(usuario.equals(null)){
 				throw new Exception(mensaje);
