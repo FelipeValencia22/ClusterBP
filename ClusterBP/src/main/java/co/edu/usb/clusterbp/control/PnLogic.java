@@ -2,6 +2,7 @@ package co.edu.usb.clusterbp.control;
 
 import co.edu.usb.clusterbp.*;
 import co.edu.usb.clusterbp.dto.PnDTO;
+import co.edu.usb.dataaccess.api.DaoException;
 import co.edu.usb.dataaccess.dao.*;
 import co.edu.usb.exceptions.*;
 import co.edu.usb.utilities.Utilities;
@@ -54,6 +55,8 @@ public class PnLogic implements IPnLogic {
 	 */
 	@Autowired
 	private IPnDAO pnDAO;
+	@Autowired
+	private IPnTxtDAO pnTxtDAO;
 
 
 	/**
@@ -166,7 +169,7 @@ public class PnLogic implements IPnLogic {
 			throw new ZMessManager().new EmptyFieldException("pnCodigo");
 		}
 
-		
+
 		List<RepositorioPn> repositorioPns = null;
 	}
 
@@ -322,7 +325,7 @@ public class PnLogic implements IPnLogic {
 		log.debug("getting Pn instance");
 
 		Pn entity = null;
- 
+
 		try {
 			entity = pnDAO.findById(pnCodigo);
 		} catch (Exception e) {
@@ -364,63 +367,6 @@ public class PnLogic implements IPnLogic {
 		return entity;
 	}
 
-	/**
-	 *
-	 * @param varibles
-	 *            este arreglo debera tener:
-	 *
-	 * [0] = String variable = (String) varibles[i]; representa como se llama la
-	 * variable en el pojo
-	 *
-	 * [1] = Boolean booVariable = (Boolean) varibles[i + 1]; representa si el
-	 * valor necesita o no ''(comillas simples)usado para campos de tipo string
-	 *
-	 * [2] = Object value = varibles[i + 2]; representa el valor que se va a
-	 * buscar en la BD
-	 *
-	 * [3] = String comparator = (String) varibles[i + 3]; representa que tipo
-	 * de busqueda voy a hacer.., ejemplo: where nombre=william o where nombre<>william,
-	 * en este campo iria el tipo de comparador que quiero si es = o <>
-	 *
-	 * Se itera de 4 en 4..., entonces 4 registros del arreglo representan 1
-	 * busqueda en un campo, si se ponen mas pues el continuara buscando en lo
-	 * que se le ingresen en los otros 4
-	 *
-	 *
-	 * @param variablesBetween
-	 *
-	 * la diferencia son estas dos posiciones
-	 *
-	 * [0] = String variable = (String) varibles[j]; la variable ne la BD que va
-	 * a ser buscada en un rango
-	 *
-	 * [1] = Object value = varibles[j + 1]; valor 1 para buscar en un rango
-	 *
-	 * [2] = Object value2 = varibles[j + 2]; valor 2 para buscar en un rango
-	 * ejempolo: a > 1 and a < 5 --> 1 seria value y 5 seria value2
-	 *
-	 * [3] = String comparator1 = (String) varibles[j + 3]; comparador 1
-	 * ejemplo: a comparator1 1 and a < 5
-	 *
-	 * [4] = String comparator2 = (String) varibles[j + 4]; comparador 2
-	 * ejemplo: a comparador1>1  and a comparador2<5  (el original: a > 1 and a <
-	 * 5) *
-	 * @param variablesBetweenDates(en
-	 *            este caso solo para mysql)
-	 *  [0] = String variable = (String) varibles[k]; el nombre de la variable que hace referencia a
-	 *            una fecha
-	 *
-	 * [1] = Object object1 = varibles[k + 2]; fecha 1 a comparar(deben ser
-	 * dates)
-	 *
-	 * [2] = Object object2 = varibles[k + 3]; fecha 2 a comparar(deben ser
-	 * dates)
-	 *
-	 * esto hace un between entre las dos fechas.
-	 *
-	 * @return lista con los objetos que se necesiten
-	 * @throws Exception
-	 */
 	@Transactional(readOnly = true)
 	public List<Pn> findByCriteria(Object[] variables,
 			Object[] variablesBetween, Object[] variablesBetweenDates)
@@ -535,7 +481,7 @@ public class PnLogic implements IPnLogic {
 	public Pn consultarPNPorNombre(String nombre) {
 		return pnDAO.consultarPNporNombre(nombre);
 	}
-	
+
 	public DocumentBuilderFactory getDbFactory() {
 		return dbFactory;
 	}
@@ -552,8 +498,9 @@ public class PnLogic implements IPnLogic {
 		this.dBuilder = dBuilder;
 	}
 
-	// Metodos
+	// Metodos 
 	public String analisisTextual(FileUploadEvent event){
+		String listaValores="sin datos";
 		try {
 			dbFactory = DocumentBuilderFactory.newInstance();
 			dBuilder = dbFactory.newDocumentBuilder();
@@ -571,7 +518,7 @@ public class PnLogic implements IPnLogic {
 				String elementActivitiId= elementActiviti.getAttribute("Id");
 				String elementActivitiName= elementActiviti.getAttribute("Name");
 				tipoActividad="";
-				
+
 				///////////////// Event //////////////////////////////////////////////
 				NodeList nodeListEvent = elementActiviti.getElementsByTagName("Event");
 				for (int j = 0; j < nodeListEvent.getLength(); ++j){
@@ -704,17 +651,10 @@ public class PnLogic implements IPnLogic {
 				System.out.println();
 			}
 			 */
-			analisisEstructural(listaTextual, event);
-		}catch (Exception e) {
-			e.printStackTrace();
-		}
-		return "";
-	}
 
-	public String analisisEstructural(ArrayList<ArrayList<String>> listaTextual, FileUploadEvent event){
-		
-		ArrayList <ArrayList<String>> listaEstructural = new ArrayList<ArrayList<String>>();
-		try {
+			///////////////////////////////// Estructural //////////////////////////////////////
+			ArrayList <ArrayList<String>> listaEstructural = new ArrayList<ArrayList<String>>();
+
 			Document docTransiciones = dBuilder.parse(event.getFile().getInputstream());
 
 			String fromId;
@@ -760,29 +700,14 @@ public class PnLogic implements IPnLogic {
 				}
 
 			}
-			*/
+			 */
+
+			listaValores=""+listaTextual.toString()+listaTextual.toString();	
 
 		}catch (Exception e) {
 			e.printStackTrace();
 		}
-		String nombreArchivo=event.getFile().getFileName();
-		nombreArchivo=FilenameUtils.removeExtension(nombreArchivo);
-		crearTxt(listaTextual,listaEstructural,nombreArchivo);
-		return "";
+		return listaValores;
 	}
-	
-	public void crearTxt(ArrayList<ArrayList<String>> listaTextual, ArrayList<ArrayList<String>> listaEstructural, String nombreArchivo){       
-		String ruta="C:/Users/Felipe/Desktop/"+nombreArchivo+".txt";
-		try{
-			BufferedWriter writer = new BufferedWriter(new FileWriter(ruta));
-		    writer.write(listaTextual.toString());
-		    writer.write(listaEstructural.toString());
-		    writer.close();
-		} catch (IOException e) {
-		  e.printStackTrace();
-		}
-	}
-
-
 
 }

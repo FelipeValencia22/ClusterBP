@@ -29,7 +29,12 @@
 				<br></br>
 				<h1 align="center">Búsqueda textual</h1>
 				<p:separator />
-
+				<h:panelGrid columns="1">
+					<p:commandButton id="btnCreateIndex" icon="fa fa-edit"
+						update="@([id$=growl])"
+						actionListener="#{textualView.createIndex}">
+					</p:commandButton>
+				</h:panelGrid>
 			</p:panel>
 		</h:form>
 

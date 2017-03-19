@@ -283,6 +283,8 @@ public interface IBusinessDelegatorView {
     
     public String parserXPDL(FileUploadEvent event);
     
+    public String crearTxt(String texto, Pn pn) throws Exception;
+    
     //TODO: Consultas
     public Usuario consultarUsuarioPorCorreo(String correo);
     
@@ -297,4 +299,7 @@ public interface IBusinessDelegatorView {
     public Usuario consultarUsuarioPorID(Long usuarioCodigo);
     
     public Pn consultarPNPorNombre(String nombre);
+    
+    public String createDirectory();
+    
 }

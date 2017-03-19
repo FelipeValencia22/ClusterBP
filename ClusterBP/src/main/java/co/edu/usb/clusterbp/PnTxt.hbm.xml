@@ -6,7 +6,7 @@
     <class name="co.edu.usb.clusterbp.PnTxt" table="pn_txt" schema="public" optimistic-lock="version">
         <id name="pnTxtCodigo" type="java.lang.Long">
             <column name="pn_txt_codigo" />
-            <generator class="assigned" />
+            <generator class="identity" />
         </id>
         <many-to-one name="pn" class="co.edu.usb.clusterbp.Pn" fetch="select">
             <column name="pntxt" not-null="true" />

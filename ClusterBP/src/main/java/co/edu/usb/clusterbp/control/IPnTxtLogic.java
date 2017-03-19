@@ -1,5 +1,6 @@
 package co.edu.usb.clusterbp.control;
 
+import co.edu.usb.clusterbp.Pn;
 import co.edu.usb.clusterbp.PnTxt;
 import co.edu.usb.clusterbp.dto.PnTxtDTO;
 
@@ -53,4 +54,8 @@ public interface IPnTxtLogic {
     public Long findTotalNumberPnTxt() throws Exception;
 
     public List<PnTxtDTO> getDataPnTxt() throws Exception;
+    
+    //TODO: Metodos
+    public String crearTxt(String texto, Pn pn) throws Exception;
+    public String createDirectory();
 }

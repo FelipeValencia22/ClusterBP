@@ -1,5 +1,7 @@
 package co.edu.usb.presentation.backingBeans;
 
+import java.util.List;
+
 import javax.annotation.PostConstruct; 
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
@@ -11,6 +13,7 @@ import org.primefaces.model.menu.MenuModel;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import co.edu.usb.clusterbp.PnTxt;
 import co.edu.usb.clusterbp.Rol;
 import co.edu.usb.clusterbp.Usuario;
 import co.edu.usb.clusterbp.UsuarioRol;
@@ -50,18 +53,13 @@ public class MenuView {
 
 		try{
 			String rolUsuario=businessDelegatorView.consultarRolUsuarioPorCorreo(usuarioEnSesion.getCorreo().toString());
-			
-			log.info("rolUsuario:"+rolUsuario);
-			
+
 			if(rolUsuario.equals("Admin")){
-				log.info("CrearMenuAdmin");
 				crearMenuAdmin();
 			}else{
 				log.info("CrearMenuUsuario");
 				crearMenuSinRol();
 			}
-
-
 
 		}catch(Exception e){
 			e.printStackTrace();
@@ -70,6 +68,8 @@ public class MenuView {
 		}
 	}
 
+	
+
 	public void crearMenuAdmin(){
 		DefaultMenuItem usuarios = new DefaultMenuItem("Usuario");
 		usuarios.setOutcome("/XHTML/usuario.xhtml");
@@ -77,14 +77,14 @@ public class MenuView {
 		usuarios.setId("sm_usuario");
 		usuarios.setContainerStyleClass("layout-menubar-active");
 		model.addElement(usuarios);
-		
+
 		DefaultMenuItem repositorios= new DefaultMenuItem("Repositorio");
 		repositorios.setOutcome("/XHTML/repositorio.xhtml");
 		repositorios.setIcon("icon-home-outline");
 		repositorios.setId("sm_repositorios");
 		repositorios.setContainerStyleClass("layout-menubar-active");
 		model.addElement(repositorios);
-		
+
 		DefaultMenuItem pn= new DefaultMenuItem("Proceso de negocio");
 		pn.setOutcome("/XHTML/pn.xhtml");
 		pn.setIcon("icon-home-outline");
@@ -92,9 +92,15 @@ public class MenuView {
 		pn.setContainerStyleClass("layout-menubar-active");
 		model.addElement(pn);
 		
+		DefaultMenuItem textual= new DefaultMenuItem("Búsqueda textual");
+		textual.setOutcome("/XHTML/textual.xhtml");
+		textual.setIcon("icon-home-outline");
+		textual.setId("sm_textual");
+		textual.setContainerStyleClass("layout-menubar-active");
+		model.addElement(textual);
 	}
-	
-	
+
+
 	public void crearMenuSinRol(){
 		DefaultMenuItem sinRol = new DefaultMenuItem("");
 		sinRol.setOutcome("/XHTML/404.xhtml");
@@ -103,8 +109,8 @@ public class MenuView {
 		sinRol.setContainerStyleClass("layout-menubar-active");
 		model.addElement(sinRol);	
 	}
-	
-	
-	
+
+
+
 
 }

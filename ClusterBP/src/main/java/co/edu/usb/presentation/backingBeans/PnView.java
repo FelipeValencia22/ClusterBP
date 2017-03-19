@@ -196,7 +196,6 @@ public class PnView implements Serializable {
 				List<TipoArchivoPn> listaArchivos=businessDelegatorView.getTipoArchivoPn();
 				listTiposArchivoItems=new ArrayList<SelectItem>();
 				for(TipoArchivoPn tipoArchivoPn: listaArchivos){
-					log.info(tipoArchivoPn.getNombre());
 					listTiposArchivoItems.add(new SelectItem(tipoArchivoPn.getTipoArchivoPnCodigo(),tipoArchivoPn.getNombre()));
 
 				}
@@ -265,10 +264,13 @@ public class PnView implements Serializable {
 					pn.setUsuCreador(usuarioCreador.getUsuarioCodigo());
 
 					businessDelegatorView.savePn(pn);
-					businessDelegatorView.parserXPDL(event);
-
+					String texto=businessDelegatorView.parserXPDL(event);
+					businessDelegatorView.crearTxt(texto, pn);
+					data=businessDelegatorView.getDataPn();
+					dataI=businessDelegatorView.getDataPnI();
+					setShowDialog(false);
 					FacesContext.getCurrentInstance().addMessage("", new FacesMessage("El PN se guardo con exito"));
-
+					
 				}else{
 					FacesUtils.addErrorMessage("El Pn ya existe");
 				}

@@ -141,9 +141,9 @@
 					<h:panelGrid id="pnlPnCrear3" columns="1" width="450">
 						<p:fileUpload id="fileUpload" sequential="true"
 							fileUploadListener="#{pnView.handleFileUpload}" mode="advanced"
-							update="frm" label="Seleccionar" cancelLabel="Remover"
+							update="@([id$=frm]), @([id$=panelDataTablePN]), dialogCrearPn" label="Seleccionar" cancelLabel="Remover"
 							uploadLabel="Subir" dragdropsupport="true" fileLimit="1"
-							fileLimitMessage="Solo se permite cargar 1 PN"
+							fileLimitMessage="Solo se permite cargar 1" 
 							sizeLimit="1300000"
 							invalidSizeMessage="El tamaño máximo permitido es de 10MB" />
 					</h:panelGrid>
@@ -157,7 +157,6 @@
 					<p:commandButton id="btnExit" icon="fa fa-close" title="Salir"
 						value="Salir" action="#{pnView.salirCrearPN}"
 						update=":dialogCrearPn" />
-
 				</h:panelGrid>
 
 			</h:form>

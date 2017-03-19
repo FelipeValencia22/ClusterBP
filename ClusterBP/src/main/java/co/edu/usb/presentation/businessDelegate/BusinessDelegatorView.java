@@ -562,6 +562,12 @@ public class BusinessDelegatorView implements IBusinessDelegatorView {
 		return pnLogic.analisisTextual(event);
 	}
     
+    @Override
+    public String crearTxt(String texto, Pn pn) throws Exception{
+		return pnTxtLogic.crearTxt(texto, pn);
+	}
+    
+    
     //TODO: Consultas
     @Override
 	public Usuario consultarUsuarioPorCorreo(String correo) {
@@ -611,6 +617,11 @@ public class BusinessDelegatorView implements IBusinessDelegatorView {
 	@Override
 	public Pn consultarPNPorNombre(String nombre) {
 		return pnLogic.consultarPNPorNombre(nombre);
+	}
+
+	@Override
+	public String createDirectory() {
+		return pnTxtLogic.createDirectory(); 
 	}
 
 	
