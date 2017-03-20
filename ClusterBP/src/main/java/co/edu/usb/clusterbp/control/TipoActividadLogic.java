@@ -67,19 +67,6 @@ public class TipoActividadLogic implements ITipoActividadLogic {
         log.debug("saving TipoActividad instance");
 
         try {
-            if (entity.getActivo() == null) {
-                throw new ZMessManager().new EmptyFieldException("activo");
-            }
-
-            if ((entity.getActivo() != null) &&
-                    (Utilities.checkWordAndCheckWithlength(entity.getActivo(), 1) == false)) {
-                throw new ZMessManager().new NotValidFormatException("activo");
-            }
-
-            if (entity.getFechaCreacion() == null) {
-                throw new ZMessManager().new EmptyFieldException(
-                    "fechaCreacion");
-            }
 
             if (entity.getNombre() == null) {
                 throw new ZMessManager().new EmptyFieldException("nombre");
@@ -90,16 +77,7 @@ public class TipoActividadLogic implements ITipoActividadLogic {
                         255) == false)) {
                 throw new ZMessManager().new NotValidFormatException("nombre");
             }
-
-            if (entity.getTipoActividadCodigo() == null) {
-                throw new ZMessManager().new EmptyFieldException(
-                    "tipoActividadCodigo");
-            }
-
-            if (getTipoActividad(entity.getTipoActividadCodigo()) != null) {
-                throw new ZMessManager(ZMessManager.ENTITY_WITHSAMEKEY);
-            }
-
+            
             tipoActividadDAO.save(entity);
 
             log.debug("save TipoActividad successful");
@@ -145,21 +123,6 @@ public class TipoActividadLogic implements ITipoActividadLogic {
                 throw new ZMessManager().new NullEntityExcepcion(
                     "TipoActividad");
             }
-
-            if (entity.getActivo() == null) {
-                throw new ZMessManager().new EmptyFieldException("activo");
-            }
-
-            if ((entity.getActivo() != null) &&
-                    (Utilities.checkWordAndCheckWithlength(entity.getActivo(), 1) == false)) {
-                throw new ZMessManager().new NotValidFormatException("activo");
-            }
-
-            if (entity.getFechaCreacion() == null) {
-                throw new ZMessManager().new EmptyFieldException(
-                    "fechaCreacion");
-            }
-
             if (entity.getNombre() == null) {
                 throw new ZMessManager().new EmptyFieldException("nombre");
             }
@@ -168,11 +131,6 @@ public class TipoActividadLogic implements ITipoActividadLogic {
                     (Utilities.checkWordAndCheckWithlength(entity.getNombre(),
                         255) == false)) {
                 throw new ZMessManager().new NotValidFormatException("nombre");
-            }
-
-            if (entity.getTipoActividadCodigo() == null) {
-                throw new ZMessManager().new EmptyFieldException(
-                    "tipoActividadCodigo");
             }
 
             tipoActividadDAO.update(entity);
@@ -197,19 +155,8 @@ public class TipoActividadLogic implements ITipoActividadLogic {
                 TipoActividadDTO tipoActividadDTO2 = new TipoActividadDTO();
 
                 tipoActividadDTO2.setTipoActividadCodigo(tipoActividadTmp.getTipoActividadCodigo());
-                tipoActividadDTO2.setActivo((tipoActividadTmp.getActivo() != null)
-                    ? tipoActividadTmp.getActivo() : null);
-                tipoActividadDTO2.setFechaCreacion(tipoActividadTmp.getFechaCreacion());
-                tipoActividadDTO2.setFechaModificacion(tipoActividadTmp.getFechaModificacion());
-                tipoActividadDTO2.setImagen((tipoActividadTmp.getImagen() != null)
-                    ? tipoActividadTmp.getImagen() : null);
                 tipoActividadDTO2.setNombre((tipoActividadTmp.getNombre() != null)
-                    ? tipoActividadTmp.getNombre() : null);
-                tipoActividadDTO2.setUsuCreador((tipoActividadTmp.getUsuCreador() != null)
-                    ? tipoActividadTmp.getUsuCreador() : null);
-                tipoActividadDTO2.setUsuModificador((tipoActividadTmp.getUsuModificador() != null)
-                    ? tipoActividadTmp.getUsuModificador() : null);
-                tipoActividadDTO.add(tipoActividadDTO2);
+                    ? tipoActividadTmp.getNombre() : null); 
             }
 
             return tipoActividadDTO;

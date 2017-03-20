@@ -646,7 +646,6 @@ public class PnLogic implements IPnLogic {
 				listaTextual.get(i).add(tipoActividad);
 				listaTextual.get(i).add(elementActivitiName);
 			}
-
 			/// Imprimir valores
 			/*
 			for (int j = 0; j < listaTextual.size(); j++) {
@@ -659,43 +658,34 @@ public class PnLogic implements IPnLogic {
 
 			///////////////////////////////// Estructural //////////////////////////////////////
 			ArrayList <ArrayList<String>> listaEstructural = new ArrayList<ArrayList<String>>();
-
 			Document docTransiciones = dBuilder.parse(event.getFile().getInputstream());
-
 			String fromId;
 			String toId;
 			String id;
 			String fromString="";
 			String toString="";
-
 			NodeList nodeListTransition= docTransiciones.getElementsByTagName("Transition");
 			for (int i = 0; i < nodeListTransition.getLength(); ++i){
 				Element elementTransition= (Element)nodeListTransition.item(i);
 				id= elementTransition.getAttribute("Id");
 				fromId= elementTransition.getAttribute("From");
 				toId= elementTransition.getAttribute("To");
-
 				/// Asignar los valores a la Lista
 				listaEstructural.add(new ArrayList<String>());
-
 				for (int j = 0; j < listaTextual.size(); j++) {
 					if(listaTextual.get(j).get(0).equals(fromId)){
 						fromString=listaTextual.get(j).get(1);
 					}
 				}
-
 				for (int j = 0; j < listaTextual.size(); j++) {
 					if(listaTextual.get(j).get(0).equals(toId)){
 						toString=listaTextual.get(j).get(1);
 					}
 				}
-
 				listaEstructural.get(i).add(fromString+"__"+toString);	
 				fromString="";
 				toString="";
-
 			}
-
 			/// Imprimir valores
 			/*
 			for (int j = 0; j < listaEstructural.size(); j++) {
@@ -703,12 +693,9 @@ public class PnLogic implements IPnLogic {
 					System.out.println(listaEstructural.get(j).get(k));
 					System.out.println();
 				}
-
 			}
 			 */
-
 			listaValores=""+listaTextual.toString()+listaTextual.toString();	
-
 		}catch (Exception e) {
 			e.printStackTrace();
 		}

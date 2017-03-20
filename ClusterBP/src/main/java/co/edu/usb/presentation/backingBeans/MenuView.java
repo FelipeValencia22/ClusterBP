@@ -6,7 +6,9 @@ import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
+import javax.faces.model.SelectItem;
 
+import org.primefaces.component.selectonemenu.SelectOneMenu;
 import org.primefaces.model.menu.DefaultMenuItem;
 import org.primefaces.model.menu.DefaultMenuModel;
 import org.primefaces.model.menu.MenuModel;
@@ -28,7 +30,7 @@ public class MenuView {
 	private static final Logger log = LoggerFactory.getLogger(MenuView.class);
 	@ManagedProperty(value = "#{BusinessDelegatorView}")
 	private IBusinessDelegatorView businessDelegatorView;
-
+	
 	public IBusinessDelegatorView getBusinessDelegatorView() {
 		return businessDelegatorView;
 	}
@@ -39,8 +41,6 @@ public class MenuView {
 
 	private MenuModel model;
 	private final Usuario usuarioEnSesion= (Usuario) FacesUtils.getfromSession("usuario");
-	
-	private boolean index;
 
 	public MenuModel getModel() {
 		return model;
@@ -49,7 +49,7 @@ public class MenuView {
 	public void setModel(MenuModel model) {
 		this.model = model;
 	}
-	
+
 	@PostConstruct
 	public void init() {
 		model = new DefaultMenuModel();

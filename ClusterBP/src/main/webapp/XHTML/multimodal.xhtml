@@ -27,26 +27,128 @@
 			<p:growl id="growl" />
 			<p:panel id="pnlPn">
 				<br></br>
-				<h1 align="center">Búsqueda Multimodal</h1>
+				<h1 align="center">Búsquedas</h1>
 				<p:separator />
-				<h:panelGrid columns="2">
 
-					<p:inputText id="txtBusqueda" placeholder="Texto"
-						style="width:450px" binding="#{multimodalView.txtBusqueda}"
-						maxlength="50">
-					</p:inputText>
+				<h:panelGrid id="pnlBusqueda" columns="4">
+					<h2>Tipo de búsqueda</h2>
+					<p:outputPanel id="customPanel" style="margin-bottom:10px">
+						<p:selectOneRadio id="customRadio" layout="custom"
+							binding="#{multimodalView.rdTipoBusqueda}">
+							<f:selectItem itemLabel="Red" itemValue="Textual" />
+							<f:selectItem itemLabel="Green" itemValue="Estructural" />
+							<f:selectItem itemLabel="Blue" itemValue="Multimodal" />
+							<p:ajax event="click" update="frm"
+								listener="#{multimodalView.tipoBusqueda}" />
+						</p:selectOneRadio>
 
-					<p:commandButton id="btnCreateIndex" icon="fa fa-edit"
-						update="@([id$=frm]), @([id$=outputPnl])" actionListener="#{multimodalView.search}">
-					</p:commandButton>
-
-					<p:outputPanel id="outputPnl" deferred="true">
-						<h:outputText binding="" value="#{multimodalView.resultado}" />
+						<h:panelGrid columns="6" cellpadding="5">
+							<p:radioButton id="opt1" for="customRadio" itemIndex="0" />
+							<h:outputLabel for="opt1" value="Textual" />
+							<p:radioButton id="opt2" for="customRadio" itemIndex="1" />
+							<h:outputLabel for="opt2" value="Estructural" />
+							<p:radioButton id="opt3" for="customRadio" itemIndex="2" />
+							<h:outputLabel for="opt3" value="Múltimodal" />
+						</h:panelGrid>
 					</p:outputPanel>
-
-					
 				</h:panelGrid>
 
+				<h:panelGrid id="pnlTexto" columns="2" style="">
+					<p:inputTextarea id="txtBusqueda" placeholder="Texto"
+						binding="#{multimodalView.txtBusqueda}" cols="83" rows="2"
+						disabled="true">
+					</p:inputTextarea>
+
+					<p:commandButton id="btnAddTexto" value="Adicionar"
+						icon="fa fa-plus" binding="#{multimodalView.btnAddTexto}"
+						actionListener="#{multimodalView.addTexto}" update="@([id$=out])"
+						disabled="true">
+					</p:commandButton>
+				</h:panelGrid>
+
+
+				<h:panelGrid id="pnlLista" columns="3">
+					<p:selectOneMenu id="somListaEventos"
+						value="#{multimodalView.from}" style="width:229px" var="i"
+						binding="#{multimodalView.somListaEventos}" filter="true"
+						filterMatchMode="contains" disabled="true">
+
+						<f:selectItem itemValue="-1" itemLabel="From"
+							noSelectionOption="true" />
+						<f:selectItems value="#{multimodalView.listaActividades}" var="ii"
+							itemLabel="#{ii.nombre}" itemValue="#{ii}" />
+
+						<p:column>
+							<p:graphicImage value="images/#{i.nombre}.png" width="50"
+								height="50" />
+						</p:column>
+						<p:column> 
+           					#{i.nombre}
+         				</p:column>
+					</p:selectOneMenu>
+
+					<p:selectOneMenu id="somListaEventos2" value="#{multimodalView.to}"
+						style="width:229px" var="i"
+						binding="#{multimodalView.somListaEventos2}" filter="true"
+						filterMatchMode="contains" disabled="true">
+
+						<f:selectItem itemValue="-1" itemLabel="From"
+							noSelectionOption="true" />
+						<f:selectItems value="#{multimodalView.listaActividades2}"
+							var="ii" itemLabel="#{ii.nombre}" itemValue="#{ii}" />
+
+						<p:column>
+							<p:graphicImage value="images/#{i.nombre}.png" width="50"
+								height="50" />
+						</p:column>
+						<p:column>
+           					#{i.nombre}
+         				</p:column>
+					</p:selectOneMenu>
+
+					<p:commandButton id="btnAddLista" value="Adicionar"
+						icon="fa fa-plus" binding="#{multimodalView.btnAddLista}"
+						actionListener="#{multimodalView.addTransiciones}"
+						update="@([id$=out2])" disabled="true">
+					</p:commandButton>
+				</h:panelGrid>
+
+				<p:separator />
+				<h2>Query</h2>
+				<h:panelGrid id="pnlQuery" columns="2">
+					<h:outputLabel value="Textual:" />
+					<h:outputText id="out" value="#{multimodalView.query}"
+						style="margin: 20px;" />
+				</h:panelGrid>
+
+				<h:panelGrid id="pnlQuery2" columns="2">
+					<h:outputLabel value="Estructural:" />
+					<h:outputText id="out2" value="#{multimodalView.transiciones}"
+						style="margin: 20px;" />
+				</h:panelGrid>
+
+				<h:panelGrid id="pnlBtns" columns="2">
+					<p:commandButton id="btnBuscar" icon="fa fa-search" value="Buscar"
+						style="margin: 20px;" update="@([id$=frm])"
+						actionListener="#{multimodalView.search}" disabled="true"
+						binding="#{multimodalView.btnBuscar}">
+					</p:commandButton>
+
+					<p:commandButton id="btnLimpiar" icon="fa fa-eraser"
+						value="Limpiar" style="margin: 20px;"
+						actionListener="#{multimodalView.limpiar}" update="@([id$=frm])"
+						binding="#{multimodalView.btnLimpiar}">
+					</p:commandButton>
+				</h:panelGrid>
+				
+				<p:separator/>
+				
+				<h2>Resultado</h2>
+				<h:panelGrid id="pnlResultado" columns="2">
+					<p:inputTextarea id="txtRestultado" placeholder="Resultado"
+						binding="#{multimodalView.txtResultado}" cols="60" rows="10">
+					</p:inputTextarea>
+				</h:panelGrid>
 
 			</p:panel>
 		</h:form>

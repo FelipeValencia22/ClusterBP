@@ -12,32 +12,19 @@ public class TipoActividad  implements java.io.Serializable {
 
      private Long tipoActividadCodigo;
      private String nombre;
-     private Long usuCreador;
-     private Date fechaCreacion;
-     private Long usuModificador;
-     private Date fechaModificacion;
-     private String activo;
-     private byte[] imagen;
+    
 
     public TipoActividad() {
     }
 
 	
-    public TipoActividad(Long tipoActividadCodigo, String nombre, Date fechaCreacion, String activo) {
+    public TipoActividad(Long tipoActividadCodigo, String nombre) {
         this.tipoActividadCodigo = tipoActividadCodigo;
-        this.nombre = nombre;
-        this.fechaCreacion = fechaCreacion;
-        this.activo = activo;
+        this.nombre = nombre;  
     }
-    public TipoActividad(Long tipoActividadCodigo, String nombre, Long usuCreador, Date fechaCreacion, Long usuModificador, Date fechaModificacion, String activo, byte[] imagen) {
-       this.tipoActividadCodigo = tipoActividadCodigo;
+    
+    public TipoActividad(String nombre) {
        this.nombre = nombre;
-       this.usuCreador = usuCreador;
-       this.fechaCreacion = fechaCreacion;
-       this.usuModificador = usuModificador;
-       this.fechaModificacion = fechaModificacion;
-       this.activo = activo;
-       this.imagen = imagen;
     }
    
     public Long getTipoActividadCodigo() {
@@ -54,52 +41,6 @@ public class TipoActividad  implements java.io.Serializable {
     public void setNombre(String nombre) {
         this.nombre = nombre;
     }
-    public Long getUsuCreador() {
-        return this.usuCreador;
-    }
-    
-    public void setUsuCreador(Long usuCreador) {
-        this.usuCreador = usuCreador;
-    }
-    public Date getFechaCreacion() {
-        return this.fechaCreacion;
-    }
-    
-    public void setFechaCreacion(Date fechaCreacion) {
-        this.fechaCreacion = fechaCreacion;
-    }
-    public Long getUsuModificador() {
-        return this.usuModificador;
-    }
-    
-    public void setUsuModificador(Long usuModificador) {
-        this.usuModificador = usuModificador;
-    }
-    public Date getFechaModificacion() {
-        return this.fechaModificacion;
-    }
-    
-    public void setFechaModificacion(Date fechaModificacion) {
-        this.fechaModificacion = fechaModificacion;
-    }
-    public String getActivo() {
-        return this.activo;
-    }
-    
-    public void setActivo(String activo) {
-        this.activo = activo;
-    }
-    public byte[] getImagen() {
-        return this.imagen;
-    }
-    
-    public void setImagen(byte[] imagen) {
-        this.imagen = imagen;
-    }
-
-
-
-
 }
 
 
