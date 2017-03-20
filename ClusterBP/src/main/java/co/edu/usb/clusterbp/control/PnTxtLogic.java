@@ -402,10 +402,11 @@ public class PnTxtLogic implements IPnTxtLogic {
 
 	@Transactional(readOnly = true)
 	public String search(String value){
+		String resultado="";
 		try {
 			Searcher searcher;
 			searcher = new IndexSearcher(idx);
-			search(searcher, value);
+			resultado=search(searcher, value);
 			searcher.close();
 		} catch (CorruptIndexException e) {
 			e.printStackTrace();
@@ -414,7 +415,7 @@ public class PnTxtLogic implements IPnTxtLogic {
 		} catch (ParseException e) {
 			e.printStackTrace();
 		}
-		return "";
+		return resultado;
 	}
 
 	@Transactional(readOnly = true)
@@ -453,19 +454,18 @@ public class PnTxtLogic implements IPnTxtLogic {
 		int hitCount = collector.getTotalHits();
 		System.out.println(hitCount + " total matching documents");
 		if (hitCount == 0) {
-			System.out.println(
-					"No matches were found for \"" + queryString + "\"");
+					resultado="No se encontraron resultados para: \"" + queryString + "\"";
 		} else {
-			System.out.println("Hits for \"" +
-					queryString + "\" were found in quotes by:");
+			resultado="El texto \"" +	queryString + "\" fue encontrado en:";
 			for (int i = 0; i<hitCount; i++) {
 				ScoreDoc scoreDoc = hits[i];
 				int docId = scoreDoc.doc;
 				float docScore = scoreDoc.score;
-//				System.out.println("docId: " + docId + "\t" + "docScore: " + docScore);
+				System.out.println("docId: " + docId + "\t" + "docScore: " + docScore);
 				Document doc = searcher.doc(docId);
-//				System.out.println("  " + (i + 1) + ". " + doc.get("title"));   
-				resultado="docId: " + docId + "\t" + "docScore: " + docScore+ "\n " + (i + 1) + ". " + doc.get("title");
+				System.out.println("  " + (i + 1) + ". " + doc.get("title"));   
+				resultado=resultado +(i + 1)+". Nombre del documento: "+ doc.get("title")+
+						"ID dento del índice: " + docId + ", " + "Puntuación sobre el documento: " + docScore+ " " + (i + 1) +"\n ";
 			}
 		}
 		

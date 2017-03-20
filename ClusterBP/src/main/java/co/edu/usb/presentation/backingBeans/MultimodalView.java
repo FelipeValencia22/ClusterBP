@@ -57,6 +57,7 @@ import co.edu.usb.utilities.*;
  */
 
 
+@SuppressWarnings("unused")
 @ManagedBean
 @ViewScoped
 public class MultimodalView implements Serializable {
@@ -70,6 +71,8 @@ public class MultimodalView implements Serializable {
 	private InputTextarea txtResultado;
 	private SelectOneMenu somListaEventos;
 	private List<SelectItem> listTiposEventosItems;
+	private SelectOneMenu somListaEventos2;
+	private List<SelectItem> listTiposEventosItems2;
 	private CommandButton btnAddTexto;
 	private CommandButton btnAddLista;
 	private CommandButton btnBuscar;
@@ -79,28 +82,23 @@ public class MultimodalView implements Serializable {
 	private List<TipoActividad> listaActividades;
 	private List<TipoActividad> listaActividades2;
 
+	private TipoActividad fromActividad;
+
 	private String query;
 	private String transiciones;
+	String resultado;
 
 	private String from;
 	private String to;
+	
+	List <String> valores;
 
-	public SelectOneRadio getRdTipoBusqueda() {
-		return rdTipoBusqueda;
-	}
-
-	public void setRdTipoBusqueda(SelectOneRadio rdTipoBusqueda) {
-		this.rdTipoBusqueda = rdTipoBusqueda;
-	}
-
-	private SelectOneMenu somListaEventos2;
-	private List<SelectItem> listTiposEventosItems2;
-	String resultado;
 
 	public MultimodalView() {
 		super();
 		setQuery("");
 		setTransiciones("");
+		setResultado("");
 	}
 
 	@ManagedProperty(value="#{BusinessDelegatorView}")
@@ -112,6 +110,14 @@ public class MultimodalView implements Serializable {
 
 	public void setBusinessDelegatorView(IBusinessDelegatorView businessDelegatorView) {
 		this.businessDelegatorView = businessDelegatorView;
+	}
+
+	public SelectOneRadio getRdTipoBusqueda() {
+		return rdTipoBusqueda;
+	}
+
+	public void setRdTipoBusqueda(SelectOneRadio rdTipoBusqueda) {
+		this.rdTipoBusqueda = rdTipoBusqueda;
 	}
 
 	public InputTextarea getTxtBusqueda() {
@@ -297,12 +303,32 @@ public class MultimodalView implements Serializable {
 		this.to = to;
 	}
 
+
+
+	public TipoActividad getFromActividad() {
+		return fromActividad;
+	}
+
+	public void setFromActividad(TipoActividad fromActividad) {
+		this.fromActividad = fromActividad;
+	}
+
+	public List<String> getValores() {
+		return valores;
+	}
+
+	public void setValores(List<String> valores) {
+		this.valores = valores;
+	}
+
 	//TODO: Metodos	
 	public String search(){
-		String busqueda= getQuery()+getTransiciones();
-		System.out.println(busqueda);
-		//		setResultado(businessDelegatorView.search());
-		//		System.out.println(getResultado());
+//		String busqueda= getQuery()+getTransiciones();
+//		setResultado(businessDelegatorView.search(busqueda));
+//		System.out.println(getResultado());
+		valores= new ArrayList<String>();
+		valores.add("uno\n");
+		valores.add("dos\n");
 		return "";
 	}
 
@@ -325,11 +351,15 @@ public class MultimodalView implements Serializable {
 	public String textual(){
 		txtBusqueda.setDisabled(false);
 		btnAddTexto.setDisabled(false);
-		btnBuscar.setDisabled(false);
+		btnBuscar.setDisabled(true);
 		//
 		somListaEventos.setDisabled(true);
 		somListaEventos2.setDisabled(true);
 		btnAddLista.setDisabled(true);
+		somListaEventos.resetValue();
+		somListaEventos2.resetValue();
+		setTransiciones("");
+		setResultado("");
 		return "";
 	}
 
@@ -337,10 +367,13 @@ public class MultimodalView implements Serializable {
 		somListaEventos.setDisabled(false);
 		somListaEventos2.setDisabled(false);
 		btnAddLista.setDisabled(false);
-		btnBuscar.setDisabled(false);
+		btnBuscar.setDisabled(true);
 		//
 		txtBusqueda.setDisabled(true);
+		txtBusqueda.resetValue();
 		btnAddTexto.setDisabled(true);	
+		setQuery("");
+		setResultado("");
 		return "";
 	}
 
@@ -348,9 +381,15 @@ public class MultimodalView implements Serializable {
 		somListaEventos.setDisabled(false);
 		somListaEventos2.setDisabled(false);
 		btnAddLista.setDisabled(false);
-		btnBuscar.setDisabled(false);
 		txtBusqueda.setDisabled(false);
 		btnAddTexto.setDisabled(false);
+		btnBuscar.setDisabled(true);
+		txtBusqueda.resetValue();
+		setQuery("");
+		somListaEventos.resetValue();
+		somListaEventos2.resetValue();
+		setTransiciones("");
+		setResultado("");
 		return "";
 	}
 
@@ -365,26 +404,48 @@ public class MultimodalView implements Serializable {
 		txtBusqueda.resetValue();
 		btnAddTexto.setDisabled(true);
 		rdTipoBusqueda.resetValue();
+		setQuery("");
+		setTransiciones("");
+		setResultado("");
 		return "";
 	}
 
 	public String addTexto(){
-		if(getQuery().equals("")){
-			setQuery(txtBusqueda.getValue().toString().trim());
+		if(!txtBusqueda.getValue().toString().trim().isEmpty()){
+			btnBuscar.setDisabled(false);
+			if(getQuery().equals("")){
+				setQuery(txtBusqueda.getValue().toString().trim());
+			}else{
+				setQuery(getQuery()+", "+txtBusqueda.getValue().toString().trim());
+			}
+			txtBusqueda.resetValue();
 		}else{
-			setQuery(getQuery()+", "+txtBusqueda.getValue().toString().trim());
+			FacesUtils.addInfoMessage("Digite el texto a buscar");
 		}
 		return "";
 	}
 
 	public String addTransiciones(){
-		if(getTransiciones().equals("")){
-			setTransiciones(getFrom()+"_"+getTo());
+		String listaEventosFrom=somListaEventos.getValue().toString().trim();
+		String listaEventosTo=somListaEventos2.getValue().toString().trim();
+		System.out.println(listaEventosFrom);
+		System.out.println(listaEventosTo);
+		if(!listaEventosFrom.equalsIgnoreCase("No")){
+			if(!listaEventosTo.equalsIgnoreCase("No")){
+				btnBuscar.setDisabled(false);
+				if(getTransiciones().equals("")){
+					setTransiciones(somListaEventos.getValue().toString()+"_"+somListaEventos2.getValue().toString());
+				}else{
+					setTransiciones(getTransiciones()+", "+somListaEventos.getValue().toString()+"_"+somListaEventos2.getValue().toString());
+				}
+				somListaEventos.resetValue();
+				somListaEventos2.resetValue();
+			}else{
+				FacesUtils.addInfoMessage("Seleccione Actividad de Inicio y Fin");
+			}
 		}else{
-			setTransiciones(getTransiciones()+", "+getFrom()+"_"+getTo());
+			FacesUtils.addInfoMessage("Seleccione Actividad de Inicio y Fin");
 		}
-		
 		return "";
 	}
-
 }
