@@ -388,6 +388,7 @@ public class PnTxtLogic implements IPnTxtLogic {
 					writer.addDocument(createDocument( pnTxt.getPn().getTitulo(),pnTxt.getTexto()));
 				}
 				writer.optimize();
+				writer.close();
 			}else{
 				log.error("Error! No se creó el índice. La lista de PN_Txt está vácia");
 			}
