@@ -110,7 +110,7 @@
 
 				<h:panelGrid id="pnlBtns" columns="2">
 					<p:commandButton id="btnBuscar" icon="fa fa-search" value="Buscar"
-						style="margin: 20px;" update="@([id$=frm]), @([id$=pnlResultado])"
+						style="margin: 20px;" update="@([id$=frm]), @([id$=pnlResultado]), @([id$=pnlTexto])"
 						actionListener="#{multimodalView.search}" disabled="true"
 						binding="#{multimodalView.btnBuscar}">
 					</p:commandButton>
@@ -134,8 +134,6 @@
 
 			</p:panel>
 		</h:form>
-
-
 
 	</ui:define>
 </ui:composition>

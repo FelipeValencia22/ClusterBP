@@ -56,8 +56,8 @@ import co.edu.usb.utilities.*;
  */
 
 
-@ManagedBean
 @ViewScoped
+@ManagedBean(name = "pnView")
 public class PnView implements Serializable {
 
 	private static final long serialVersionUID = 1L;
@@ -265,6 +265,7 @@ public class PnView implements Serializable {
 
 					businessDelegatorView.savePn(pn);
 					String texto=businessDelegatorView.parserXPDL(event);
+					System.out.println("texto"+texto);
 					businessDelegatorView.crearTxt(texto, pn);
 					data=businessDelegatorView.getDataPn();
 					dataI=businessDelegatorView.getDataPnI();

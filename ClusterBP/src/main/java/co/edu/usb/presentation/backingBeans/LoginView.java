@@ -63,6 +63,6 @@ public class LoginView {
             return "/login.xhtml";
         }
         FacesUtils.addInfoMessage("Bienvenid@!");
-        return "/XHTML/initialMenu.xhtml";
+        return "/XHTML/dashboard.xhtml";
     }
 }

@@ -376,9 +376,9 @@ public class PnTxtLogic implements IPnTxtLogic {
 
 
 	//TODO: LUCENE INDEX
-
 	@Transactional(readOnly = true)
 	public String createDirectory(){
+
 		idx = new RAMDirectory();
 		try {
 			writer =new IndexWriter(idx,new StandardAnalyzer(Version.LUCENE_30),IndexWriter.MaxFieldLength.LIMITED); 
@@ -387,8 +387,11 @@ public class PnTxtLogic implements IPnTxtLogic {
 				for(PnTxt pnTxt: pnTxtList){
 					writer.addDocument(createDocument( pnTxt.getPn().getTitulo(),pnTxt.getTexto()));
 				}
+				writer.optimize();
+			}else{
+				log.error("Error! No se creó el índice. La lista de PN_Txt está vácia");
 			}
-			writer.optimize();
+
 		}
 		catch (IOException ioe) {
 			log.error("IOException:"+ioe.toString());;
@@ -415,7 +418,7 @@ public class PnTxtLogic implements IPnTxtLogic {
 		}
 		return resultado;
 	}
-
+	
 	@Transactional(readOnly = true)
 	public String addNewDocument(PnTxt pnTxt){
 		try {
@@ -428,7 +431,7 @@ public class PnTxtLogic implements IPnTxtLogic {
 		}
 		return "";
 	}
-
+	
 	@Transactional(readOnly = true)
 	private static Document createDocument(String title, String content) {
 		Document doc = new Document();

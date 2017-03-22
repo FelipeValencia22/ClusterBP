@@ -58,8 +58,8 @@ import co.edu.usb.utilities.*;
 
 
 @SuppressWarnings("unused")
-@ManagedBean
 @ViewScoped
+@ManagedBean(name = "multimodalView")
 public class MultimodalView implements Serializable {
 
 	private static final long serialVersionUID = 1L;
@@ -86,12 +86,12 @@ public class MultimodalView implements Serializable {
 
 	private String query;
 	private String transiciones;
-	
+
 	String resultado;
 
 	private String from;
 	private String to;
-	
+
 	List <String> valores;
 
 
@@ -324,9 +324,15 @@ public class MultimodalView implements Serializable {
 
 	//TODO: Metodos	
 	public String search(){
-		String busqueda= getQuery()+getTransiciones();
-		setResultado(businessDelegatorView.search(busqueda));
-		System.out.println(getResultado());
+		try {
+			String busqueda= getQuery()+getTransiciones();
+			setResultado(businessDelegatorView.search(busqueda));
+			System.out.println(getResultado());
+
+
+		} catch (Exception e) {
+			log.error("Error! No se pudieron obtener la lista de PN");
+		}
 		return "";
 	}
 
@@ -422,6 +428,7 @@ public class MultimodalView implements Serializable {
 			}
 			else{
 				FacesUtils.addInfoMessage("No se permiten caracteres especiales");
+				txtBusqueda.resetValue();
 			}
 		}else{
 			FacesUtils.addInfoMessage("Digite el texto a buscar");
@@ -440,9 +447,9 @@ public class MultimodalView implements Serializable {
 			if(!listaEventosTo.equalsIgnoreCase("No")){
 				btnBuscar.setDisabled(false);
 				if(getTransiciones().equals("")){
-					setTransiciones(somListaEventos.getValue().toString()+"_"+somListaEventos2.getValue().toString());
+					setTransiciones(listaEventosFrom+"_"+listaEventosTo);
 				}else{
-					setTransiciones(getTransiciones()+", "+somListaEventos.getValue().toString()+"_"+somListaEventos2.getValue().toString());
+					setTransiciones(getTransiciones()+", "+listaEventosFrom+"_"+listaEventosTo);
 				}
 				somListaEventos.resetValue();
 				somListaEventos2.resetValue();

@@ -70,7 +70,8 @@ public class MenuView {
 			log.error(e.getMessage());
 		}
 	}
-
+	
+	
 	public void crearMenuAdmin(){
 		DefaultMenuItem usuarios = new DefaultMenuItem("Usuario");
 		usuarios.setOutcome("/XHTML/usuario.xhtml");

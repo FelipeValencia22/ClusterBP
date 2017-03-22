@@ -43,8 +43,8 @@ import javax.faces.event.ActionEvent;
  * www.zathuracode.org
  *
  */
-@ManagedBean
 @ViewScoped
+@ManagedBean(name = "usuarioView")
 public class UsuarioView implements Serializable {
 	private static final long serialVersionUID = 1L;
 	private static final Logger log = LoggerFactory.getLogger(UsuarioView.class);

@@ -41,8 +41,8 @@ import javax.faces.event.ActionEvent;
  * www.zathuracode.org
  *
  */
-@ManagedBean
 @ViewScoped
+@ManagedBean(name = "rolView")
 public class RolView implements Serializable {
     private static final long serialVersionUID = 1L;
     private static final Logger log = LoggerFactory.getLogger(RolView.class);

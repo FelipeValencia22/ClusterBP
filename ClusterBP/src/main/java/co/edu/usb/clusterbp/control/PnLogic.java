@@ -80,7 +80,6 @@ public class PnLogic implements IPnLogic {
 
 	DocumentBuilderFactory dbFactory; 
 	DocumentBuilder dBuilder;
-	ArrayList <String> lista= new ArrayList<String>();
 	
 	@Transactional(readOnly = true)
 	public List<Pn> getPn() throws Exception {
@@ -506,8 +505,9 @@ public class PnLogic implements IPnLogic {
 
 	// Metodos 
 	public String analisisTextual(FileUploadEvent event){
-		String listaValores="sin datos";
-		lista.add("");
+		String listaValores="";
+		ArrayList <ArrayList<String>> listaTextual = new ArrayList<ArrayList<String>>();
+		ArrayList <ArrayList<String>> listaEstructural = new ArrayList<ArrayList<String>>();
 		try {
 			dbFactory = DocumentBuilderFactory.newInstance();
 			dBuilder = dbFactory.newDocumentBuilder();
@@ -516,7 +516,6 @@ public class PnLogic implements IPnLogic {
 			String StartEvent;
 			String IntermediateEvent;
 			String EndEvent;
-			ArrayList <ArrayList<String>> listaTextual = new ArrayList<ArrayList<String>>();
 			doc.getDocumentElement().normalize();
 
 			NodeList nodeListActiviti= doc.getElementsByTagName("Activity");
@@ -648,7 +647,7 @@ public class PnLogic implements IPnLogic {
 				listaTextual.get(i).add(tipoActividad);
 				listaTextual.get(i).add(elementActivitiName);
 				if(!elementActivitiName.isEmpty()){
-					lista.add(tipoActividad+" ");
+					listaValores=listaValores+" "+elementActivitiName;
 				}
 				
 			}
@@ -663,7 +662,6 @@ public class PnLogic implements IPnLogic {
 			 
 
 			///////////////////////////////// Estructural //////////////////////////////////////
-			ArrayList <ArrayList<String>> listaEstructural = new ArrayList<ArrayList<String>>();
 			Document docTransiciones = dBuilder.parse(event.getFile().getInputstream());
 			String fromId;
 			String toId;
@@ -689,7 +687,7 @@ public class PnLogic implements IPnLogic {
 					}
 				}
 				listaEstructural.get(i).add(fromString+"_"+toString);	
-				lista.add(fromString+"_"+toString+" ");
+				listaValores=listaValores+" "+fromString+"_"+toString;
 				fromString="";
 				toString="";
 			}
@@ -702,17 +700,11 @@ public class PnLogic implements IPnLogic {
 				}
 			}
 			*/
-			
-			System.out.println("una lista");
-			for (int i = 0; i < lista.size(); i++) {
-				System.out.println(lista.get(i));
-			}
-			 
-			listaValores=""+listaTextual.toString()+listaTextual.toString();	
+		
 		}catch (Exception e) {
 			e.printStackTrace();
 		}
-		listaValores=lista.toString();
+		listaValores=listaTextual.toString()+listaEstructural.toString();
 		return listaValores;
 	}
 	

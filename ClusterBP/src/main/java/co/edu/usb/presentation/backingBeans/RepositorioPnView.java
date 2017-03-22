@@ -41,8 +41,9 @@ import javax.faces.event.ActionEvent;
  * www.zathuracode.org
  *
  */
-@ManagedBean
+
 @ViewScoped
+@ManagedBean(name = "repositorioPnView")
 public class RepositorioPnView implements Serializable {
     private static final long serialVersionUID = 1L;
     private static final Logger log = LoggerFactory.getLogger(RepositorioPnView.class);
