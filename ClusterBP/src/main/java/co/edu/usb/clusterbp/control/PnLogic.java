@@ -80,6 +80,7 @@ public class PnLogic implements IPnLogic {
 
 	DocumentBuilderFactory dbFactory; 
 	DocumentBuilder dBuilder;
+	ArrayList <String> lista= new ArrayList<String>();
 	
 	@Transactional(readOnly = true)
 	public List<Pn> getPn() throws Exception {
@@ -506,6 +507,7 @@ public class PnLogic implements IPnLogic {
 	// Metodos 
 	public String analisisTextual(FileUploadEvent event){
 		String listaValores="sin datos";
+		lista.add("");
 		try {
 			dbFactory = DocumentBuilderFactory.newInstance();
 			dBuilder = dbFactory.newDocumentBuilder();
@@ -557,7 +559,7 @@ public class PnLogic implements IPnLogic {
 					for (int k = 0; k < nodeListEndEvent.getLength(); k++) {
 						Element elementEndEvent = (Element) nodeListEndEvent.item(k);
 						EndEvent=elementEndEvent.getAttribute("Result");
-						if(!IntermediateEvent.equals("EndEvent")){
+						if(!EndEvent.equals("None")){
 							tipoActividad ="EndEvent"+EndEvent;
 						}else{
 							tipoActividad="EndEvent";
@@ -624,10 +626,10 @@ public class PnLogic implements IPnLogic {
 					String valor4 =elementRoute.getAttribute("ParallelEventBased");
 
 					if (!valor1.isEmpty()) {
-						tipoActividad="RouteGatewayType"+valor1;
+						tipoActividad="RouteGateway"+valor1;
 					}
 					if (!valor2.isEmpty()) {
-						tipoActividad="RouteExclusiveType"+valor2;
+						tipoActividad="RouteExclusive"+valor2;
 					}
 					if (!valor3.isEmpty() && valor4.isEmpty()) {
 						tipoActividad="RouteExclusiveTypeBasedEvent";
@@ -645,16 +647,20 @@ public class PnLogic implements IPnLogic {
 				listaTextual.get(i).add(elementActivitiId);
 				listaTextual.get(i).add(tipoActividad);
 				listaTextual.get(i).add(elementActivitiName);
+				if(!elementActivitiName.isEmpty()){
+					lista.add(tipoActividad+" ");
+				}
+				
 			}
 			/// Imprimir valores
-			/*
+			
 			for (int j = 0; j < listaTextual.size(); j++) {
 				for (int k = 0; k < listaTextual.get(j).size(); k++) {
 					System.out.println(listaTextual.get(j).get(k));
 				}
 				System.out.println();
 			}
-			 */
+			 
 
 			///////////////////////////////// Estructural //////////////////////////////////////
 			ArrayList <ArrayList<String>> listaEstructural = new ArrayList<ArrayList<String>>();
@@ -682,7 +688,8 @@ public class PnLogic implements IPnLogic {
 						toString=listaTextual.get(j).get(1);
 					}
 				}
-				listaEstructural.get(i).add(fromString+"__"+toString);	
+				listaEstructural.get(i).add(fromString+"_"+toString);	
+				lista.add(fromString+"_"+toString+" ");
 				fromString="";
 				toString="";
 			}
@@ -694,11 +701,18 @@ public class PnLogic implements IPnLogic {
 					System.out.println();
 				}
 			}
-			 */
+			*/
+			
+			System.out.println("una lista");
+			for (int i = 0; i < lista.size(); i++) {
+				System.out.println(lista.get(i));
+			}
+			 
 			listaValores=""+listaTextual.toString()+listaTextual.toString();	
 		}catch (Exception e) {
 			e.printStackTrace();
 		}
+		listaValores=lista.toString();
 		return listaValores;
 	}
 	

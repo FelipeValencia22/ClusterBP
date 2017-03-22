@@ -389,14 +389,12 @@ public class PnTxtLogic implements IPnTxtLogic {
 				}
 			}
 			writer.optimize();
-			writer.close();
 		}
 		catch (IOException ioe) {
 			log.error("IOException:"+ioe.toString());;
 		} catch (Exception e) {
 			log.error("Exception:"+e.toString());;
 		}
-		log.info("Directorio:"+idx.toString());
 		return "";
 	}
 
@@ -421,7 +419,6 @@ public class PnTxtLogic implements IPnTxtLogic {
 	@Transactional(readOnly = true)
 	public String addNewDocument(PnTxt pnTxt){
 		try {
-			System.out.println(idx);
 			writer.addDocument(createDocument( pnTxt.getPn().getTitulo(),pnTxt.getTexto()));
 			writer.optimize();
 		} catch (CorruptIndexException e) {
@@ -444,7 +441,6 @@ public class PnTxtLogic implements IPnTxtLogic {
 	private static String search(Searcher searcher, String queryString)
 			throws ParseException, IOException {
 		String resultado="Sin resultado";
-		System.out.println(idx);
 		QueryParser parser = new QueryParser(Version.LUCENE_30,"content",new StandardAnalyzer(Version.LUCENE_30));
 		Query query = parser.parse(queryString);
 		int hitsPerPage = 10;

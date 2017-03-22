@@ -86,6 +86,7 @@ public class MultimodalView implements Serializable {
 
 	private String query;
 	private String transiciones;
+	
 	String resultado;
 
 	private String from;
@@ -323,12 +324,9 @@ public class MultimodalView implements Serializable {
 
 	//TODO: Metodos	
 	public String search(){
-//		String busqueda= getQuery()+getTransiciones();
-//		setResultado(businessDelegatorView.search(busqueda));
-//		System.out.println(getResultado());
-		valores= new ArrayList<String>();
-		valores.add("uno\n");
-		valores.add("dos\n");
+		String busqueda= getQuery()+getTransiciones();
+		setResultado(businessDelegatorView.search(busqueda));
+		System.out.println(getResultado());
 		return "";
 	}
 
@@ -411,14 +409,20 @@ public class MultimodalView implements Serializable {
 	}
 
 	public String addTexto(){
-		if(!txtBusqueda.getValue().toString().trim().isEmpty()){
-			btnBuscar.setDisabled(false);
-			if(getQuery().equals("")){
-				setQuery(txtBusqueda.getValue().toString().trim());
-			}else{
-				setQuery(getQuery()+", "+txtBusqueda.getValue().toString().trim());
+		String textoBusqueda=txtBusqueda.getValue().toString().trim();
+		if(!textoBusqueda.isEmpty()){
+			if(Utilities.isOnlyLetters(textoBusqueda)){
+				btnBuscar.setDisabled(false);
+				if(getQuery().equals("")){
+					setQuery(textoBusqueda);
+				}else{
+					setQuery(getQuery()+", "+textoBusqueda);
+				}
+				txtBusqueda.resetValue();
 			}
-			txtBusqueda.resetValue();
+			else{
+				FacesUtils.addInfoMessage("No se permiten caracteres especiales");
+			}
 		}else{
 			FacesUtils.addInfoMessage("Digite el texto a buscar");
 		}
@@ -427,7 +431,9 @@ public class MultimodalView implements Serializable {
 
 	public String addTransiciones(){
 		String listaEventosFrom=somListaEventos.getValue().toString().trim();
+		listaEventosFrom=listaEventosFrom.replace(" ", "");
 		String listaEventosTo=somListaEventos2.getValue().toString().trim();
+		listaEventosTo=listaEventosTo.replace(" ", "");
 		System.out.println(listaEventosFrom);
 		System.out.println(listaEventosTo);
 		if(!listaEventosFrom.equalsIgnoreCase("No")){

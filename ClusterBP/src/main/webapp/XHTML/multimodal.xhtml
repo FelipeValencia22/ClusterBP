@@ -7,8 +7,8 @@
 	<ui:define name="content">
 		<p:ajaxStatus onstart="PF('statusDialog').show()"
 			onsuccess="PF('statusDialog').hide()" />
-		<p:dialog modal="true" widgetVar="statusDialog" header="Loading"
-			draggable="false" closable="false">
+		<p:dialog modal="true" widgetVar="statusDialog" header="Cargando"
+			draggable="false" closable="false" resizable="false">
 			<p:graphicImage
 				value="#{facesContext.externalContext.request.scheme}://#{facesContext.externalContext.request.serverName}:#{facesContext.externalContext.request.serverPort}#{facesContext.externalContext.request.contextPath}/images/ajaxloadingbar.gif" />
 		</p:dialog>
@@ -110,7 +110,7 @@
 
 				<h:panelGrid id="pnlBtns" columns="2">
 					<p:commandButton id="btnBuscar" icon="fa fa-search" value="Buscar"
-						style="margin: 20px;" update="@([id$=frm])"
+						style="margin: 20px;" update="@([id$=frm]), @([id$=pnlResultado])"
 						actionListener="#{multimodalView.search}" disabled="true"
 						binding="#{multimodalView.btnBuscar}">
 					</p:commandButton>
@@ -122,13 +122,13 @@
 						, @([id$=out]), @([id$=out2]))"
 						binding="#{multimodalView.btnLimpiar}">
 					</p:commandButton>
-				</h:panelGrid>
+				</h:panelGrid> 
 
 				<p:separator />
 
 				<h2>Resultado</h2>
 				<h:panelGrid id="pnlResultado" columns="2">
-					<h:outputText id="response" value="#{multimodalView.valores}" 
+					<h:outputText id="response" value="#{multimodalView.resultado}"  
 						style="padding: 30px;" />
 				</h:panelGrid>
 
