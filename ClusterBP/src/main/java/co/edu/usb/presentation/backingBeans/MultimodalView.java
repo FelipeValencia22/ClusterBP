@@ -93,6 +93,7 @@ public class MultimodalView implements Serializable {
 	private String to;
 
 	List <String> valores;
+	List <String> listaResultado;
 
 
 	public MultimodalView() {
@@ -119,6 +120,14 @@ public class MultimodalView implements Serializable {
 
 	public void setRdTipoBusqueda(SelectOneRadio rdTipoBusqueda) {
 		this.rdTipoBusqueda = rdTipoBusqueda;
+	}
+
+	public List<String> getListaResultado() {
+		return listaResultado;
+	}
+
+	public void setListaResultado(List<String> listaResultado) {
+		this.listaResultado = listaResultado;
 	}
 
 	public InputTextarea getTxtBusqueda() {
@@ -327,11 +336,10 @@ public class MultimodalView implements Serializable {
 		try {
 			String busqueda= getQuery()+getTransiciones();
 			setResultado(businessDelegatorView.search(busqueda));
-			System.out.println(getResultado());
-
-
+			System.out.println(listaResultado);
+			
 		} catch (Exception e) {
-			log.error("Error! No se pudieron obtener la lista de PN");
+			e.printStackTrace();
 		}
 		return "";
 	}

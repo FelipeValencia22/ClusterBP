@@ -404,7 +404,8 @@ public class PnTxtLogic implements IPnTxtLogic {
 
 	@Transactional(readOnly = true)
 	public String search(String value){
-		String resultado="";
+		String resultado = null;
+		
 		try {
 			Searcher searcher;
 			searcher = new IndexSearcher(idx);
@@ -445,6 +446,7 @@ public class PnTxtLogic implements IPnTxtLogic {
 	private static String search(Searcher searcher, String queryString)
 			throws ParseException, IOException {
 		String resultado="Sin resultado";
+		List <String> listaResultado = null;
 		QueryParser parser = new QueryParser(Version.LUCENE_30,"content",new StandardAnalyzer(Version.LUCENE_30));
 		Query query = parser.parse(queryString);
 		int hitsPerPage = 10;
@@ -466,6 +468,7 @@ public class PnTxtLogic implements IPnTxtLogic {
 				System.out.println("  " + (i + 1) + ". " + doc.get("title"));   
 				resultado=resultado +(i + 1)+". Nombre del documento: "+ doc.get("title")+
 						"ID dento del índice: " + docId + ", " + "Puntuación sobre el documento: " + docScore+ " " + (i + 1) +"\n ";
+			
 			}
 		}
 		

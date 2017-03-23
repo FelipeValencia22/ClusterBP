@@ -48,21 +48,25 @@ public class LoginView {
     }
 
     public String login() {
+    	String resultado="";
         try {
             Authentication request = new UsernamePasswordAuthenticationToken(this.getUserId(),
                     this.getPassword());
             Authentication result = authenticationManager.authenticate(request);
-            SecurityContext securityContext = SecurityContextHolder.getContext();
-            securityContext.setAuthentication(result);
-
-            FacesUtils.getHttpSession(true)
-                      .setAttribute("SPRING_SECURITY_CONTEXT", securityContext);
+            if(result.isAuthenticated()){
+            	SecurityContext securityContext = SecurityContextHolder.getContext();
+                securityContext.setAuthentication(result);
+                FacesUtils.getHttpSession(true)
+                          .setAttribute("SPRING_SECURITY_CONTEXT", securityContext);
+                FacesUtils.addInfoMessage("Bienvenid@!");
+                resultado="/XHTML/dashboard.xhtml";
+            }else{
+            	FacesUtils.addErrorMessage("Usuario o contraseña inválida");
+            	resultado="/login.xhtml";
+            }
         } catch (AuthenticationException e) {
-            FacesUtils.addErrorMessage("Usuario o contraseña inválida");
-
-            return "/login.xhtml";
+            
         }
-        FacesUtils.addInfoMessage("Bienvenid@!");
-        return "/XHTML/dashboard.xhtml";
+        return resultado;
     }
 }

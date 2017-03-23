@@ -61,7 +61,8 @@
 
 					<p:commandButton id="btnAddTexto" value="Adicionar"
 						icon="fa fa-plus" binding="#{multimodalView.btnAddTexto}"
-						actionListener="#{multimodalView.addTexto}" update="@([id$=out]), @([id$=txtBusqueda]), @([id$=growl]), @([id$=btnBuscar])"
+						actionListener="#{multimodalView.addTexto}"
+						update="@([id$=out]), @([id$=txtBusqueda]), @([id$=growl]), @([id$=btnBuscar])"
 						disabled="true">
 					</p:commandButton>
 				</h:panelGrid>
@@ -75,7 +76,7 @@
 						<f:selectItem itemValue="No" itemLabel="From"
 							noSelectionOption="false" />
 						<f:selectItems value="#{multimodalView.listTiposEventosItems}" />
-						
+
 					</p:selectOneMenu>
 
 					<p:selectOneMenu id="somListaEventos2" style="width:229px" var="i"
@@ -90,7 +91,8 @@
 					<p:commandButton id="btnAddLista" value="Adicionar"
 						icon="fa fa-plus" binding="#{multimodalView.btnAddLista}"
 						actionListener="#{multimodalView.addTransiciones}"
-						update="@([id$=out2]), @([id$=somListaEventos]), @([id$=somListaEventos2]), @([id$=growl]), @([id$=btnBuscar])" disabled="true">
+						update="@([id$=out2]), @([id$=somListaEventos]), @([id$=somListaEventos2]), @([id$=growl]), @([id$=btnBuscar])"
+						disabled="true">
 					</p:commandButton>
 				</h:panelGrid>
 
@@ -110,25 +112,31 @@
 
 				<h:panelGrid id="pnlBtns" columns="2">
 					<p:commandButton id="btnBuscar" icon="fa fa-search" value="Buscar"
-						style="margin: 20px;" update="@([id$=frm]), @([id$=pnlResultado]), @([id$=pnlTexto])"
+						style="margin: 20px;"
+						update="@([id$=frm]), @([id$=pnlResultado]), @([id$=pnlTexto])"
 						actionListener="#{multimodalView.search}" disabled="true"
 						binding="#{multimodalView.btnBuscar}">
 					</p:commandButton>
 
 					<p:commandButton id="btnLimpiar" icon="fa fa-eraser"
 						value="Limpiar" style="margin: 20px;"
-						actionListener="#{multimodalView.limpiar}" update="@([id$=frm], 
+						actionListener="#{multimodalView.limpiar}"
+						update="@([id$=frm], 
 						@([id$=somListaEventos]), @([id$=somListaEventos2]), @([id$=txtBusqueda])
 						, @([id$=out]), @([id$=out2]))"
 						binding="#{multimodalView.btnLimpiar}">
 					</p:commandButton>
-				</h:panelGrid> 
+				</h:panelGrid>
 
 				<p:separator />
 
 				<h2>Resultado</h2>
 				<h:panelGrid id="pnlResultado" columns="2">
-					<h:outputText id="response" value="#{multimodalView.resultado}"  
+
+					<ui:repeat var="item" varStatus="status" value="#{multimodalView.listaResultado}">  
+   						Resultado: #{item}<br /> 
+					</ui:repeat>
+					<h:outputText id="response" value="#{multimodalView.resultado}"
 						style="padding: 30px;" />
 				</h:panelGrid>
 
