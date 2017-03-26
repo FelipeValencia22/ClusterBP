@@ -5,11 +5,6 @@ import org.slf4j.LoggerFactory;
 
 import java.io.Serializable;
 
-import java.sql.*;
-
-import java.util.Date;
-
-
 /**
 *
 * @author Zathura Code Generator http://zathuracode.org
@@ -18,7 +13,8 @@ import java.util.Date;
 */
 public class PnTxtDTO implements Serializable {
     private static final long serialVersionUID = 1L;
-    private static final Logger log = LoggerFactory.getLogger(PnTxtDTO.class);
+    @SuppressWarnings("unused")
+	private static final Logger log = LoggerFactory.getLogger(PnTxtDTO.class);
     private Long pnTxtCodigo;
     private String texto;
     private Long pnCodigo_Pn;

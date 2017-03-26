@@ -6,11 +6,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import co.edu.usb.clusterbp.Usuario;
-import co.edu.usb.clusterbp.UsuarioRol;
 import co.edu.usb.dataaccess.dao.IUsuarioDAO;
-import co.edu.usb.dataaccess.dao.IUsuarioRolDAO;
-import co.edu.usb.dataaccess.dao.UsuarioDAO;
-import co.edu.usb.dataaccess.dao.UsuarioRolDAO;
 
 @Scope("singleton")
 @Service("seguridadLogica")

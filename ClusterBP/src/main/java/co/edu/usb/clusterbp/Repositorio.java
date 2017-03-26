@@ -12,7 +12,11 @@ import java.util.Set;
 public class Repositorio  implements java.io.Serializable {
 
 
-     private Long repositorioCodigo;
+     /**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	private Long repositorioCodigo;
      private String nombre;
      private String descripcion;
      private Long usuCreador;

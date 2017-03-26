@@ -4,9 +4,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.Serializable;
-
-import java.sql.*;
-
 import java.util.Date;
 
 
@@ -18,7 +15,8 @@ import java.util.Date;
 */
 public class RepositorioPnDTO implements Serializable {
     private static final long serialVersionUID = 1L;
-    private static final Logger log = LoggerFactory.getLogger(RepositorioPnDTO.class);
+    @SuppressWarnings("unused")
+	private static final Logger log = LoggerFactory.getLogger(RepositorioPnDTO.class);
     private String activo;
     private Date fechaCreacion;
     private Date fechaModificacion;

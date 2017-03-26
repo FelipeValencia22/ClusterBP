@@ -12,7 +12,11 @@ import java.util.Set;
 public class Rol  implements java.io.Serializable {
 
 
-     private Long rolCodigo;
+     /**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	private Long rolCodigo;
      private String nombre;
      private Long usuCreador;
      private Date fechaCreacion;

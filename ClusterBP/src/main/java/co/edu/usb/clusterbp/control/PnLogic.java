@@ -2,25 +2,9 @@ package co.edu.usb.clusterbp.control;
 
 import co.edu.usb.clusterbp.*;
 import co.edu.usb.clusterbp.dto.PnDTO;
-import co.edu.usb.dataaccess.api.DaoException;
 import co.edu.usb.dataaccess.dao.*;
 import co.edu.usb.exceptions.*;
 import co.edu.usb.utilities.Utilities;
-
-import org.apache.commons.io.FilenameUtils;
-import org.apache.lucene.analysis.standard.StandardAnalyzer;
-import org.apache.lucene.document.Field;
-import org.apache.lucene.index.CorruptIndexException;
-import org.apache.lucene.index.IndexWriter;
-import org.apache.lucene.queryParser.ParseException;
-import org.apache.lucene.queryParser.QueryParser;
-import org.apache.lucene.search.IndexSearcher;
-import org.apache.lucene.search.Query;
-import org.apache.lucene.search.ScoreDoc;
-import org.apache.lucene.search.Searcher;
-import org.apache.lucene.search.TopScoreDocCollector;
-import org.apache.lucene.store.RAMDirectory;
-import org.apache.lucene.util.Version;
 import org.primefaces.event.FileUploadEvent;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -37,16 +21,9 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 
-import java.io.BufferedWriter;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.io.PrintWriter;
-import java.math.BigDecimal;
-
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.Set;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -68,12 +45,6 @@ public class PnLogic implements IPnLogic {
 	 */
 	@Autowired
 	private IPnDAO pnDAO;
-	@Autowired
-	private IPnTxtDAO pnTxtDAO;
-	@Autowired
-	private IRepositorioPnDAO repositorioPnDAO;
-	@Autowired
-	private IPnTxtLogic pnTxtLogic;
 
 	@Autowired
 	ITipoArchivoPnLogic logicTipoArchivoPn1;
@@ -179,6 +150,7 @@ public class PnLogic implements IPnLogic {
 		}
 
 
+		@SuppressWarnings("unused")
 		List<RepositorioPn> repositorioPns = null;
 	}
 
@@ -508,6 +480,7 @@ public class PnLogic implements IPnLogic {
 	}
 
 	// Metodos 
+	@SuppressWarnings("unused")
 	public String analisisTextual(FileUploadEvent event){
 		String listaValores="";
 		ArrayList <ArrayList<String>> listaTextual = new ArrayList<ArrayList<String>>();

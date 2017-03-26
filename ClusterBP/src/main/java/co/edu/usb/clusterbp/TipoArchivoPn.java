@@ -12,7 +12,11 @@ import java.util.Set;
 public class TipoArchivoPn  implements java.io.Serializable {
 
 
-     private Long tipoArchivoPnCodigo;
+     /**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	private Long tipoArchivoPnCodigo;
      private String nombre;
      private Long usuCreador;
      private Date fechaCreacion;

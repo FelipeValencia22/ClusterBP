@@ -35,14 +35,10 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.io.IOException;
-import java.math.BigDecimal;
 
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.Set;
-
-
 /**
  * @author Zathura Code Generator http://zathuracode.org
  * www.zathuracode.org
@@ -444,6 +440,7 @@ public class PnTxtLogic implements IPnTxtLogic {
 		return doc;
 	}
 
+	@SuppressWarnings("unused")
 	@Transactional (readOnly = false, propagation = Propagation.REQUIRED)
 	private static List<String> search(Searcher searcher, String queryString)
 			throws ParseException, IOException {

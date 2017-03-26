@@ -4,9 +4,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.Serializable;
-
-import java.sql.*;
-
 import java.util.Date;
 
 
@@ -18,7 +15,8 @@ import java.util.Date;
 */
 public class UsuarioRolDTO implements Serializable {
     private static final long serialVersionUID = 1L;
-    private static final Logger log = LoggerFactory.getLogger(UsuarioRolDTO.class);
+    @SuppressWarnings("unused")
+	private static final Logger log = LoggerFactory.getLogger(UsuarioRolDTO.class);
     private Date fechaCreacion;
     private Date fechaModificacion;
     private Long usuCreador;

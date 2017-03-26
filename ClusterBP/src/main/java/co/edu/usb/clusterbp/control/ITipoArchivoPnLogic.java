@@ -2,15 +2,7 @@ package co.edu.usb.clusterbp.control;
 
 import co.edu.usb.clusterbp.TipoArchivoPn;
 import co.edu.usb.clusterbp.dto.TipoArchivoPnDTO;
-
-import java.math.BigDecimal;
-
-import java.util.*;
-import java.util.Date;
 import java.util.List;
-import java.util.Set;
-
-
 /**
 * @author Zathura Code Generator http://zathuracode.org
 * www.zathuracode.org

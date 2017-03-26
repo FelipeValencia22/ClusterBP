@@ -10,7 +10,11 @@ import java.util.Date;
 public class UsuarioRol  implements java.io.Serializable {
 
 
-     private Long usuarioRolCodigo;
+     /**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	private Long usuarioRolCodigo;
      private Rol rol;
      private Usuario usuario;
      private Long usuCreador;

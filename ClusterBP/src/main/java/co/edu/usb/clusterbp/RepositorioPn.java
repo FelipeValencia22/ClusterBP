@@ -10,7 +10,11 @@ import java.util.Date;
 public class RepositorioPn  implements java.io.Serializable {
 
 
-     private Long repositorioPnCodigo;
+     /**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	private Long repositorioPnCodigo;
      private Pn pn;
      private Repositorio repositorio;
      private Long usuCreador;

@@ -12,7 +12,11 @@ import java.util.Set;
 public class Usuario  implements java.io.Serializable {
 
 
-     private Long usuarioCodigo;
+     /**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	private Long usuarioCodigo;
      private String correo;
      private String clave;
      private String nombre;

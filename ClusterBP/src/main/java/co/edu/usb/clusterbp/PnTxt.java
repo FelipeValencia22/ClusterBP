@@ -9,7 +9,11 @@ package co.edu.usb.clusterbp;
 public class PnTxt  implements java.io.Serializable {
 
 
-     private Long pnTxtCodigo;
+     /**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	private Long pnTxtCodigo;
      private Pn pn;
      private String texto;
      private String clustering;
