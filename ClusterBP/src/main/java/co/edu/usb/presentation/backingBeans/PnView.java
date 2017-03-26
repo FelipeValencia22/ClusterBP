@@ -1,23 +1,15 @@
 package  co.edu.usb.presentation.backingBeans;
 import java.util.ArrayList;
 import java.util.Date;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.List;
-import java.util.Set;
-import java.util.TimeZone;
 import java.io.IOException;
 import java.io.Serializable;
-import java.sql.*;
 import org.primefaces.component.inputtext.InputText;
 import org.primefaces.component.inputtextarea.InputTextarea;
 import org.primefaces.component.selectonemenu.SelectOneMenu;
 import org.apache.commons.io.FilenameUtils;
-import org.primefaces.component.calendar.*;
 import org.primefaces.component.commandbutton.CommandButton;
-import org.primefaces.component.fileupload.FileUpload;
 import org.primefaces.event.FileUploadEvent;
-import org.primefaces.event.RowEditEvent;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
@@ -25,26 +17,11 @@ import javax.faces.bean.ManagedProperty;
 import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
 import javax.faces.model.SelectItem;
-import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.parsers.DocumentBuilder;
-import org.w3c.dom.Document;
-import org.w3c.dom.NodeList;
-import org.w3c.dom.Node;
-import org.w3c.dom.Element;
 import java.io.File;
-import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.parsers.DocumentBuilder;
-import org.w3c.dom.Document;
-import org.w3c.dom.NodeList;
-import org.w3c.dom.Node;
-import org.w3c.dom.Element;
-import java.io.File;
-
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import  co.edu.usb.exceptions.*;
 import co.edu.usb.clusterbp.*;
 import co.edu.usb.clusterbp.dto.PnDTO;
 import co.edu.usb.presentation.businessDelegate.*;
@@ -242,41 +219,44 @@ public class PnView implements Serializable {
 		try {
 			titulo= event.getFile().getFileName();
 			String ext = FilenameUtils.getExtension(titulo); 
-			if(ext.equals("xpdl")){
-				nombreArchivo=FilenameUtils.removeExtension(titulo);
-				System.out.println(nombreArchivo);
-				
-				Pn pnExiste=businessDelegatorView.consultarPNPorNombre(titulo);
+			String descripcion= "prueba";
+			if(!descripcion.isEmpty()){
+				if(ext.equals("xpdl")){
+					nombreArchivo=FilenameUtils.removeExtension(titulo);
 
-				if(pnExiste==null){
-					String descripcion= "prueba";
-					Date fechaCreacion= new Date();
-					TipoArchivoPn tipoArchivoPn=businessDelegatorView.getTipoArchivoPn(1L);
+					Pn pnExiste=businessDelegatorView.consultarPNPorNombre(titulo);
 
-					Pn pn = new Pn();
-					pn.setActivo("S");
-					pn.setArchivo(event.getFile().getContents());
-					pn.setDescripcion(descripcion);
-					pn.setFechaCreacion(fechaCreacion);
-					pn.setTipoArchivoPn(tipoArchivoPn);
-					pn.setTitulo(titulo);
-					Usuario usuarioCreador=  (Usuario) FacesUtils.getfromSession("usuario");
-					pn.setUsuCreador(usuarioCreador.getUsuarioCodigo());
+					if(pnExiste==null){
 
-					businessDelegatorView.savePn(pn);
-					String texto=businessDelegatorView.parserXPDL(event);
-					System.out.println("texto"+texto);
-					businessDelegatorView.crearTxt(texto, pn);
-					data=businessDelegatorView.getDataPn();
-					dataI=businessDelegatorView.getDataPnI();
-					setShowDialog(false);
-					FacesContext.getCurrentInstance().addMessage("", new FacesMessage("El PN se guardo con exito"));
-					
+						Date fechaCreacion= new Date();
+						TipoArchivoPn tipoArchivoPn=businessDelegatorView.getTipoArchivoPn(1L);
+
+						Pn pn = new Pn();
+						pn.setActivo("S");
+						pn.setArchivo(event.getFile().getContents());
+						pn.setDescripcion(descripcion);
+						pn.setFechaCreacion(fechaCreacion);
+						pn.setTipoArchivoPn(tipoArchivoPn);
+						pn.setTitulo(titulo);
+						Usuario usuarioCreador=  (Usuario) FacesUtils.getfromSession("usuario");
+						pn.setUsuCreador(usuarioCreador.getUsuarioCodigo());
+						businessDelegatorView.savePn(pn);
+
+						String texto=businessDelegatorView.parserXPDL(event);
+						businessDelegatorView.crearTxt(texto, pn);
+						data=businessDelegatorView.getDataPn();
+						dataI=businessDelegatorView.getDataPnI();
+						setShowDialog(false);
+						FacesContext.getCurrentInstance().addMessage("", new FacesMessage("El PN se guardo con exito"));
+
+					}else{
+						FacesUtils.addErrorMessage("El Pn ya existe");
+					}
 				}else{
-					FacesUtils.addErrorMessage("El Pn ya existe");
+					FacesUtils.addErrorMessage("El formato del archivo es incorrecto");
 				}
 			}else{
-				FacesUtils.addErrorMessage("El formato del archivo es incorrecto");
+				FacesUtils.addErrorMessage("Agregue una descripción");
 			}
 		}catch (Exception e) {
 			FacesUtils.addErrorMessage("Error! No se subió el PN");

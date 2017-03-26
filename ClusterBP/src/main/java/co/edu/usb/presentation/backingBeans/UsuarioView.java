@@ -9,26 +9,16 @@ import co.edu.usb.utilities.*;
 import org.primefaces.component.calendar.*;
 import org.primefaces.component.commandbutton.CommandButton;
 import org.primefaces.component.inputtext.InputText;
-import org.primefaces.component.messages.Messages;
 import org.primefaces.component.password.Password;
 import org.primefaces.component.selectbooleancheckbox.SelectBooleanCheckbox;
-import org.primefaces.event.CellEditEvent;
 import org.primefaces.event.RowEditEvent;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.Serializable;
 
-import java.sql.*;
-
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.Set;
-import java.util.TimeZone;
 
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
@@ -36,7 +26,6 @@ import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
-
 
 /**
  * @author Zathura Code Generator http://zathuracode.org
@@ -368,19 +357,19 @@ public class UsuarioView implements Serializable {
 					usuarioRol.setFechaCreacion(fechaCreacion);
 					usuarioRol.setUsuCreador(usuarioCreador.getUsuarioCodigo());
 					Rol rol=null;
-					if(esAdmin.isSelected()){
-						rol=businessDelegatorView.consultarIdRolPorNombre("Admin");
-						if(rol!=null){
-							usuarioRol.setRol(rol);
-						}
-						else{
-
-						}
-					}else{
-						rol=businessDelegatorView.consultarIdRolPorNombre("Usuario");
-						if(rol!=null){
-							usuarioRol.setRol(rol);
-						}
+					//					if(esAdmin.isSelected()){
+					//						rol=businessDelegatorView.consultarIdRolPorNombre("Admin");
+					//						if(rol!=null){
+					//							usuarioRol.setRol(rol);
+					//						}
+					//						else{
+					//
+					//						}
+					//					}else{
+					rol=businessDelegatorView.consultarIdRolPorNombre("Usuario");
+					if(rol!=null){
+						usuarioRol.setRol(rol);
+						//}
 					}
 
 					usuarioRol.setUsuario(usuarioRegistrado);
@@ -537,8 +526,8 @@ public class UsuarioView implements Serializable {
 		txtCorreo.resetValue();
 		txtClaveC.resetValue();
 		txtClaveRC.resetValue();
-		esAdmin.resetValue();
-		esAdmin.setDisabled(true);
+		//esAdmin.resetValue();
+		//esAdmin.setDisabled(true);
 		btnCrear.setDisabled(true);		
 		return "";
 	}
@@ -584,15 +573,15 @@ public class UsuarioView implements Serializable {
 			txtNombre.resetValue();
 			txtClaveC.resetValue();
 			txtClaveRC.resetValue();
-			esAdmin.setDisabled(false);
+			//esAdmin.setDisabled(false);
 			btnCrear.setDisabled(false);			
 			FacesUtils.addErrorMessage("El usuario no existe");
 		}else{
 			String rol=businessDelegatorView.consultarRolUsuarioPorCorreo(correo);
-			if(rol.equals("Admin")){
-				esAdmin.setSelected(true);
-				esAdmin.setDisabled(true);
-			}
+			//			if(rol.equals("Admin")){
+			//				esAdmin.setSelected(true);
+			//				esAdmin.setDisabled(true);
+			//			}
 			txtNombre.setValue(usuario.getNombre());
 			btnCrear.setDisabled(true);
 			FacesUtils.addInfoMessage("El usuario existe!");
@@ -688,7 +677,7 @@ public class UsuarioView implements Serializable {
 		txtNombre.resetValue(); 
 		txtClaveC.resetValue();
 		txtClaveRC.resetValue();
-		esAdmin.setSelected(false);
+		//esAdmin.setSelected(false);
 		setShowDialog(false);
 
 		return "";

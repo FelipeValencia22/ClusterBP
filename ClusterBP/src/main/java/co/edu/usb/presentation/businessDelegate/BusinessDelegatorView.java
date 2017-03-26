@@ -619,13 +619,18 @@ public class BusinessDelegatorView implements IBusinessDelegatorView {
 	}
 	
 	@Override
-	public String search(String value){
-		return pnTxtLogic.search(value);
+	public List<String> search(String value){
+		return pnTxtLogic.search(value); 
 	}
 
 	@Override
 	public String createIndex() {
 		return pnTxtLogic.createDirectory();
+	}
+
+	@Override
+	public String cadenaClustering() {
+		return pnLogic.cadenaClustering();
 	}
  
 }

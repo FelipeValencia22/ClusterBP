@@ -173,15 +173,6 @@ public class UsuarioLogic implements IUsuarioLogic {
 				throw new ZMessManager().new NullEntityExcepcion("Usuario");
 			}
 
-			if (entity.getActivo() == null) {
-				throw new ZMessManager().new EmptyFieldException("activo");
-			}
-
-			if ((entity.getActivo() != null) &&
-					(Utilities.checkWordAndCheckWithlength(entity.getActivo(), 1) == false)) {
-				throw new ZMessManager().new NotValidFormatException("activo");
-			}
-
 			if (entity.getClave() == null) {
 				throw new ZMessManager().new EmptyFieldException("clave");
 			}
@@ -202,11 +193,6 @@ public class UsuarioLogic implements IUsuarioLogic {
 				throw new ZMessManager().new NotValidFormatException("correo");
 			}
 
-			if (entity.getFechaCreacion() == null) {
-				throw new ZMessManager().new EmptyFieldException(
-						"fechaCreacion");
-			}
-
 			if (entity.getNombre() == null) {
 				throw new ZMessManager().new EmptyFieldException("nombre");
 			}
@@ -215,10 +201,6 @@ public class UsuarioLogic implements IUsuarioLogic {
 					(Utilities.checkWordAndCheckWithlength(entity.getNombre(),
 							255) == false)) {
 				throw new ZMessManager().new NotValidFormatException("nombre");
-			}
-
-			if (entity.getUsuCreador() == null) {
-				throw new ZMessManager().new EmptyFieldException("usuCreador");
 			}
 
 			if (entity.getUsuarioCodigo() == null) {
@@ -247,21 +229,22 @@ public class UsuarioLogic implements IUsuarioLogic {
 				UsuarioDTO usuarioDTO2 = new UsuarioDTO();
 
 				if(usuarioTmp.getActivo().toString().trim().equalsIgnoreCase("S")){
-
-					usuarioDTO2.setUsuarioCodigo(usuarioTmp.getUsuarioCodigo());
-					usuarioDTO2.setClave((usuarioTmp.getClave() != null)
-							? usuarioTmp.getClave() : null);
-					usuarioDTO2.setCorreo((usuarioTmp.getCorreo() != null)
-							? usuarioTmp.getCorreo() : null);
-					usuarioDTO2.setFechaCreacion(usuarioTmp.getFechaCreacion());
-					usuarioDTO2.setFechaModificacion(usuarioTmp.getFechaModificacion());
-					usuarioDTO2.setNombre((usuarioTmp.getNombre() != null)
-							? usuarioTmp.getNombre() : null);
-					usuarioDTO2.setUsuCreador((usuarioTmp.getUsuCreador() != null)
-							? usuarioTmp.getUsuCreador() : null);
-					usuarioDTO2.setUsuaModificador((usuarioTmp.getUsuaModificador() != null)
-							? usuarioTmp.getUsuaModificador() : null);
-					usuarioDTO.add(usuarioDTO2);
+					if(!usuarioTmp.getCorreo().equals("clusterbp@gmail.com")){
+						usuarioDTO2.setUsuarioCodigo(usuarioTmp.getUsuarioCodigo());
+						usuarioDTO2.setClave((usuarioTmp.getClave() != null)
+								? usuarioTmp.getClave() : null);
+						usuarioDTO2.setCorreo((usuarioTmp.getCorreo() != null)
+								? usuarioTmp.getCorreo() : null);
+						usuarioDTO2.setFechaCreacion(usuarioTmp.getFechaCreacion());
+						usuarioDTO2.setFechaModificacion(usuarioTmp.getFechaModificacion());
+						usuarioDTO2.setNombre((usuarioTmp.getNombre() != null)
+								? usuarioTmp.getNombre() : null);
+						usuarioDTO2.setUsuCreador((usuarioTmp.getUsuCreador() != null)
+								? usuarioTmp.getUsuCreador() : null);
+						usuarioDTO2.setUsuaModificador((usuarioTmp.getUsuaModificador() != null)
+								? usuarioTmp.getUsuaModificador() : null);
+						usuarioDTO.add(usuarioDTO2);
+					}
 				}
 			}
 
@@ -270,7 +253,7 @@ public class UsuarioLogic implements IUsuarioLogic {
 			throw e;
 		}
 	}
-	
+
 	@Transactional(readOnly = true)
 	public List<UsuarioDTO> getDataUsuarioI() throws Exception {
 		try {
@@ -282,21 +265,22 @@ public class UsuarioLogic implements IUsuarioLogic {
 				UsuarioDTO usuarioDTO2 = new UsuarioDTO();
 
 				if(usuarioTmp.getActivo().toString().trim().equalsIgnoreCase("N")){
-
-					usuarioDTO2.setUsuarioCodigo(usuarioTmp.getUsuarioCodigo());
-					usuarioDTO2.setClave((usuarioTmp.getClave() != null)
-							? usuarioTmp.getClave() : null);
-					usuarioDTO2.setCorreo((usuarioTmp.getCorreo() != null)
-							? usuarioTmp.getCorreo() : null);
-					usuarioDTO2.setFechaCreacion(usuarioTmp.getFechaCreacion());
-					usuarioDTO2.setFechaModificacion(usuarioTmp.getFechaModificacion());
-					usuarioDTO2.setNombre((usuarioTmp.getNombre() != null)
-							? usuarioTmp.getNombre() : null);
-					usuarioDTO2.setUsuCreador((usuarioTmp.getUsuCreador() != null)
-							? usuarioTmp.getUsuCreador() : null);
-					usuarioDTO2.setUsuaModificador((usuarioTmp.getUsuaModificador() != null)
-							? usuarioTmp.getUsuaModificador() : null);
-					usuarioDTO.add(usuarioDTO2);
+					if(!usuarioTmp.getCorreo().equals("clusterbp@gmail.com")){
+						usuarioDTO2.setUsuarioCodigo(usuarioTmp.getUsuarioCodigo());
+						usuarioDTO2.setClave((usuarioTmp.getClave() != null)
+								? usuarioTmp.getClave() : null);
+						usuarioDTO2.setCorreo((usuarioTmp.getCorreo() != null)
+								? usuarioTmp.getCorreo() : null);
+						usuarioDTO2.setFechaCreacion(usuarioTmp.getFechaCreacion());
+						usuarioDTO2.setFechaModificacion(usuarioTmp.getFechaModificacion());
+						usuarioDTO2.setNombre((usuarioTmp.getNombre() != null)
+								? usuarioTmp.getNombre() : null);
+						usuarioDTO2.setUsuCreador((usuarioTmp.getUsuCreador() != null)
+								? usuarioTmp.getUsuCreador() : null);
+						usuarioDTO2.setUsuaModificador((usuarioTmp.getUsuaModificador() != null)
+								? usuarioTmp.getUsuaModificador() : null);
+						usuarioDTO.add(usuarioDTO2);
+					}
 				}
 			}
 
@@ -533,7 +517,7 @@ public class UsuarioLogic implements IUsuarioLogic {
 	public Usuario consultarCorreoDisponible(String correo) {
 		return usuarioDAO.consultarCorreoDisponible(correo);
 	}
-	
+
 	@Override
 	@Transactional(readOnly = true)
 	public Usuario consultarUsuarioPorID(Long usuarioCodigo) {

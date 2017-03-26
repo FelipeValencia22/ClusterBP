@@ -5,6 +5,7 @@ import co.edu.usb.clusterbp.dto.PnTxtDTO;
 import co.edu.usb.dataaccess.api.DaoException;
 import co.edu.usb.dataaccess.dao.*;
 import co.edu.usb.exceptions.*;
+import co.edu.usb.utilities.FacesUtils;
 import co.edu.usb.utilities.Utilities;
 
 import org.apache.lucene.analysis.standard.StandardAnalyzer;
@@ -64,7 +65,7 @@ public class PnTxtLogic implements IPnTxtLogic {
 	 *
 	 */
 	@Autowired
-	IPnLogic logicPn1;
+	IPnLogic pnLogic;
 
 	IndexWriter writer; 
 	static RAMDirectory idx;
@@ -366,8 +367,8 @@ public class PnTxtLogic implements IPnTxtLogic {
 			PnTxt pnTxt= new PnTxt();
 			pnTxt.setPn(pn);
 			pnTxt.setTexto(texto);
+			pnTxt.setClustering(pnLogic.cadenaClustering());
 			savePnTxt(pnTxt);
-			addNewDocument(pnTxt);
 		}catch(DaoException e){
 			log.error(e.toString());
 		}
@@ -385,14 +386,15 @@ public class PnTxtLogic implements IPnTxtLogic {
 			List <PnTxt> pnTxtList= getPnTxt();
 			if(!pnTxtList.isEmpty()){
 				for(PnTxt pnTxt: pnTxtList){
-					writer.addDocument(createDocument( pnTxt.getPn().getTitulo(),pnTxt.getTexto()));
+					if(pnTxt.getPn().getActivo().equals("S")){
+						writer.addDocument(createDocument( pnTxt.getPn().getTitulo(),pnTxt.getTexto()));
+					}				
 				}
 				writer.optimize();
 				writer.close();
 			}else{
-				log.error("Error! No se creó el índice. La lista de PN_Txt está vácia");
+				FacesUtils.addInfoMessage("Error! No se creó el índice. La lista de PN está vácia");
 			}
-
 		}
 		catch (IOException ioe) {
 			log.error("IOException:"+ioe.toString());;
@@ -403,13 +405,13 @@ public class PnTxtLogic implements IPnTxtLogic {
 	}
 
 	@Transactional(readOnly = true)
-	public String search(String value){
-		String resultado = null;
-		
+	public List<String> search(String value){
+		List<String> resultado = new ArrayList<String>();
+		createDirectory();
 		try {
 			Searcher searcher;
 			searcher = new IndexSearcher(idx);
-			resultado=search(searcher, value);
+			resultado=search(searcher, value); 
 			searcher.close();
 		} catch (CorruptIndexException e) {
 			e.printStackTrace();
@@ -443,36 +445,34 @@ public class PnTxtLogic implements IPnTxtLogic {
 	}
 
 	@Transactional (readOnly = false, propagation = Propagation.REQUIRED)
-	private static String search(Searcher searcher, String queryString)
+	private static List<String> search(Searcher searcher, String queryString)
 			throws ParseException, IOException {
-		String resultado="Sin resultado";
-		List <String> listaResultado = null;
+		String resultado="";
+		List <String> listaResultado = new ArrayList<String>();
 		QueryParser parser = new QueryParser(Version.LUCENE_30,"content",new StandardAnalyzer(Version.LUCENE_30));
 		Query query = parser.parse(queryString);
 		int hitsPerPage = 10;
 		TopScoreDocCollector collector = TopScoreDocCollector.create(5 * hitsPerPage, false);
 		searcher.search(query, collector);
 		ScoreDoc[] hits = collector.topDocs().scoreDocs;
-		int hitCount = collector.getTotalHits();
-		System.out.println(hitCount + " total matching documents");
+		int hitCount = collector.getTotalHits();		
 		if (hitCount == 0) {
-					resultado="No se encontraron resultados para: \"" + queryString + "\"";
+			listaResultado.add("No se encontraron resultados para: \"" + queryString + "\"");
 		} else {
-			resultado="El texto \"" +	queryString + "\" fue encontrado en:";
+			listaResultado.add("Cantidad de procesos de negocio encontrados:" +hitCount);
+			listaResultado.add("El texto \"" +	queryString + "\" fue encontrado en:");
 			for (int i = 0; i<hitCount; i++) {
 				ScoreDoc scoreDoc = hits[i];
 				int docId = scoreDoc.doc;
 				float docScore = scoreDoc.score;
-				System.out.println("docId: " + docId + "\t" + "docScore: " + docScore);
 				Document doc = searcher.doc(docId);
-				System.out.println("  " + (i + 1) + ". " + doc.get("title"));   
-				resultado=resultado +(i + 1)+". Nombre del documento: "+ doc.get("title")+
-						"ID dento del índice: " + docId + ", " + "Puntuación sobre el documento: " + docScore+ " " + (i + 1) +"\n ";
-			
+				resultado=(i + 1)+" - Nombre del proceso de negocio: "+ doc.get("title")/*+
+						",  ID dento del índice: " + docId + ",  Puntuación sobre el documento: " + docScore*/;
+				listaResultado.add(resultado);
 			}
 		}
 		
-		return resultado;
+		return listaResultado;
 	}
 
 }

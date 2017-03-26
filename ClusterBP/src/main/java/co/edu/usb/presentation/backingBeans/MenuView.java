@@ -1,25 +1,17 @@
 package co.edu.usb.presentation.backingBeans;
 
-import java.util.List;
-
 import javax.annotation.PostConstruct; 
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
-import javax.faces.model.SelectItem;
 
-import org.primefaces.component.selectonemenu.SelectOneMenu;
 import org.primefaces.model.menu.DefaultMenuItem;
 import org.primefaces.model.menu.DefaultMenuModel;
 import org.primefaces.model.menu.MenuModel;
-import org.primefaces.push.annotation.Singleton;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import co.edu.usb.clusterbp.PnTxt;
-import co.edu.usb.clusterbp.Rol;
 import co.edu.usb.clusterbp.Usuario;
-import co.edu.usb.clusterbp.UsuarioRol;
 import co.edu.usb.presentation.backingBeans.MenuView;
 import co.edu.usb.presentation.businessDelegate.IBusinessDelegatorView;
 import co.edu.usb.utilities.FacesUtils;
@@ -73,33 +65,48 @@ public class MenuView {
 	
 	
 	public void crearMenuAdmin(){
+		
+		DefaultMenuItem dashboard = new DefaultMenuItem("Dashboard");
+		dashboard.setOutcome("/XHTML/dashboard.xhtml");
+		dashboard.setIcon("fa fa-home");
+		dashboard.setId("sm_usuario");
+		dashboard.setContainerStyleClass("layout-menubar-active");
+		model.addElement(dashboard);
+		
 		DefaultMenuItem usuarios = new DefaultMenuItem("Usuario");
 		usuarios.setOutcome("/XHTML/usuario.xhtml");
-		usuarios.setIcon("icon-home-outline");
+		usuarios.setIcon("fa fa-users");
 		usuarios.setId("sm_usuario");
 		usuarios.setContainerStyleClass("layout-menubar-active");
 		model.addElement(usuarios);
 
 		DefaultMenuItem repositorios= new DefaultMenuItem("Repositorio");
 		repositorios.setOutcome("/XHTML/repositorio.xhtml");
-		repositorios.setIcon("icon-home-outline");
+		repositorios.setIcon("fa fa-database");
 		repositorios.setId("sm_repositorios");
 		repositorios.setContainerStyleClass("layout-menubar-active");
 		model.addElement(repositorios);
 
 		DefaultMenuItem pn= new DefaultMenuItem("Proceso de negocio");
 		pn.setOutcome("/XHTML/pn.xhtml");
-		pn.setIcon("icon-home-outline");
+		pn.setIcon("fa fa-gears");
 		pn.setId("sm_pns");
 		pn.setContainerStyleClass("layout-menubar-active");
 		model.addElement(pn);
 		
-		DefaultMenuItem multimodal= new DefaultMenuItem("Búsqueda Multimodal");
+		DefaultMenuItem multimodal= new DefaultMenuItem("Búsquedas");
 		multimodal.setOutcome("/XHTML/multimodal.xhtml");
-		multimodal.setIcon("icon-home-outline");
+		multimodal.setIcon("fa fa-search");
 		multimodal.setId("sm_multimodal");
 		multimodal.setContainerStyleClass("layout-menubar-active");
 		model.addElement(multimodal);
+		
+		DefaultMenuItem clustering= new DefaultMenuItem("Clustering");
+		clustering.setOutcome("/XHTML/clustering.xhtml");
+		clustering.setIcon("fa fa-code");
+		clustering.setId("sm_clustering");
+		clustering.setContainerStyleClass("layout-menubar-active");
+		model.addElement(clustering);
 	}
 
 	public void crearMenuSinRol(){

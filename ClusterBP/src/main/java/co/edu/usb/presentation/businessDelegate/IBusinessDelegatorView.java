@@ -285,6 +285,8 @@ public interface IBusinessDelegatorView {
     
     public String createIndex();
     
+    public String cadenaClustering();    
+    
     //TODO: Consultas
     public Usuario consultarUsuarioPorCorreo(String correo);
     
@@ -302,6 +304,6 @@ public interface IBusinessDelegatorView {
     
     public String crearTxt(String texto, Pn pn) throws Exception;
     
-    public String search(String value);
+    public List<String> search(String value);
     
 }

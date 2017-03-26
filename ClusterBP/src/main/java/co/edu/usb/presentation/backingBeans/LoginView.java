@@ -46,6 +46,28 @@ public class LoginView {
     public void setUserId(String userId) {
         this.userId = userId;
     }
+    /*
+    public String login() {
+        try {
+            Authentication request = new UsernamePasswordAuthenticationToken(this.getUserId(),
+                    this.getPassword());
+            Authentication result = authenticationManager.authenticate(request);
+            SecurityContext securityContext = SecurityContextHolder.getContext();
+            securityContext.setAuthentication(result);
+
+            FacesUtils.getHttpSession(true)
+                      .setAttribute("SPRING_SECURITY_CONTEXT", securityContext);
+        } catch (AuthenticationException e) {
+            FacesUtils.addErrorMessage("Usuario o contraseña inválida");
+
+            return "/login.xhtml";
+        }
+        FacesUtils.addInfoMessage("Bienvenid@!");
+        return "/XHTML/dashboard.xhtml";
+    }
+    */
+    
+    
 
     public String login() {
     	String resultado="";
@@ -69,4 +91,6 @@ public class LoginView {
         }
         return resultado;
     }
+    
+    
 }

@@ -17,15 +17,12 @@ import org.slf4j.LoggerFactory;
 
 import java.io.Serializable;
 
-import java.sql.*;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.Set;
 import java.util.TimeZone;
 
 import javax.faces.application.FacesMessage;
@@ -45,7 +42,8 @@ import javax.faces.event.ActionEvent;
 @ManagedBean(name = "tipoArchivoPnView")
 public class TipoArchivoPnView implements Serializable {
     private static final long serialVersionUID = 1L;
-    private static final Logger log = LoggerFactory.getLogger(TipoArchivoPnView.class);
+    @SuppressWarnings("unused")
+	private static final Logger log = LoggerFactory.getLogger(TipoArchivoPnView.class);
     private InputText txtActivo;
     private InputText txtNombre;
     private InputText txtUsuCreador;

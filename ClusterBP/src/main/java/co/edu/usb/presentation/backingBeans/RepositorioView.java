@@ -2,39 +2,26 @@ package co.edu.usb.presentation.backingBeans;
 
 import co.edu.usb.clusterbp.*;
 import co.edu.usb.clusterbp.dto.RepositorioDTO;
-import co.edu.usb.exceptions.*;
 import co.edu.usb.presentation.businessDelegate.*;
 import co.edu.usb.utilities.*;
 
 import org.primefaces.component.calendar.*;
 import org.primefaces.component.commandbutton.CommandButton;
 import org.primefaces.component.inputtext.InputText;
-
-import org.primefaces.event.RowEditEvent;
+import org.primefaces.component.inputtextarea.InputTextarea;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.Serializable;
 
-import java.sql.*;
-
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.Set;
-import java.util.TimeZone;
 
-import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
-import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
-
 
 /**
  * @author Zathura Code Generator http://zathuracode.org
@@ -49,13 +36,13 @@ public class RepositorioView implements Serializable {
 	private static final Logger log = LoggerFactory.getLogger(RepositorioView.class);
 
 	private InputText txtActivo;
-	private InputText txtDescripcion;
+	private InputTextarea txtDescripcion;
 	private InputText txtNombre;
 	private InputText txtUsuCreador;
 	private InputText txtUsuModificador;
 	private InputText txtRepositorioCodigo;
 
-	private InputText txtDescripcionM;
+	private InputTextarea txtDescripcionM;
 	private InputText txtNombreM;
 
 	private Calendar txtFechaCreacion;
@@ -96,11 +83,11 @@ public class RepositorioView implements Serializable {
 		this.txtActivo = txtActivo;
 	}
 
-	public InputText getTxtDescripcion() {
+	public InputTextarea getTxtDescripcion() {
 		return txtDescripcion;
 	}
 
-	public void setTxtDescripcion(InputText txtDescripcion) {
+	public void setTxtDescripcion(InputTextarea txtDescripcion) {
 		this.txtDescripcion = txtDescripcion;
 	}
 
@@ -232,11 +219,11 @@ public class RepositorioView implements Serializable {
 		this.showDialog = showDialog;
 	}
 
-	public InputText getTxtDescripcionM() {
+	public InputTextarea getTxtDescripcionM() {
 		return txtDescripcionM;
 	}
 
-	public void setTxtDescripcionM(InputText txtDescripcionM) {
+	public void setTxtDescripcionM(InputTextarea txtDescripcionM) {
 		this.txtDescripcionM = txtDescripcionM;
 	}
 
@@ -356,7 +343,6 @@ public class RepositorioView implements Serializable {
 						FacesUtils.addInfoMessage("El Repositorio ha sido modificado con exito");
 						data=businessDelegatorView.getDataRepositorio();
 						dataI=businessDelegatorView.getDataRepositorioI();
-						limpiarCamposModificar();
 					}else{
 						FacesUtils.addErrorMessage("El Nombre del Repositorio ya está en uso");
 					}

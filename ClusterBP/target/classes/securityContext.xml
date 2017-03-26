@@ -13,7 +13,7 @@
 
 		<form-login login-page="/login.xhtml"
 			authentication-failure-url="/login.xhtml?authfailed=true"
-			default-target-url="/XHTML/initialMenu.xhtml"
+			default-target-url="/XHTML/dashboard.xhtml?"
 			always-use-default-target="false" />
 
 		<logout invalidate-session="true" logout-success-url="/login.xhtml?loggedout=true"

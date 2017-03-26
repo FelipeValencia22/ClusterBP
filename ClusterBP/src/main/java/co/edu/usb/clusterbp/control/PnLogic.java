@@ -81,6 +81,10 @@ public class PnLogic implements IPnLogic {
 	DocumentBuilderFactory dbFactory; 
 	DocumentBuilder dBuilder;
 	
+	int eventos;
+	int actividades;
+	int compuertas;
+	
 	@Transactional(readOnly = true)
 	public List<Pn> getPn() throws Exception {
 		log.debug("finding all Pn instances");
@@ -508,6 +512,10 @@ public class PnLogic implements IPnLogic {
 		String listaValores="";
 		ArrayList <ArrayList<String>> listaTextual = new ArrayList<ArrayList<String>>();
 		ArrayList <ArrayList<String>> listaEstructural = new ArrayList<ArrayList<String>>();
+		eventos=0;
+		actividades=0;
+		compuertas=0;
+		
 		try {
 			dbFactory = DocumentBuilderFactory.newInstance();
 			dBuilder = dbFactory.newDocumentBuilder();
@@ -564,6 +572,7 @@ public class PnLogic implements IPnLogic {
 							tipoActividad="EndEvent";
 						}
 					}
+					eventos++;
 				}
 
 				/////////////// Implementation /////////////////////////////////////////////////////////
@@ -609,11 +618,13 @@ public class PnLogic implements IPnLogic {
 							tipoActividad="Task";
 						}
 					}
+					actividades++;
 				}
 				/////////////// BlockActivity /////////////////////////////////////////////////////////
 				NodeList nodeListBlockActivity = elementActiviti.getElementsByTagName("BlockActivity");
 				for (int j = 0; j < nodeListBlockActivity.getLength(); ++j){
 					tipoActividad="TaskBlocActivity";
+					actividades++;
 				}
 				//////////////// Route ////////////////////////////////////////////////////////////////
 				NodeList nodeListRoute = elementActiviti.getElementsByTagName("Route");
@@ -640,6 +651,7 @@ public class PnLogic implements IPnLogic {
 					if(valor1.isEmpty() && valor2.isEmpty()){
 						tipoActividad="Route";
 					}
+					compuertas++;
 				}
 				///// Asignar los valores a una lista de listas
 				listaTextual.add(new ArrayList<String>());
@@ -653,13 +665,13 @@ public class PnLogic implements IPnLogic {
 			}
 			/// Imprimir valores
 			
-			for (int j = 0; j < listaTextual.size(); j++) {
+			/*for (int j = 0; j < listaTextual.size(); j++) {
 				for (int k = 0; k < listaTextual.get(j).size(); k++) {
 					System.out.println(listaTextual.get(j).get(k));
 				}
 				System.out.println();
 			}
-			 
+			 */
 
 			///////////////////////////////// Estructural //////////////////////////////////////
 			Document docTransiciones = dBuilder.parse(event.getFile().getInputstream());
@@ -704,8 +716,14 @@ public class PnLogic implements IPnLogic {
 		}catch (Exception e) {
 			e.printStackTrace();
 		}
+		
 		listaValores=listaTextual.toString()+listaEstructural.toString();
 		return listaValores;
+	}
+	
+	public String cadenaClustering(){
+		String cadena=eventos+" "+actividades+" "+" "+compuertas;
+		return cadena;
 	}
 	
 	

@@ -17,15 +17,11 @@ import org.slf4j.LoggerFactory;
 
 import java.io.Serializable;
 
-import java.sql.*;
-
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.Set;
 import java.util.TimeZone;
 
 import javax.faces.application.FacesMessage;
@@ -45,7 +41,8 @@ import javax.faces.event.ActionEvent;
 @ManagedBean(name = "usuarioRolView")
 public class UsuarioRolView implements Serializable {
     private static final long serialVersionUID = 1L;
-    private static final Logger log = LoggerFactory.getLogger(UsuarioRolView.class);
+    @SuppressWarnings("unused")
+	private static final Logger log = LoggerFactory.getLogger(UsuarioRolView.class);
     private InputText txtUsuCreador;
     private InputText txtUsuarioModificador;
     private InputText txtRolCodigo_Rol;

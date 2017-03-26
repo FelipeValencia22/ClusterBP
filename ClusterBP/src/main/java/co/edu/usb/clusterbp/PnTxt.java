@@ -12,6 +12,7 @@ public class PnTxt  implements java.io.Serializable {
      private Long pnTxtCodigo;
      private Pn pn;
      private String texto;
+     private String clustering;
 
     public PnTxt() {
     }
@@ -21,10 +22,11 @@ public class PnTxt  implements java.io.Serializable {
         this.pnTxtCodigo = pnTxtCodigo;
         this.pn = pn;
     }
-    public PnTxt(Long pnTxtCodigo, Pn pn, String texto) {
+    public PnTxt(Long pnTxtCodigo, Pn pn, String texto, String clustering) {
        this.pnTxtCodigo = pnTxtCodigo;
        this.pn = pn;
        this.texto = texto;
+       this.clustering=clustering;
     }
    
     public Long getPnTxtCodigo() {
@@ -49,8 +51,13 @@ public class PnTxt  implements java.io.Serializable {
         this.texto = texto;
     }
 
+	public String getClustering() {
+		return clustering;
+	}
 
-
+	public void setClustering(String clustering) {
+		this.clustering = clustering;
+	}
 
 }
 

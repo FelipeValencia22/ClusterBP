@@ -1,83 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE html>
+
 <html xmlns="http://www.w3.org/1999/xhtml"
 	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
 	xmlns:f="http://java.sun.com/jsf/core"
-	xmlns:ui="http://java.sun.com/jsf/facelets"
-	xmlns:p="http://primefaces.org/ui">
-
+	xmlns:ui="http://java.sun.com/jsf/facelets">
 <h:head>
-	<title>.:VOBITeam:.</title>
-	<meta name="viewport"
-		content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" />
+	<f:view contentType="text/html">
 
-	<h:outputScript name="js/login.js" library="sentinel-layout" />
-	<h:outputStylesheet name="css/font-icon-layout.css"
-		library="sentinel-layout" />
-	<h:outputStylesheet name="css/sentinel-layout.css"
-		library="sentinel-layout" />
-	<h:outputStylesheet name="css/core-layout.css"
-		library="sentinel-layout" />
+		<meta charset="utf-8" />
+		<meta name="viewport"
+			content="width=device-width, initial-scale=1, user-scalable=no" />
+		<link rel="stylesheet" href="assets/css/main.css" />
+	</f:view>
+
 </h:head>
+<h:body>
+	<h:form>
+		<p:growl id="growl" showDetail="fa" />
+		<div class="container" align="center">
+			<h:panelGrid columns="1" width="700">
+				<div id="login" class="form-action show">
 
-<h:body class="fontRegular login-back white-back">
-	<h:form id="frm">
-		<p:growl id="msgGrowl" autoUpdate="true" showDetail="false" />
-		<div class="Container">
-			<div
-				class="Container80 MaxWid500 Fnone MarAuto TexAlCenter PaddingTopPercent10">
-				<a href="" id="login-logo"> <h:graphicImage
-						name="images/LOGO.svg" styleClass="Fleft"
-						library="sentinel-layout" /> <span
-					class="Fs30 FontTitilliumSemiBoldItalic Fleft"><span
-						class="softblue">VOBI</span><span class="hardblue">Team</span></span>
-				</a>
-				<div class="EmptyBox10"></div>
-			</div>
+					<h2 class="form-signin-heading">ClusterBP</h2>
+					<h5>	Plataforma web para la agrupación y búsqueda de modelos de procesos de negocio</h5>
 
-			<!-- LOGIN BOX COVER START -->
-			<div class="Container80 MaxWid500 white-back Fnone MarAuto BordRad10"
-				id="login-box">
-				<div class="Container">
-					<div
-						class="Container50 TexAlCenter Animated05 BoxSizeBorder TabBtn left TabBtnActiveLeft"
-						role="1">
-						<div class="Container80 Fnone MarAuto FontBold">
-							<i class="icon-lock"></i> Iniciar sesión
-						</div>
-					</div>
+					<p:inputText id="usernameField" name="j_username"
+						value="#{loginView.userId}" placeholder="Correo"
+						style='width:75%; margin: 10px;' />
 
-					<div
-						class="Container90 Fnone MarAuto TexAlCenter TabContent OvHidden"
-						id="TAB1">
-						<div class="EmptyBox50"></div>
-						<p:inputText id="usernameField" name="j_username"
-							value="#{loginView.userId}" placeholder="Email"
-							styleClass="Container80 Fnone MarAuto Fs18" />
-						<div class="EmptyBox10"></div>
-						<p:password id="passwordField" name="j_password"
-							value="#{loginView.password}" placeholder="Clave"
-							styleClass="Container80 Fnone MarAuto Fs18" feedback="false" />
-						<div class="EmptyBox20"></div>
+					<p:password id="passwordField" name="j_password"
+						value="#{loginView.password}" placeholder="Contraseña"
+						style='width:75%; margin: 10px;' feedback="false" />
 
-						<div class="EmptyBox30"></div>
-						<p:commandButton styleClass="Fs16" value="Ingresar"
-							action="#{loginView.login}" update="msgGrowl, frm" />
-						<div class="EmptyBox50"></div>
-					</div>
-					
-                <div class="Container90 Fnone MarAuto DispNone TexAlCenter TabContent OvHidden" id="TAB2">
-                    <div class="EmptyBox50"></div>
-                    <p:inputText id="txtRecuperarContraseña"  placeholder="Su direccion de Email" styleClass="Container80 Fnone MarAuto Fs18"/>
-                    <div class="EmptyBox20"></div>
-                     <p:commandButton styleClass="Fs16" value="Enviar"   update="msgGrowl"/>
-                    <div class="EmptyBox50"></div>
-                </div> 
-                
+					<p:commandButton value="Iniciar sesión" action="#{loginView.login}"
+						update="@([id$=msgGrowl])" style="margin: 10px;" />
 				</div>
-			</div>
-		</div>
-		<!-- LOGIN BOX COVER END -->
-	</h:form>
-</h:body>
 
+			</h:panelGrid>
+		</div>
+	</h:form>
+
+	<f:view contentType="text/html">
+
+		<!-- Footer -->
+		<footer id="footer">
+			<h6>Felipe Alejandro Valencia Bacca</h6>
+			<h6>Proyecto de grado Ingeniería de Sistemas 2017-1</h6>
+			<h6>Universidad de San Buenaventura Cali</h6>
+			<ul class="icons">
+				<li><a href="#" class="icon fa-twitter"><span class="label">Twitter</span></a></li>
+				<li><a href="#" class="icon fa-instagram"><span
+						class="label">Instagram</span></a></li>
+				<li><a href="#" class="icon fa-github"><span class="label">GitHub</span></a></li>
+				<li><a href="#" class="icon fa-envelope-o"><span
+						class="label">Email</span></a></li>
+			</ul>
+
+		</footer>
+
+		<!-- Scripts -->
+		<!--[if lte IE 8]><script src="assets/js/ie/respond.min.js"></script><![endif]-->
+		<script src="assets/js/main.js"></script>
+		<script src="assets/js/main.js"></script>
+
+	</f:view>
+
+</h:body>
 </html>

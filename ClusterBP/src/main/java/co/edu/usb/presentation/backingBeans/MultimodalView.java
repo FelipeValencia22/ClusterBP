@@ -44,10 +44,13 @@ import java.io.File;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import  co.edu.usb.exceptions.*;
 import co.edu.usb.clusterbp.*;
+import co.edu.usb.clusterbp.control.IPnTxtLogic;
 import co.edu.usb.clusterbp.dto.PnDTO;
+import co.edu.usb.dataaccess.dao.IUsuarioRolDAO;
 import co.edu.usb.presentation.businessDelegate.*;
 import co.edu.usb.utilities.*;
 /**
@@ -93,8 +96,9 @@ public class MultimodalView implements Serializable {
 	private String to;
 
 	List <String> valores;
-	List <String> listaResultado;
+	List <String> listaResultado= new ArrayList<String>();
 
+	private boolean dir=true;
 
 	public MultimodalView() {
 		super();
@@ -102,6 +106,8 @@ public class MultimodalView implements Serializable {
 		setTransiciones("");
 		setResultado("");
 	}
+	
+	
 
 	@ManagedProperty(value="#{BusinessDelegatorView}")
 	private IBusinessDelegatorView businessDelegatorView;
@@ -334,10 +340,8 @@ public class MultimodalView implements Serializable {
 	//TODO: Metodos	
 	public String search(){
 		try {
-			String busqueda= getQuery()+getTransiciones();
-			setResultado(businessDelegatorView.search(busqueda));
-			System.out.println(listaResultado);
-			
+			String busqueda= getQuery()+" "+getTransiciones();
+			listaResultado=businessDelegatorView.search(busqueda);			
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -361,9 +365,13 @@ public class MultimodalView implements Serializable {
 	}
 
 	public String textual(){
+		txtBusqueda.resetValue();
 		txtBusqueda.setDisabled(false);
 		btnAddTexto.setDisabled(false);
 		btnBuscar.setDisabled(true);
+		if(!listaResultado.isEmpty()){
+			listaResultado.clear();
+		}
 		//
 		somListaEventos.setDisabled(true);
 		somListaEventos2.setDisabled(true);
@@ -376,10 +384,15 @@ public class MultimodalView implements Serializable {
 	}
 
 	public String estructural(){
+		somListaEventos.resetValue();
+		somListaEventos2.resetValue();
 		somListaEventos.setDisabled(false);
 		somListaEventos2.setDisabled(false);
 		btnAddLista.setDisabled(false);
 		btnBuscar.setDisabled(true);
+		if(!listaResultado.isEmpty()){
+			listaResultado.clear();
+		}
 		//
 		txtBusqueda.setDisabled(true);
 		txtBusqueda.resetValue();
@@ -390,12 +403,18 @@ public class MultimodalView implements Serializable {
 	}
 
 	public String multimodal(){
+		txtBusqueda.resetValue();
+		somListaEventos.resetValue();
+		somListaEventos2.resetValue();
 		somListaEventos.setDisabled(false);
 		somListaEventos2.setDisabled(false);
 		btnAddLista.setDisabled(false);
 		txtBusqueda.setDisabled(false);
 		btnAddTexto.setDisabled(false);
 		btnBuscar.setDisabled(true);
+		if(!listaResultado.isEmpty()){
+			listaResultado.clear();
+		}
 		txtBusqueda.resetValue();
 		setQuery("");
 		somListaEventos.resetValue();
@@ -430,7 +449,7 @@ public class MultimodalView implements Serializable {
 				if(getQuery().equals("")){
 					setQuery(textoBusqueda);
 				}else{
-					setQuery(getQuery()+", "+textoBusqueda);
+					setQuery(getQuery()+" "+textoBusqueda);
 				}
 				txtBusqueda.resetValue();
 			}
@@ -457,7 +476,7 @@ public class MultimodalView implements Serializable {
 				if(getTransiciones().equals("")){
 					setTransiciones(listaEventosFrom+"_"+listaEventosTo);
 				}else{
-					setTransiciones(getTransiciones()+", "+listaEventosFrom+"_"+listaEventosTo);
+					setTransiciones(getTransiciones()+" "+listaEventosFrom+"_"+listaEventosTo);
 				}
 				somListaEventos.resetValue();
 				somListaEventos2.resetValue();

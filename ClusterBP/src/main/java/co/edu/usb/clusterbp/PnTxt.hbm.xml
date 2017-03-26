@@ -14,5 +14,8 @@
         <property name="texto" type="java.lang.String">
             <column name="texto" />
         </property>
+        <property name="clustering" type="java.lang.String">
+            <column name="clustering" />
+        </property>
     </class>
 </hibernate-mapping>

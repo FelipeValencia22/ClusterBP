@@ -57,7 +57,7 @@ public interface IPnTxtLogic {
     
     public String crearTxt(String texto, Pn pn) throws Exception;
     
-    public String search(String value);
+    public List<String> search(String value);
     
     public String createDirectory();
 }

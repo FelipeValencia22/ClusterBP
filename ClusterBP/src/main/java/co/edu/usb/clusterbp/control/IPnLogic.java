@@ -60,6 +60,8 @@ public interface IPnLogic {
 	//TODO: Metodos;
 
 	public String analisisTextual(FileUploadEvent event);
+	
+	public String cadenaClustering();
 
 	//TODO: Consultas
 	public Pn consultarPNPorNombre (String nombre);
