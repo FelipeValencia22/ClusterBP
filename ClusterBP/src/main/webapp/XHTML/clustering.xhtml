@@ -34,11 +34,12 @@
 				<h:panelGrid id="pnlBusqueda" columns="4">
 					<p:outputLabel value="Cantidad de Clusters K" />
 
-					<p:inputText id="txtBusqueda" placeholder="Cantidad" maxlength="1" style="margin:10px;"/>
+					<p:inputText id="txtK" placeholder="Cantidad" maxlength="2" style="margin:10px;"
+					binding="#{clusterView.txtK}"/> 
 
 					<p:commandButton id="btnAddTexto" value="Ejecutar"
-						icon="fa fa-plus" actionListener="#{multimodalView.addTexto}"
-						update="@([id$=frm])" disabled="true" style="margin:10px;">
+						icon="fa fa-plus" actionListener="#{clusterView.clustering}"
+						update="@([id$=frm])" style="margin:10px;">
 					</p:commandButton>
 
 				</h:panelGrid>

@@ -1,6 +1,7 @@
 package co.edu.usb.dataaccess.dao;
 
 import co.edu.usb.clusterbp.Pn;
+import co.edu.usb.clusterbp.configuracion.PATH;
 import co.edu.usb.dataaccess.api.HibernateDaoImpl;
 
 import org.hibernate.Query;
@@ -22,9 +23,16 @@ import org.springframework.stereotype.Repository;
 
 import java.math.BigDecimal;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.math.BigDecimal;
+import java.nio.file.Files;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Set;
+
 
 import javax.annotation.Resource;
 
@@ -49,4 +57,38 @@ public class PnDAO extends HibernateDaoImpl<Pn, Long> implements IPnDAO {
     public static IPnDAO getFromApplicationContext(ApplicationContext ctx) {
         return (IPnDAO) ctx.getBean("PnDAO");
     }
+  //Permite crear los  procesos XPDL en el servidor.
+    public  String crearProceso(Pn XPDL ) throws IOException {
+
+    		FileOutputStream out = new FileOutputStream(PATH.RUTA_REPOSITORIO_XPDL+XPDL.getNombre());
+        	out.write(XPDL.getContenido().getBytes());
+        	out.close();
+        	
+		return "Completado";
+    }
+    
+    
+    public  String crearDocumentoEstructura(String nombreXPDL,String contenidoEstructural) throws IOException {
+
+		FileOutputStream out = new FileOutputStream(PATH.RUTA_REPOSITORIO_TXT+nombreXPDL.split(".xpdl")[0]+".txt");
+		out.write(contenidoEstructural.getBytes());
+    	out.close();
+    	
+	return "Completado";
+}
+    
+    
+    
+    //Permite obtener todos los procesos xpdl 
+    public  File[] obtenerProcesos() throws IOException {
+        // Aquí la carpeta donde queremos buscar
+
+        File folder = new File(PATH.RUTA_REPOSITORIO_XPDL);
+        File[] listOfFiles = folder.listFiles(); 
+
+    	return listOfFiles;
+    }
+    
+    
+    
 }

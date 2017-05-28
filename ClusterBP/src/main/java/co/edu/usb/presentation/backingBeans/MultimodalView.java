@@ -106,8 +106,6 @@ public class MultimodalView implements Serializable {
 		setTransiciones("");
 		setResultado("");
 	}
-	
-	
 
 	@ManagedProperty(value="#{BusinessDelegatorView}")
 	private IBusinessDelegatorView businessDelegatorView;
@@ -318,8 +316,6 @@ public class MultimodalView implements Serializable {
 	public void setTo(String to) {
 		this.to = to;
 	}
-
-
 
 	public TipoActividad getFromActividad() {
 		return fromActividad;

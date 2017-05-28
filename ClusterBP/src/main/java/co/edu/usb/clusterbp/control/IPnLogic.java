@@ -1,9 +1,17 @@
 package co.edu.usb.clusterbp.control;
 
+import java.io.IOException;
+import java.math.BigDecimal;
+
+import java.util.*;
+
+import org.primefaces.event.FileUploadEvent;
+
+import co.edu.usb.clusterbp.Cluster;
+import co.edu.usb.clusterbp.Consulta;
 import co.edu.usb.clusterbp.Pn;
 import co.edu.usb.clusterbp.dto.PnDTO;
-import java.util.List;
-import org.primefaces.event.FileUploadEvent;
+
 
 /**
  * @author Zathura Code Generator http://zathuracode.org
@@ -11,6 +19,11 @@ import org.primefaces.event.FileUploadEvent;
  *
  */
 public interface IPnLogic {
+	public ArrayList<Pn> obtenerProcesos() throws Exception;
+	public String[] crearProceso(Pn[] listXPDL);
+	public String construirEstructuraProceso(String XPDL);
+	public ArrayList<Cluster> obtenerClustering(Consulta consulta);
+	
 	public List<Pn> getPn() throws Exception;
 
 	/**
@@ -29,26 +42,13 @@ public interface IPnLogic {
 	 *
 	 */
 	public void updatePn(Pn entity) throws Exception;
-
-	/**
-	 * Load an existing Pn entity
-	 *
-	 */
-	public Pn getPn(Long pnCodigo) throws Exception;
-
-	public List<Pn> findByCriteria(Object[] variables,
-			Object[] variablesBetween, Object[] variablesBetweenDates)
-					throws Exception;
-
-	public List<Pn> findPagePn(String sortColumnName, boolean sortAscending,
-			int startRow, int maxResults) throws Exception;
-
-	public Long findTotalNumberPn() throws Exception;
-
+	
 	public List<PnDTO> getDataPn() throws Exception;
 
 	public List<PnDTO> getDataPnI() throws Exception;
-
+	
+	public Pn getPn(Long pnCodigo) throws Exception;
+	
 	//TODO: Metodos;
 
 	public String analisisTextual(FileUploadEvent event);
@@ -57,4 +57,5 @@ public interface IPnLogic {
 
 	//TODO: Consultas
 	public Pn consultarPNPorNombre (String nombre);
+
 }

@@ -1,6 +1,8 @@
 package co.edu.usb.presentation.businessDelegate;
 
 
+import co.edu.usb.clusterbp.Cluster;
+import co.edu.usb.clusterbp.Consulta;
 import co.edu.usb.clusterbp.Pn;
 import co.edu.usb.clusterbp.PnTxt;
 import co.edu.usb.clusterbp.Repositorio;
@@ -42,7 +44,7 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
-
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Set;
@@ -66,14 +68,6 @@ public interface IBusinessDelegatorView {
 
     public Pn getPn(Long pnCodigo) throws Exception;
 
-    public List<Pn> findByCriteriaInPn(Object[] variables,
-        Object[] variablesBetween, Object[] variablesBetweenDates)
-        throws Exception;
-
-    public List<Pn> findPagePn(String sortColumnName, boolean sortAscending,
-        int startRow, int maxResults) throws Exception;
-
-    public Long findTotalNumberPn() throws Exception;
 
     public List<PnDTO> getDataPn() throws Exception;
     
@@ -287,6 +281,8 @@ public interface IBusinessDelegatorView {
     
     public String cadenaClustering();    
     
+    public String clustering(int k);
+    
     //TODO: Consultas
     public Usuario consultarUsuarioPorCorreo(String correo);
     
@@ -305,5 +301,13 @@ public interface IBusinessDelegatorView {
     public String crearTxt(String texto, Pn pn) throws Exception;
     
     public List<String> search(String value);
+    
+    //// TODO: DILAN
+    
+    //Proceso de negocio
+    public ArrayList<Pn> obtenerProcesos() throws Exception;
+    public String[] crearProceso(Pn[] listXPDL);
+    public ArrayList<Cluster> crearClusteringXPDL(Consulta consulta);	
+	
     
 }

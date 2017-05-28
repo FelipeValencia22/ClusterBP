@@ -223,7 +223,7 @@ public class UsuarioLogic implements IUsuarioLogic {
 				UsuarioDTO usuarioDTO2 = new UsuarioDTO();
 
 				if(usuarioTmp.getActivo().toString().trim().equalsIgnoreCase("S")){
-					if(!usuarioTmp.getCorreo().equals("clusterbp@gmail.com")){
+					if(!usuarioTmp.getCorreo().equals("clusterbp@usbcali.edu.co")){
 						usuarioDTO2.setUsuarioCodigo(usuarioTmp.getUsuarioCodigo());
 						usuarioDTO2.setClave((usuarioTmp.getClave() != null)
 								? usuarioTmp.getClave() : null);

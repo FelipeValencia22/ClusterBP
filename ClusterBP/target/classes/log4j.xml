@@ -14,8 +14,6 @@
 
 	<root>
 		<priority value="info" />
-		<!-- <priority value="off"/> <priority value ="debug" /> <priority value 
-			="fatal" /> -->
 		<appender-ref ref="ConsoleAppender" />
 	</root>
 

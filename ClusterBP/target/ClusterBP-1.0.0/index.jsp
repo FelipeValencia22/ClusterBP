@@ -9,7 +9,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 <html>
 <head>
 
-<title>ClusterBP.</title>
+<title>ClusterBP</title>
 </head>
 <body>
 	<jsp:forward page="login.xhtml"/>

@@ -26,6 +26,8 @@ public class RepositorioDTO implements Serializable {
     private Long repositorioCodigo;
     private Long usuCreador;
     private Long usuModificador;
+    private String codeMessage;
+    private String message;
 
     public String getActivo() {
         return activo;
@@ -90,4 +92,21 @@ public class RepositorioDTO implements Serializable {
     public void setUsuModificador(Long usuModificador) {
         this.usuModificador = usuModificador;
     }
+
+	public String getCodeMessage() {
+		return codeMessage;
+	}
+
+	public void setCodeMessage(String codeMessage) {
+		this.codeMessage = codeMessage;
+	}
+
+	public String getMessage() {
+		return message;
+	}
+
+	public void setMessage(String message) {
+		this.message = message;
+	}
+    
 }

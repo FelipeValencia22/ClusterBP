@@ -67,8 +67,6 @@ public class LoginView {
     }
     */
     
-    
-
     public String login() {
     	String resultado="";
         try {

@@ -1,5 +1,7 @@
 package co.edu.usb.presentation.businessDelegate;
 
+import co.edu.usb.clusterbp.Cluster;
+import co.edu.usb.clusterbp.Consulta;
 import co.edu.usb.clusterbp.Pn;
 import co.edu.usb.clusterbp.PnTxt;
 import co.edu.usb.clusterbp.Repositorio;
@@ -9,6 +11,7 @@ import co.edu.usb.clusterbp.TipoActividad;
 import co.edu.usb.clusterbp.TipoArchivoPn;
 import co.edu.usb.clusterbp.Usuario;
 import co.edu.usb.clusterbp.UsuarioRol;
+import co.edu.usb.clusterbp.control.IClusteringLogic;
 import co.edu.usb.clusterbp.control.IPnLogic;
 import co.edu.usb.clusterbp.control.IPnTxtLogic;
 import co.edu.usb.clusterbp.control.IRepositorioLogic;
@@ -50,7 +53,7 @@ import org.springframework.stereotype.Service;
 import java.math.BigDecimal;
 
 import java.sql.*;
-
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Set;
@@ -80,17 +83,19 @@ public class BusinessDelegatorView implements IBusinessDelegatorView {
     private ITipoActividadLogic tipoActividadLogic;
     @Autowired
     private IPnTxtLogic pnTxtLogic;
+    @Autowired
+    private IClusteringLogic clusteringLogic;
 
     public List<Pn> getPn() throws Exception {
-        return pnLogic.getPn();
+        return pnLogic.getPn(); 
     }
 
     public void savePn(Pn entity) throws Exception {
         pnLogic.savePn(entity);
-    }
+    } 
 
     public void deletePn(Pn entity) throws Exception {
-        pnLogic.deletePn(entity);
+        pnLogic.deletePn(entity); 
     }
 
     public void updatePn(Pn entity) throws Exception {
@@ -109,26 +114,10 @@ public class BusinessDelegatorView implements IBusinessDelegatorView {
         return pn;
     }
 
-    public List<Pn> findByCriteriaInPn(Object[] variables,
-        Object[] variablesBetween, Object[] variablesBetweenDates)
-        throws Exception {
-        return pnLogic.findByCriteria(variables, variablesBetween,
-            variablesBetweenDates);
-    }
-
-    public List<Pn> findPagePn(String sortColumnName, boolean sortAscending,
-        int startRow, int maxResults) throws Exception {
-        return pnLogic.findPagePn(sortColumnName, sortAscending, startRow,
-            maxResults);
-    }
-
-    public Long findTotalNumberPn() throws Exception {
-        return pnLogic.findTotalNumberPn();
-    }
 
     public List<PnDTO> getDataPn() throws Exception {
         return pnLogic.getDataPn();
-    }
+    } 
     
     public List<PnDTO> getDataPnI() throws Exception {
         return pnLogic.getDataPnI(); 
@@ -561,6 +550,21 @@ public class BusinessDelegatorView implements IBusinessDelegatorView {
 	public String parserXPDL(FileUploadEvent event) {
 		return pnLogic.analisisTextual(event);
 	}
+    
+    @Override
+	public String createIndex() {
+		return pnTxtLogic.createDirectory();
+	}
+
+	@Override
+	public String cadenaClustering() {
+		return pnLogic.cadenaClustering();
+	}
+	
+	@Override
+	public String clustering(int k) {
+		return clusteringLogic.clustering(k); 
+	}
         
     //TODO: Consultas
     @Override
@@ -622,15 +626,22 @@ public class BusinessDelegatorView implements IBusinessDelegatorView {
 	public List<String> search(String value){
 		return pnTxtLogic.search(value); 
 	}
-
-	@Override
-	public String createIndex() {
-		return pnTxtLogic.createDirectory();
+	
+	///TODO: DILAN
+	
+	 //Proceso de negocio
+    public ArrayList<Pn> obtenerProcesos() throws Exception{
+    	return pnLogic.obtenerProcesos();
+    }
+    
+    public String[] crearProceso(Pn[] listXPDL){
+    	return pnLogic.crearProceso(listXPDL);
+    }
+    
+    public ArrayList<Cluster> crearClusteringXPDL(Consulta consulta) {
+		
+		return pnLogic.obtenerClustering(consulta);
+		
 	}
 
-	@Override
-	public String cadenaClustering() {
-		return pnLogic.cadenaClustering();
-	}
- 
 }

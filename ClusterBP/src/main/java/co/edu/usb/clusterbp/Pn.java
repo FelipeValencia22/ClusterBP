@@ -12,129 +12,188 @@ import java.util.Set;
 public class Pn  implements java.io.Serializable {
 
 
-     /**
+	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
 	private Long pnCodigo;
-     private TipoArchivoPn tipoArchivoPn;
-     private String titulo;
-     private String descripcion;
-     private Long usuCreador;
-     private Date fechaCreacion;
-     private Long usuModificador;
-     private Date fechaModificacion;
-     private String activo;
-     private byte[] archivo;
-     private Set<RepositorioPn> repositorioPns = new HashSet<RepositorioPn>(0);
+	private TipoArchivoPn tipoArchivoPn;
+	private String titulo;
+	private String descripcion;
+	private Long usuCreador;
+	private Date fechaCreacion;
+	private Long usuModificador;
+	private Date fechaModificacion;
+	private String activo;
+	private byte[] archivo;
+	private Set<RepositorioPn> repositorioPns = new HashSet<RepositorioPn>(0);
 
-    public Pn() {
-    }
+	// DILAN
+	private String nombre;
+	private String contenido;
+	private Long tamanho;
+	private String code;
+	private String message;
 
+	public Pn() {
+	}
+
+
+	public Pn(Long pnCodigo, TipoArchivoPn tipoArchivoPn, String titulo, Long usuCreador, Date fechaCreacion, String activo, byte[] archivo) {
+		this.pnCodigo = pnCodigo;
+		this.tipoArchivoPn = tipoArchivoPn;
+		this.titulo = titulo;
+		this.usuCreador = usuCreador;
+		this.fechaCreacion = fechaCreacion;
+		this.activo = activo;
+		this.archivo = archivo;
+	}
+	public Pn(Long pnCodigo, TipoArchivoPn tipoArchivoPn, String titulo, String descripcion, Long usuCreador, Date fechaCreacion, Long usuModificador, Date fechaModificacion, String activo, byte[] archivo, Set<RepositorioPn> repositorioPns) {
+		this.pnCodigo = pnCodigo;
+		this.tipoArchivoPn = tipoArchivoPn;
+		this.titulo = titulo;
+		this.descripcion = descripcion;
+		this.usuCreador = usuCreador;
+		this.fechaCreacion = fechaCreacion;
+		this.usuModificador = usuModificador;
+		this.fechaModificacion = fechaModificacion;
+		this.activo = activo;
+		this.archivo = archivo;
+		this.repositorioPns = repositorioPns;
+	}
+
+	public Long getPnCodigo() {
+		return this.pnCodigo;
+	}
+
+	public void setPnCodigo(Long pnCodigo) {
+		this.pnCodigo = pnCodigo;
+	}
+	public TipoArchivoPn getTipoArchivoPn() {
+		return this.tipoArchivoPn;
+	}
+
+	public void setTipoArchivoPn(TipoArchivoPn tipoArchivoPn) {
+		this.tipoArchivoPn = tipoArchivoPn;
+	}
+	public String getTitulo() {
+		return this.titulo;
+	}
+
+	public void setTitulo(String titulo) {
+		this.titulo = titulo;
+	}
+	public String getDescripcion() {
+		return this.descripcion;
+	}
+
+	public void setDescripcion(String descripcion) {
+		this.descripcion = descripcion;
+	}
+	public Long getUsuCreador() {
+		return this.usuCreador;
+	}
+
+	public void setUsuCreador(Long usuCreador) {
+		this.usuCreador = usuCreador;
+	}
+	public Date getFechaCreacion() {
+		return this.fechaCreacion;
+	}
+
+	public void setFechaCreacion(Date fechaCreacion) {
+		this.fechaCreacion = fechaCreacion;
+	}
+	public Long getUsuModificador() {
+		return this.usuModificador;
+	}
+
+	public void setUsuModificador(Long usuModificador) {
+		this.usuModificador = usuModificador;
+	}
+	public Date getFechaModificacion() {
+		return this.fechaModificacion;
+	}
+
+	public void setFechaModificacion(Date fechaModificacion) {
+		this.fechaModificacion = fechaModificacion;
+	}
+	public String getActivo() {
+		return this.activo;
+	}
+
+	public void setActivo(String activo) {
+		this.activo = activo;
+	}
+	public byte[] getArchivo() {
+		return this.archivo;
+	}
+
+	public void setArchivo(byte[] archivo) {
+		this.archivo = archivo;
+	}
+	public Set<RepositorioPn> getRepositorioPns() {
+		return this.repositorioPns;
+	}
+
+	public void setRepositorioPns(Set<RepositorioPn> repositorioPns) {
+		this.repositorioPns = repositorioPns;
+	}
 	
-    public Pn(Long pnCodigo, TipoArchivoPn tipoArchivoPn, String titulo, Long usuCreador, Date fechaCreacion, String activo, byte[] archivo) {
-        this.pnCodigo = pnCodigo;
-        this.tipoArchivoPn = tipoArchivoPn;
-        this.titulo = titulo;
-        this.usuCreador = usuCreador;
-        this.fechaCreacion = fechaCreacion;
-        this.activo = activo;
-        this.archivo = archivo;
-    }
-    public Pn(Long pnCodigo, TipoArchivoPn tipoArchivoPn, String titulo, String descripcion, Long usuCreador, Date fechaCreacion, Long usuModificador, Date fechaModificacion, String activo, byte[] archivo, Set<RepositorioPn> repositorioPns) {
-       this.pnCodigo = pnCodigo;
-       this.tipoArchivoPn = tipoArchivoPn;
-       this.titulo = titulo;
-       this.descripcion = descripcion;
-       this.usuCreador = usuCreador;
-       this.fechaCreacion = fechaCreacion;
-       this.usuModificador = usuModificador;
-       this.fechaModificacion = fechaModificacion;
-       this.activo = activo;
-       this.archivo = archivo;
-       this.repositorioPns = repositorioPns;
-    }
-   
-    public Long getPnCodigo() {
-        return this.pnCodigo;
-    }
-    
-    public void setPnCodigo(Long pnCodigo) {
-        this.pnCodigo = pnCodigo;
-    }
-    public TipoArchivoPn getTipoArchivoPn() {
-        return this.tipoArchivoPn;
-    }
-    
-    public void setTipoArchivoPn(TipoArchivoPn tipoArchivoPn) {
-        this.tipoArchivoPn = tipoArchivoPn;
-    }
-    public String getTitulo() {
-        return this.titulo;
-    }
-    
-    public void setTitulo(String titulo) {
-        this.titulo = titulo;
-    }
-    public String getDescripcion() {
-        return this.descripcion;
-    }
-    
-    public void setDescripcion(String descripcion) {
-        this.descripcion = descripcion;
-    }
-    public Long getUsuCreador() {
-        return this.usuCreador;
-    }
-    
-    public void setUsuCreador(Long usuCreador) {
-        this.usuCreador = usuCreador;
-    }
-    public Date getFechaCreacion() {
-        return this.fechaCreacion;
-    }
-    
-    public void setFechaCreacion(Date fechaCreacion) {
-        this.fechaCreacion = fechaCreacion;
-    }
-    public Long getUsuModificador() {
-        return this.usuModificador;
-    }
-    
-    public void setUsuModificador(Long usuModificador) {
-        this.usuModificador = usuModificador;
-    }
-    public Date getFechaModificacion() {
-        return this.fechaModificacion;
-    }
-    
-    public void setFechaModificacion(Date fechaModificacion) {
-        this.fechaModificacion = fechaModificacion;
-    }
-    public String getActivo() {
-        return this.activo;
-    }
-    
-    public void setActivo(String activo) {
-        this.activo = activo;
-    }
-    public byte[] getArchivo() {
-        return this.archivo;
-    }
-    
-    public void setArchivo(byte[] archivo) {
-        this.archivo = archivo;
-    }
-    public Set<RepositorioPn> getRepositorioPns() {
-        return this.repositorioPns;
-    }
-    
-    public void setRepositorioPns(Set<RepositorioPn> repositorioPns) {
-        this.repositorioPns = repositorioPns;
-    }
+	// DILAN
 
 
+	public String getNombre() {
+		return nombre;
+	}
 
+
+	public void setNombre(String nombre) {
+		this.nombre = nombre;
+	}
+
+
+	public String getContenido() {
+		return contenido;
+	}
+
+
+	public void setContenido(String contenido) {
+		this.contenido = contenido;
+	}
+
+
+	public Long getTamanho() {
+		return tamanho;
+	}
+
+
+	public void setTamanho(Long tamanho) {
+		this.tamanho = tamanho;
+	}
+
+
+	public String getCode() {
+		return code;
+	}
+
+
+	public void setCode(String code) {
+		this.code = code;
+	}
+
+
+	public String getMessage() {
+		return message;
+	}
+
+
+	public void setMessage(String message) {
+		this.message = message;
+	}
+	
+	
+	
 
 }
 

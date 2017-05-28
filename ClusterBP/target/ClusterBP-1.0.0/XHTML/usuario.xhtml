@@ -16,8 +16,8 @@
 		<!-- Expired session -->
 		<p:idleMonitor onactive="PF('sessionTimeOutDialog').show();"
 			timeout="#{session.maxInactiveInterval * 1000}" />
-		<p:dialog modal="true" widgetVar="sessionTimeOutDialog"
-			header="Expired session" draggable="false" closable="false">
+		<p:dialog modal="true" widgetVar="sessionTimeOutDialog" resizable="false"
+			header="Sesión expirada" draggable="false" closable="false">
 			<h:outputText value="Su sesión ha expirado" />
 			<input id="confirmBackToLogin" type="button" value="Iniciar sesión"
 				onclick="window.location='#{facesContext.externalContext.requestContextPath}/index.jsp';" />
@@ -26,14 +26,17 @@
 		<h:form id="frm">
 
 			<p:growl id="growl" />
+			<p:panel id="pnlPn">
+				<br></br>
+				<h1 align="center">Administraci&#243;n de Usuarios</h1>
+				<h:panelGrid columns="2">
+					<p:commandButton value="Crear" type="button"
+						onclick="PF('dlg').show();" />
+				</h:panelGrid>
+				
+				<p:separator/>
 
-			<p:panel id="pnlUsuarios" header="Administraci&#243;n de usuarios">
-				<br></br>
-				<p:commandButton value="Crear Usuario" type="button"
-					onclick="PF('dlg').show();" />
-				<br></br>
-				<br></br>
-
+				<h2>Usuarios</h2>
 				<p:accordionPanel id="panelDataTableUsuario" header="Usuarios"
 					multiple="true">
 					<p:growl id="men" />
@@ -54,7 +57,7 @@
 
 							<p:column filterBy="#{usuario.correo}" sortBy="#{usuario.correo}">
 								<f:facet name="header">
-									<h:outputText value="Correo" />
+									<h:outputText value="Login" />
 								</f:facet>
 								<h:outputText value="#{usuario.correo}" />
 							</p:column>
@@ -79,7 +82,7 @@
 							</p:column>
 
 
-							<p:column headerText="Cambiar estado">
+							<p:column headerText="Inactivar">
 								<div align="center">
 									<p:commandButton id="btnEstado" icon="fa fa-retweet"
 										update=":frm:panelDataTableUsuario, :frm:growl"
@@ -113,7 +116,7 @@
 
 							<p:column filterBy="#{usuario.correo}" sortBy="#{usuario.correo}">
 								<f:facet name="header">
-									<h:outputText value="Correo" />
+									<h:outputText value="Login" />
 								</f:facet>
 								<h:outputText value="#{usuario.correo}" />
 							</p:column>
@@ -125,7 +128,7 @@
 								<h:outputText value="#{usuario.nombre}" />
 							</p:column>
 
-							<p:column headerText="Cambiar estado">
+							<p:column headerText="Activar">
 								<div align="center">
 									<p:commandButton id="btnEstado" icon="fa fa-retweet"
 										update=":frm:panelDataTableUsuario, :frm:growl,
@@ -154,7 +157,7 @@
 				<h:form id="formDialogCrear">
 					<h:panelGrid id="pnlUsuariosCrear" columns="1" width="400">
 
-						<p:inputText id="txtCorreo" placeholder="Correo"
+						<p:inputText id="txtCorreo" placeholder="Login"
 							style="width:450px" binding="#{usuarioView.txtCorreo}"
 							maxlength="50">
 							<p:ajax listener="#{usuarioView.txtLoginListener}"
@@ -173,14 +176,14 @@
 						<p:password id="txtClaveCR" placeholder="Repetir contrase&#241;a"
 							style="width:450px" binding="#{usuarioView.txtClaveRC}"
 							maxlength="25" />
-
+						<!-- 
 						<h:panelGrid id="pnlAdministrador" columns="2">
 							<h:outputText value="¿Administrador?" />
 							<p:selectBooleanCheckbox id="esAdmin" label="Administrador"
 								style="width:400px" binding="#{usuarioView.esAdmin}"
 								disabled="true" />
 						</h:panelGrid>
-
+						 -->
 					</h:panelGrid>
 
 					<h:panelGrid id="pnlUsuariosBtns" columns="3" width="400">
@@ -215,7 +218,7 @@
 
 					<h:panelGrid id="pnlUsuariosCrear" columns="1" width="400">
 
-						<p:inputText id="txtEmailM" placeholder="Correo"
+						<p:inputText id="txtEmailM" placeholder="Login"
 							style="width:450px" binding="#{usuarioView.txtCorreoM}"
 							maxlength="50">
 						</p:inputText>

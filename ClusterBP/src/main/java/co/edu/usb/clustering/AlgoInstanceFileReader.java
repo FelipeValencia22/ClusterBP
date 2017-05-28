@@ -18,18 +18,27 @@ package co.edu.usb.clustering;
 */
 
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.faces.bean.ManagedProperty;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.transaction.annotation.Transactional;
+
+import co.edu.usb.clusterbp.PnTxt;
+import co.edu.usb.clusterbp.control.IPnTxtLogic;
 import co.edu.usb.clustering.ArraysAlgos;
-import co.edu.usb.clustering.TimeSeries;
 import co.edu.usb.clustering.DoubleArray;
 import co.edu.usb.clustering.DoubleArrayInstance;
 import co.edu.usb.clustering.MemoryLogger;
+import co.edu.usb.presentation.businessDelegate.IBusinessDelegatorView;
 
 /**
  * This class reads an instance file in memory. This is the
@@ -41,7 +50,10 @@ import co.edu.usb.clustering.MemoryLogger;
  */
 
 public class AlgoInstanceFileReader {
- 
+	
+	@ManagedProperty(value = "#{BusinessDelegatorView}")
+	private IBusinessDelegatorView businessDelegatorView;
+	 
 	/** the time the algorithm started */
 	long startTimestamp = 0; 
 	
@@ -66,6 +78,13 @@ public class AlgoInstanceFileReader {
 	 */
 	public AlgoInstanceFileReader() {
 	}
+	public IBusinessDelegatorView getBusinessDelegatorView() {
+		return businessDelegatorView;
+	}
+	
+	public void setBusinessDelegatorView(IBusinessDelegatorView businessDelegatorView) {
+		this.businessDelegatorView = businessDelegatorView;
+	}
 
 	/**
 	 * Run the algorithm
@@ -74,6 +93,8 @@ public class AlgoInstanceFileReader {
 	 * @return a list of DoubleArray (vectors of double values), each representing an instance.
 	 * @throws IOException exception if error while writing the file
 	 */
+	
+	@Transactional(readOnly = true)
 	public List<DoubleArray> runAlgorithm(String input, String separator) throws IOException {
 		
 		// reset memory logger
@@ -86,6 +107,28 @@ public class AlgoInstanceFileReader {
 		
 		attributeNames = new ArrayList<String>();
 
+		// Write the file
+		//List<PnTxt> texto= new ArrayList<PnTxt>();
+		BufferedWriter bw = null ;
+		try {
+			bw = new BufferedWriter(new FileWriter("archivo.txt"));
+			bw.write("");
+			String texto="@NAME=Pizza Colaboration.bpmn\n1,1,3,19,83,0.4,1,12,92,31";
+//			for(PnTxt tipoArchivoPn: texto){
+//				bw.write("@NAME="+tipoArchivoPn.getPn().getTitulo());
+//				bw.newLine();
+//				bw.write(tipoArchivoPn.getClustering());
+//				bw.newLine();
+//			}
+			bw.write(""+texto);
+			bw.newLine();			
+			bw.close();
+		} catch (IOException e) {
+			e.printStackTrace();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
 		// Prepare to read the file...
 		BufferedReader myInput = null;
 		String thisLine;
@@ -102,7 +145,7 @@ public class AlgoInstanceFileReader {
 		String currentInstanceName = null;
 		
 		// prepare the object for reading the file
-		myInput = new BufferedReader(new InputStreamReader( new FileInputStream(new File(input))));
+		myInput = new BufferedReader(new InputStreamReader( new FileInputStream(new File("archivo.txt"))));
 		
 		// for each line  until the end of file
 		while ((thisLine = myInput.readLine()) != null) {

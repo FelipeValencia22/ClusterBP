@@ -16,6 +16,6 @@
         </property>
         <property name="clustering" type="java.lang.String">
             <column name="clustering" />
-        </property>
+        </property>		
     </class>
 </hibernate-mapping>

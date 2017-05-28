@@ -17,32 +17,38 @@
 
 </h:head>
 <h:body>
-	<div class="container" align="center">
-		<h:form >
+	<h:form>
+		<p:growl id="growl" showDetail="fa" />
+		<div class="container" align="center">
 			<h:panelGrid columns="1" width="700">
-				<p:growl id="msgGrowl" autoUpdate="true" showDetail="false" />
-				<h2 class="form-signin-heading">ClusterBP</h2>
-				<h3 class="form-signin-heading">Panel de administración</h3>
+				<div id="login" class="form-action show">
 
-				<p:inputText id="usernameField" name="j_username"
-					value="#{loginView.userId}" placeholder="Correo"
-					/>
+					<h2 class="form-signin-heading">ClusterBP</h2>
+					<h5>	Plataforma web para la agrupación y búsqueda de modelos de procesos de negocio</h5>
 
-				<p:password id="passwordField" name="j_password"
-					value="#{loginView.password}" placeholder="Contraseña"
-					feedback="false"  />
-				<br></br>
+					<p:inputText id="usernameField" name="j_username"
+						value="#{loginView.userId}" placeholder="Correo"
+						style='width:75%; margin: 10px;' />
 
-				<p:commandButton 
-					value="inicioSesion" action="#{loginView.login}" update="msgGrowl" />
+					<p:password id="passwordField" name="j_password"
+						value="#{loginView.password}" placeholder="Contraseña"
+						style='width:75%; margin: 10px;' feedback="false" />
+
+					<p:commandButton value="Iniciar sesión" action="#{loginView.login}"
+						update="@([id$=msgGrowl])" style="margin: 10px;" />
+				</div>
+
 			</h:panelGrid>
-		</h:form>
-	</div>
+		</div>
+	</h:form>
 
 	<f:view contentType="text/html">
 
 		<!-- Footer -->
 		<footer id="footer">
+			<h6>Felipe Alejandro Valencia Bacca</h6>
+			<h6>Proyecto de grado Ingeniería de Sistemas 2017-1</h6>
+			<h6>Universidad de San Buenaventura Cali</h6>
 			<ul class="icons">
 				<li><a href="#" class="icon fa-twitter"><span class="label">Twitter</span></a></li>
 				<li><a href="#" class="icon fa-instagram"><span
@@ -56,6 +62,7 @@
 
 		<!-- Scripts -->
 		<!--[if lte IE 8]><script src="assets/js/ie/respond.min.js"></script><![endif]-->
+		<script src="assets/js/main.js"></script>
 		<script src="assets/js/main.js"></script>
 
 	</f:view>
